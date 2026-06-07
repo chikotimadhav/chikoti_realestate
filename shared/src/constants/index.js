@@ -10,7 +10,7 @@ export const API_BASE_URL = {
 
 export const PORTALS = {
   buyer:  { dev: 'http://localhost:3001', prod: 'https://www.chikotirealestate.com'    },
-  seller: { dev: 'http://localhost:3002', prod: 'https://seller.chikotirealestate.com' },
+  seller: { dev: 'http://localhost:3002', prod: 'https://chikoti-realestate-seller-portal.vercel.app/' },
   admin:  { dev: 'http://localhost:3003', prod: 'https://admin.chikotirealestate.com'  },
 };
 

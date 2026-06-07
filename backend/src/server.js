@@ -57,6 +57,8 @@ connectDB().then(async () => {
       'https://www.chikotirealestate.com',
       'https://seller.chikotirealestate.com',
       'https://admin.chikotirealestate.com',
+      'https://chikoti-realestate-seller-portal-vercel-app',
+      'https://chikoti-realestate-seller-portal.vercel.app',
       'https://chikoti-realestate-admin-portal-7yc.vercel.app',
       /\.vercel\.app$/, // Allow all vercel subdomains
     ],

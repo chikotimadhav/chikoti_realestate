@@ -70,7 +70,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout }) {
                 paddingBottom: '2px', transition: 'all 0.2s',
               }}>{n.label}</button>
             ))}
-            <a href="https://seller.chikotirealestate.com" target="_blank" rel="noreferrer"
+            <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
                style={{ color:'#94A3B8', fontSize:'0.9rem', transition:'color 0.2s' }}
                onMouseEnter={e => e.target.style.color='#C9A84C'}
                onMouseLeave={e => e.target.style.color='#94A3B8'}>
@@ -109,7 +109,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout }) {
               paddingBottom: '0.75rem', width: '100%',
             }}>{n.label}</button>
           ))}
-          <a href="https://seller.chikotirealestate.com" target="_blank" rel="noreferrer"
+          <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
              onClick={() => setMobileOpen(false)}
              style={{ color:'#94A3B8', fontSize:'1.1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem', width: '100%' }}>
             List Property ↗
