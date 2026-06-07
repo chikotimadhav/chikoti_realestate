@@ -1,0 +1,175 @@
+/* ============================================================
+   CHIKOTI SELLER PORTAL — Styles
+   Aesthetic: Clean Professional — Slate navy + emerald teal
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+  --teal:      #0D9488;
+  --teal-dark: #0F766E;
+  --teal-lite: #CCFBF1;
+  --navy:      #0F172A;
+  --navy-mid:  #1E293B;
+  --white:     #FFFFFF;
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-400: #94A3B8;
+  --slate-600: #475569;
+  --slate-800: #1E293B;
+  --gold:      #F59E0B;
+  --success:   #10B981;
+  --danger:    #EF4444;
+  --warn:      #F59E0B;
+  --radius:    10px;
+  --radius-lg: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--slate-100); color: var(--slate-800); }
+h1, h2, h3, h4 { color: var(--navy); }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+input, select, textarea { font-family: inherit; outline: none; }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn { padding: 0.65rem 1.5rem; border-radius: var(--radius); font-weight: 700; font-size: 0.9rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.45rem; }
+.btn-teal  { background: var(--teal); color: white; }
+.btn-teal:hover  { background: var(--teal-dark); transform: translateY(-1px); }
+.btn-navy  { background: var(--navy); color: white; }
+.btn-navy:hover  { background: var(--navy-mid); }
+.btn-ghost { background: transparent; border: 1.5px solid var(--slate-200); color: var(--slate-600); }
+.btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #DC2626; }
+.btn-sm { padding: 0.4rem 0.9rem; font-size: 0.8rem; }
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card { background: var(--white); border-radius: var(--radius-lg); box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+.card-pad { padding: 1.5rem; }
+
+/* ── Stat cards ─────────────────────────────────────────── */
+.stat-card { background: white; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 0 1px 8px rgba(0,0,0,0.07); display: flex; align-items: center; gap: 1rem; }
+.stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+
+/* ── Forms ──────────────────────────────────────────────── */
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-weight: 600; font-size: 0.88rem; color: var(--slate-800); margin-bottom: 0.4rem; }
+.form-input { width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid var(--slate-200); border-radius: var(--radius); font-size: 0.9rem; color: var(--slate-800); background: var(--slate-50); transition: all 0.2s; }
+.form-input:focus { border-color: var(--teal); background: white; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+/* ── Badges ─────────────────────────────────────────────── */
+.badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.badge-pending  { background: #FEF3C7; color: #92400E; }
+.badge-approved { background: #D1FAE5; color: #065F46; }
+.badge-rejected { background: #FEE2E2; color: #991B1B; }
+
+/* ── Tables ─────────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { background: var(--slate-100); color: var(--slate-600); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 0.75rem 1rem; text-align: left; }
+td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--slate-100); font-size: 0.9rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--slate-50); }
+
+/* ── Upload area ────────────────────────────────────────── */
+.upload-area { border: 2px dashed var(--slate-200); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+.upload-area:hover { border-color: var(--teal); background: var(--teal-lite); }
+.img-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.75rem; margin-top: 1rem; }
+.img-preview-item { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; }
+.img-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.img-remove { position: absolute; top: 4px; right: 4px; background: rgba(239,68,68,0.9); color: white; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* ── Dynamic sections ───────────────────────────────────── */
+.dynamic-sec { border-radius: var(--radius-lg); padding: 1.25rem; margin: 1rem 0; border-left: 4px solid; }
+.sec-agri  { background: #F0FDF4; border-color: #16A34A; }
+.sec-comm  { background: #FFFBEB; border-color: #D97706; }
+.sec-resi  { background: #EFF6FF; border-color: #2563EB; }
+.sec-title { font-weight: 800; font-size: 1rem; margin-bottom: 1rem; }
+.checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem; }
+.checkbox-grid label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.88rem; font-weight: 400; cursor: pointer; }
+
+/* ── Map ────────────────────────────────────────────────── */
+.map-box { width: 100%; height: 360px; border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--slate-200); margin-top: 0.5rem; }
+
+/* ── Sidebar Nav ────────────────────────────────────────── */
+.sidebar { width: 240px; background: var(--navy); min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; padding-top: 72px; }
+.sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 1.5rem; color: var(--slate-400); font-size: 0.92rem; font-weight: 600; transition: all 0.2s; cursor: pointer; }
+.sidebar-link:hover, .sidebar-link.active { color: white; background: rgba(13,148,136,0.15); border-right: 3px solid var(--teal); }
+.sidebar-link.active { color: #5EEAD4; }
+.main-with-sidebar { margin-left: 240px; }
+
+@media (max-width: 768px) {
+  .form-row, .form-row-3 { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main-with-sidebar { margin-left: 0; }
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.main-footer {
+  background: var(--white);
+  border-top: 1px solid var(--slate-200);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* For pages with sidebar, footer should have margin left */
+.sidebar-footer {
+  margin-left: 240px;
+}
+
+@media (max-width: 768px) {
+  .sidebar-footer {
+    margin-left: 0;
+  }
+}
+
+.designer-credit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--slate-400);
+}
+
+.designer-credit span {
+  text-transform: lowercase;
+  opacity: 0.8;
+}
+
+.instagram-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--teal);
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.instagram-icon-link:hover {
+  color: var(--teal-dark);
+  transform: translateY(-1px);
+}
+
+.instagram-icon-link svg {
+  transition: transform 0.25s ease;
+}
+
+.instagram-icon-link:hover svg {
+  transform: rotate(12deg) scale(1.1);
+}
+

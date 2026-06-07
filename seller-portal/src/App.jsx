@@ -1,0 +1,47 @@
+import React, { useState, useEffect } from 'react';
+import './styles/seller.css';
+import SellerHeader   from './components/SellerHeader.jsx';
+import Footer         from './components/Footer.jsx';
+import LoginPage      from './pages/Login.jsx';
+import DashboardPage  from './pages/Dashboard.jsx';
+import ListPage       from './pages/ListProperty.jsx';
+import InquiriesPage  from './pages/Inquiries.jsx';
+
+export default function App() {
+  const [user,  setUser]  = useState(() => {
+    try { return JSON.parse(localStorage.getItem('ck_seller_user')); } catch { return null; }
+  });
+  const [page, setPage] = useState('dashboard');
+
+  const onLogin  = (userData, token) => {
+    localStorage.setItem('ck_seller_user',  JSON.stringify(userData));
+    localStorage.setItem('ck_seller_token', token);
+    setUser(userData);
+    setPage('dashboard');
+  };
+  const onLogout = () => {
+    localStorage.removeItem('ck_seller_user');
+    localStorage.removeItem('ck_seller_token');
+    setUser(null);
+  };
+
+  if (!user || user.role === 'buyer') {
+    return <LoginPage onLogin={onLogin} />;
+  }
+
+  const pages = {
+    dashboard:  <DashboardPage user={user} navigate={setPage} />,
+    list:       <ListPage      user={user} navigate={setPage} />,
+    inquiries:  <InquiriesPage user={user} />,
+  };
+
+  return (
+    <>
+      <SellerHeader page={page} navigate={setPage} user={user} onLogout={onLogout} />
+      <main style={{ minHeight:'90vh', background:'#F1F5F9', paddingTop:72 }}>
+        {pages[page] || pages.dashboard}
+      </main>
+      <Footer />
+    </>
+  );
+}

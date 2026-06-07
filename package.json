@@ -1,0 +1,22 @@
+{
+  "name": "chikoti-realestate-mongodb-root",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "admin-portal",
+    "backend",
+    "buyer-portal",
+    "seller-portal"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w backend",
+    "dev:buyer": "npm run dev -w buyer-portal",
+    "dev:seller": "npm run dev -w seller-portal",
+    "dev:admin": "npm run dev -w admin-portal",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:buyer\" \"npm run dev:seller\" \"npm run dev:admin\"",
+    "all": "npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}

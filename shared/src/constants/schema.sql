@@ -1,0 +1,10 @@
+-- ⚠️  SQL schema removed — project now uses MongoDB with Mongoose.
+-- See backend/src/models/ for all schema definitions:
+--   User.js      → users collection
+--   Property.js  → properties collection
+--   Inquiry.js   → inquiries collection
+--   Favorite.js  → favorites collection
+--
+-- No manual schema import needed.
+-- MongoDB creates collections automatically on first write.
+-- The admin user is auto-seeded when the backend starts.
