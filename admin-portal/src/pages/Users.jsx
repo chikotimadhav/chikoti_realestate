@@ -11,7 +11,7 @@ export default function UsersPage() {
   async function load(silent = false) {
     if (!silent) setLoading(true);
     try {
-      const res  = await fetch('http://localhost:5000/api/admin/users', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token()}` }
       });
       const data = await res.json();
@@ -30,7 +30,7 @@ export default function UsersPage() {
   }, []);
 
   async function toggleUser(id, field, current) {
-    await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/users/${id}`, {
       method:'PATCH',
       headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token()}` },
       body: JSON.stringify({ [field]: !current }),

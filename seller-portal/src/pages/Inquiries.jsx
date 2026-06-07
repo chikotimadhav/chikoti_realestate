@@ -9,7 +9,7 @@ export default function InquiriesPage() {
   useEffect(() => {
     function loadInquiries(silent = false) {
       if (!silent) setLoading(true);
-      fetch('http://localhost:5000/api/inquiries/seller', {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/inquiries/seller`, {
         headers: { Authorization: `Bearer ${token()}` }
       })
         .then(r => r.json())

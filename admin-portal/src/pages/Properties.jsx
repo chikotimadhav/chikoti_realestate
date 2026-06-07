@@ -20,7 +20,7 @@ export default function PropertiesPage() {
     if (!silent) setLoading(true);
     try {
       const qs = tab !== 'all' ? `?status=${tab}` : '';
-      const res = await fetch(`http://localhost:5000/api/admin/properties${qs}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/properties${qs}`, {
         headers: { Authorization: `Bearer ${token()}` }
       });
       const data = await res.json();
@@ -39,7 +39,7 @@ export default function PropertiesPage() {
   }, [tab]);
 
   async function updateStatus(id, status, is_featured = false) {
-    await fetch(`http://localhost:5000/api/admin/properties/${id}/status`, {
+    await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/properties/${id}/status`, {
       method:'PATCH',
       headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token()}` },
       body: JSON.stringify({ status, is_featured }),
@@ -50,7 +50,7 @@ export default function PropertiesPage() {
 
   async function deleteProperty(id) {
     if (!confirm('Permanently delete this property?')) return;
-    await fetch(`http://localhost:5000/api/properties/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties/${id}`, {
       method:'DELETE', headers:{ Authorization:`Bearer ${token()}` }
     });
     load();

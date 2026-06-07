@@ -18,10 +18,11 @@ export default function OverviewPage() {
   const [pending, setPending] = useState([]);
 
   useEffect(() => {
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
     function fetchData() {
       Promise.all([
-        fetch('http://localhost:5000/api/admin/stats', { headers:{ Authorization:`Bearer ${token()}` } }).then(r=>r.json()),
-        fetch('http://localhost:5000/api/admin/properties?status=pending', { headers:{ Authorization:`Bearer ${token()}` } }).then(r=>r.json()),
+        fetch(`${apiBase}/api/admin/stats`, { headers:{ Authorization:`Bearer ${token()}` } }).then(r=>r.json()),
+        fetch(`${apiBase}/api/admin/properties?status=pending`, { headers:{ Authorization:`Bearer ${token()}` } }).then(r=>r.json()),
       ]).then(([s, p]) => {
         setStats(s.data || {});
         setPending((p.data || []).slice(0, 5));
@@ -114,7 +115,8 @@ function PendingRow({ property: p, onAction }) {
 
   async function act(status, is_featured = false) {
     setActing(true);
-    await fetch(`http://localhost:5000/api/admin/properties/${p.id}/status`, {
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    await fetch(`${apiBase}/api/admin/properties/${p.id}/status`, {
       method:'PATCH',
       headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token()}` },
       body: JSON.stringify({ status, is_featured }),

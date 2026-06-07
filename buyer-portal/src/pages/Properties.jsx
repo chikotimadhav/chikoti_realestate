@@ -19,7 +19,7 @@ export default function PropertiesPage({ openDetail }) {
     if (type)    params.set('type', type);
     if (listing) params.set('listing', listing);
     if (sort)    params.set('sort', sort);
-    fetch(`http://localhost:5000/api/properties?${params}`)
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties?${params}`)
       .then(r => r.json())
       .then(d => setProperties(d.data || []))
       .catch(() => setProperties([]))

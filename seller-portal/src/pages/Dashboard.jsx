@@ -19,11 +19,12 @@ export default function DashboardPage({ user, navigate }) {
   async function load(silent = false) {
     if (!silent) setLoading(true);
     try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const [pRes, iRes] = await Promise.all([
-        fetch('http://localhost:5000/api/properties/seller/mine', {
+        fetch(`${apiBase}/api/properties/seller/mine`, {
           headers: { Authorization: `Bearer ${token()}` }
         }),
-        fetch('http://localhost:5000/api/inquiries/seller', {
+        fetch(`${apiBase}/api/inquiries/seller`, {
           headers: { Authorization: `Bearer ${token()}` }
         }),
       ]);
@@ -43,7 +44,8 @@ export default function DashboardPage({ user, navigate }) {
 
   async function deleteProp(id) {
     if (!confirm('Delete this property?')) return;
-    await fetch(`http://localhost:5000/api/properties/${id}`, {
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    await fetch(`${apiBase}/api/properties/${id}`, {
       method: 'DELETE', headers: { Authorization: `Bearer ${token()}` }
     });
     load();

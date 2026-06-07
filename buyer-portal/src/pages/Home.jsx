@@ -33,7 +33,7 @@ export default function HomePage({ navigate, openDetail }) {
   useEffect(() => {
     function loadFeatured(silent = false) {
       if (!silent) setLoading(true);
-      fetch('http://localhost:5000/api/properties/featured')
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties/featured`)
         .then(r => r.json())
         .then(d => setFeatured(d.data || []))
         .catch(() => setFeatured([]))

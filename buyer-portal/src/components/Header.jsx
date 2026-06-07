@@ -17,9 +17,10 @@ export default function Header({ page, navigate, user, onLogin, onLogout }) {
     e.preventDefault();
     setErr(''); setLoading(true);
     try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const endpoint = tab === 'login'
-        ? 'http://localhost:5000/api/auth/login'
-        : 'http://localhost:5000/api/auth/register';
+        ? `${apiBase}/api/auth/login`
+        : `${apiBase}/api/auth/register`;
       const body = tab === 'login'
         ? { email: form.email, password: form.password }
         : form;

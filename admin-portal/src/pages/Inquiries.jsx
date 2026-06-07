@@ -10,7 +10,7 @@ export default function InquiriesPage() {
   useEffect(() => {
     function fetchInquiries(silent = false) {
       if (!silent) setLoading(true);
-      fetch('http://localhost:5000/api/admin/inquiries', {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/inquiries`, {
         headers: { Authorization: `Bearer ${token()}` }
       })
         .then(r => r.json())
