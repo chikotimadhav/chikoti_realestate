@@ -91,18 +91,9 @@ export default function HomePage({ navigate, openDetail }) {
           </div>
 
           {/* Stats */}
-          <div style={{
-            display:'grid', gridTemplateColumns:'repeat(4,1fr)',
-            gap:'1px', marginTop:'4rem',
-            background:'rgba(201,168,76,0.15)',
-            borderRadius:16, overflow:'hidden',
-            border:'1px solid rgba(201,168,76,0.2)',
-          }}>
+          <div className="stats-grid">
             {STATS.map(s => (
-              <div key={s.label} style={{
-                background:'rgba(10,22,40,0.8)',
-                padding:'1.5rem 1rem', textAlign:'center',
-              }}>
+              <div key={s.label} className="stats-col">
                 <div style={{ fontSize:'1.75rem', marginBottom:'0.25rem' }}>{s.icon}</div>
                 <div style={{ fontFamily:'Playfair Display', fontSize:'1.75rem', fontWeight:900, color:'#C9A84C' }}>{s.value}</div>
                 <div style={{ color:'#64748B', fontSize:'0.8rem', marginTop:'0.2rem' }}>{s.label}</div>
@@ -118,15 +109,9 @@ export default function HomePage({ navigate, openDetail }) {
           <p style={{ textAlign:'center', color:'#8B6914', fontWeight:700, fontSize:'0.78rem', letterSpacing:2, textTransform:'uppercase', marginBottom:'1rem' }}>
             Official Land Verification Portals
           </p>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1rem' }}>
+          <div className="portals-grid">
             {PORTALS.map(p => (
-              <a key={p.label} href={p.href} target="_blank" rel="noreferrer" style={{
-                display:'flex', alignItems:'center', gap:'0.75rem',
-                background:'white', borderRadius:12, padding:'1rem 1.25rem',
-                boxShadow:'0 2px 8px rgba(0,0,0,0.06)',
-                border:'1px solid rgba(201,168,76,0.2)',
-                transition:'all 0.2s',
-              }}
+              <a key={p.label} href={p.href} target="_blank" rel="noreferrer" className="portal-card"
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
               onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}>
                 <span style={{ fontSize:'1.75rem' }}>{p.icon}</span>

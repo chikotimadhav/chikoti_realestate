@@ -61,7 +61,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout }) {
           </div>
 
           {/* Desktop Nav */}
-          <nav style={{ display:'flex', alignItems:'center', gap:'1.75rem' }}>
+          <nav className="nav-desktop">
             {NAV.map(n => (
               <button key={n.page} onClick={() => navigate(n.page)} style={{
                 background: 'none', color: page === n.page ? '#C9A84C' : '#CBD5E1',
@@ -91,6 +91,43 @@ export default function Header({ page, navigate, user, onLogin, onLogout }) {
               </button>
             )}
           </nav>
+
+          {/* Mobile Nav Toggle */}
+          <button className="nav-mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
+            <i className={mobileOpen ? "fas fa-times" : "fas fa-bars"} />
+          </button>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`}>
+          {NAV.map(n => (
+            <button key={n.page} onClick={() => { navigate(n.page); setMobileOpen(false); }} style={{
+              background: 'none', color: page === n.page ? '#C9A84C' : '#CBD5E1',
+              fontWeight: page === n.page ? 700 : 500,
+              fontSize: '1.1rem', textAlign: 'left',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
+              paddingBottom: '0.75rem', width: '100%',
+            }}>{n.label}</button>
+          ))}
+          <a href="https://seller.chikotirealestate.com" target="_blank" rel="noreferrer"
+             onClick={() => setMobileOpen(false)}
+             style={{ color:'#94A3B8', fontSize:'1.1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem', width: '100%' }}>
+            List Property ↗
+          </a>
+          {user ? (
+            <div style={{ display:'flex', flexDirection:'column', gap:'1rem', marginTop:'0.5rem' }}>
+              <span style={{ color:'#C9A84C', fontWeight:600, fontSize:'1.1rem' }}>
+                👤 {user.name}
+              </span>
+              <button onClick={() => { onLogout(); setMobileOpen(false); }} className="btn-outline" style={{ padding:'0.6rem 1.5rem', width:'100%', textAlign:'center' }}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => { setShowLogin(true); setMobileOpen(false); }} className="btn-gold" style={{ padding:'0.75rem 1.5rem', width:'100%', justifyContent:'center', marginTop:'0.5rem' }}>
+              Login
+            </button>
+          )}
         </div>
       </header>
 

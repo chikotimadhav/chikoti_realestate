@@ -249,3 +249,115 @@ input, select, textarea {
   transform: rotate(12deg) scale(1.1);
 }
 
+/* ============================================================
+   RESPONSIVE UTILITIES FOR MOBILE LAYOUT
+   ============================================================ */
+
+/* Responsive Header / Navigation */
+.nav-desktop {
+  display: flex !important;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.nav-mobile-toggle {
+  display: none !important;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--cream);
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.nav-mobile-toggle:hover {
+  color: var(--gold);
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 68px;
+  left: 0;
+  right: 0;
+  background: rgba(10, 22, 40, 0.98);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 1.5rem;
+  flex-direction: column;
+  gap: 1.25rem;
+  z-index: 499;
+  box-shadow: var(--shadow-dark);
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 4rem;
+  background: rgba(201, 168, 76, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.stats-col {
+  background: rgba(10, 22, 40, 0.8);
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+/* Portals Grid */
+.portals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.portal-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  transition: all 0.2s;
+}
+
+/* Media Queries for Tablet/Mobile */
+@media (max-width: 992px) {
+  .portals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-mobile-toggle {
+    display: block !important;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 2.5rem;
+  }
+  .portals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
