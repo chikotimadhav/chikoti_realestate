@@ -34,27 +34,29 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 
-// Seed default admin on first run
+// Seed permanent admins on first run
 userSchema.statics.seedAdmin = async function () {
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const allowedAdminEmails = [
+    'madhavchikoti92@gmail.com',
+    'admin2@chikotirealestate.com',
+    'admin3@chikotirealestate.com'
+  ];
 
-  if (!adminEmail || !adminPassword) {
-    console.warn('⚠️ Seeding admin aborted: ADMIN_EMAIL or ADMIN_PASSWORD environment variables are not set.');
-    return;
+  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+
+  for (const email of allowedAdminEmails) {
+    const exists = await this.findOne({ email });
+    if (!exists) {
+      await this.create({
+        name: email === 'madhavchikoti92@gmail.com' ? 'Madhav Chikoti' : `Admin (${email.split('@')[0]})`,
+        email: email,
+        password: adminPassword,
+        role: 'admin',
+        is_verified: true,
+      });
+      console.log(`👤 Permanent admin seeded: ${email}`);
+    }
   }
-
-  const exists = await this.findOne({ email: adminEmail });
-  if (exists) return;
-
-  await this.create({
-    name: 'Chikoti Admin',
-    email: adminEmail,
-    password: adminPassword,
-    role: 'admin',
-    is_verified: true,
-  });
-  console.log(`👤 Default admin seeded: ${adminEmail}`);
 };
 
 module.exports = mongoose.model('User', userSchema);

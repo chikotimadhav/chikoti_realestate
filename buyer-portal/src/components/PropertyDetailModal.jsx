@@ -7,8 +7,13 @@ function formatPrice(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
-export default function PropertyDetailModal({ property: p, onClose }) {
-  const [form, setForm] = useState({ buyer_name:'', buyer_email:'', buyer_phone:'', message:'' });
+export default function PropertyDetailModal({ property: p, onClose, user, onLoginRequired }) {
+  const [form, setForm] = useState(() => ({
+    buyer_name: user?.name || '',
+    buyer_email: user?.email || '',
+    buyer_phone: user?.phone || '',
+    message: ''
+  }));
   const [sent, setSent] = useState(false);
   const [err,  setErr]  = useState('');
   const [imgIdx, setImgIdx] = useState(0);
@@ -117,51 +122,80 @@ export default function PropertyDetailModal({ property: p, onClose }) {
             <p style={{ color:'#4B5563', fontSize:'0.9rem', lineHeight:1.65, marginBottom:'1.25rem' }}>{p.description}</p>
           )}
 
-          {/* Contact */}
-          <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1.25rem' }}>
-            <a href={`tel:${p.contact_number}`} className="btn-gold" style={{ flex:1, justifyContent:'center', padding:'0.65rem' }}>
-              <i className="fas fa-phone" /> {p.contact_number}
-            </a>
-            {p.whatsapp_number && (
-              <a href={`https://wa.me/91${p.whatsapp_number}`} target="_blank" rel="noreferrer"
-                style={{
-                  flex:1, justifyContent:'center', padding:'0.65rem',
-                  background:'#25D366', color:'white', borderRadius:12,
-                  display:'flex', alignItems:'center', gap:'0.5rem', fontWeight:700,
-                }}>
-                <i className="fab fa-whatsapp" /> WhatsApp
-              </a>
-            )}
-          </div>
-
-          {/* Inquiry Form */}
-          {sent ? (
+          {/* Contact / Inquiry Area */}
+          {!user ? (
             <div style={{
-              background:'#D1FAE5', borderRadius:12, padding:'1.25rem',
-              textAlign:'center', color:'#065F46', fontWeight:600,
+              background: 'rgba(201,168,76,0.06)',
+              border: '1.5px dashed rgba(201,168,76,0.4)',
+              borderRadius: 16,
+              padding: '2rem 1.5rem',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.85rem',
+              marginTop: '1.5rem'
             }}>
-              ✅ Inquiry sent! The seller will contact you shortly.
+              <div style={{ fontSize: '2.2rem' }}>🔒</div>
+              <h4 style={{ fontFamily: 'Playfair Display', fontSize: '1.15rem', fontWeight:700, color: '#0A1628' }}>
+                Login Required to Inquire
+              </h4>
+              <p style={{ color: '#6B7280', fontSize: '0.88rem', maxWidth: 360, lineHeight: 1.5 }}>
+                Please log in or register to view the phone / WhatsApp contact details and submit inquiries for this property.
+              </p>
+              <button onClick={() => { onClose(); onLoginRequired(); }} className="btn-gold" style={{ padding: '0.7rem 2rem', fontSize: '0.9rem', width:'100%', justifyContent:'center' }}>
+                Sign In / Register
+              </button>
             </div>
           ) : (
-            <div style={{ background:'#F9FAFB', borderRadius:12, padding:'1.25rem' }}>
-              <h4 style={{ marginBottom:'1rem', color:'#0A1628' }}>📩 Send an Inquiry</h4>
-              <form onSubmit={sendInquiry} style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
-                  <input className="form-input" placeholder="Your Name" required
-                    value={form.buyer_name} onChange={e => setForm({...form, buyer_name:e.target.value})} />
-                  <input className="form-input" type="tel" placeholder="Phone Number" required
-                    value={form.buyer_phone} onChange={e => setForm({...form, buyer_phone:e.target.value})} />
+            <>
+              {/* Contact */}
+              <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1.25rem' }}>
+                <a href={`tel:${p.contact_number}`} className="btn-gold" style={{ flex:1, justifyContent:'center', padding:'0.65rem' }}>
+                  <i className="fas fa-phone" /> {p.contact_number}
+                </a>
+                {p.whatsapp_number && (
+                  <a href={`https://wa.me/91${p.whatsapp_number}`} target="_blank" rel="noreferrer"
+                    style={{
+                      flex:1, justifyContent:'center', padding:'0.65rem',
+                      background:'#25D366', color:'white', borderRadius:12,
+                      display:'flex', alignItems:'center', gap:'0.5rem', fontWeight:700,
+                    }}>
+                    <i className="fab fa-whatsapp" /> WhatsApp
+                  </a>
+                )}
+              </div>
+
+              {/* Inquiry Form */}
+              {sent ? (
+                <div style={{
+                  background:'#D1FAE5', borderRadius:12, padding:'1.25rem',
+                  textAlign:'center', color:'#065F46', fontWeight:600,
+                }}>
+                  ✅ Inquiry sent! The seller will contact you shortly.
                 </div>
-                <input className="form-input" type="email" placeholder="Email Address" required
-                  value={form.buyer_email} onChange={e => setForm({...form, buyer_email:e.target.value})} />
-                <textarea className="form-input" placeholder="Your message…" rows={3}
-                  value={form.message} onChange={e => setForm({...form, message:e.target.value})} />
-                {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
-                <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.75rem' }}>
-                  <i className="fas fa-paper-plane" /> Send Inquiry
-                </button>
-              </form>
-            </div>
+              ) : (
+                <div style={{ background:'#F9FAFB', borderRadius:12, padding:'1.25rem' }}>
+                  <h4 style={{ marginBottom:'1rem', color:'#0A1628' }}>📩 Send an Inquiry</h4>
+                  <form onSubmit={sendInquiry} style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
+                    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem' }}>
+                      <input className="form-input" placeholder="Your Name" required
+                        value={form.buyer_name} onChange={e => setForm({...form, buyer_name:e.target.value})} />
+                      <input className="form-input" type="tel" placeholder="Phone Number" required
+                        value={form.buyer_phone} onChange={e => setForm({...form, buyer_phone:e.target.value})} />
+                    </div>
+                    <input className="form-input" type="email" placeholder="Email Address" required
+                      value={form.buyer_email} onChange={e => setForm({...form, buyer_email:e.target.value})} />
+                    <textarea className="form-input" placeholder="Your message…" rows={3}
+                      value={form.message} onChange={e => setForm({...form, message:e.target.value})} />
+                    {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
+                    <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.75rem' }}>
+                      <i className="fas fa-paper-plane" /> Send Inquiry
+                    </button>
+                  </form>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -5,8 +5,7 @@ const NAV = [
   { label: 'Properties', page: 'properties' },
 ];
 
-export default function Header({ page, navigate, user, onLogin, onLogout }) {
-  const [showLogin, setShowLogin]   = useState(false);
+export default function Header({ page, navigate, user, onLogin, onLogout, showLogin, setShowLogin }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tab, setTab]   = useState('login');
   const [form, setForm] = useState({ name:'', email:'', phone:'', password:'', role:'buyer' });

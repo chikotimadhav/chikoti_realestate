@@ -8,6 +8,7 @@ import PropertyDetailModal from './components/PropertyDetailModal.jsx';
 export default function App() {
   const [page,     setPage]     = useState('home');
   const [detail,   setDetail]   = useState(null);   // property to show in modal
+  const [showLogin, setShowLogin] = useState(false);
   const [user,     setUser]     = useState(() => {
     try { return JSON.parse(localStorage.getItem('ck_user')); } catch { return null; }
   });
@@ -42,6 +43,8 @@ export default function App() {
         user={user}
         onLogin={onLogin}
         onLogout={onLogout}
+        showLogin={showLogin}
+        setShowLogin={setShowLogin}
       />
       <main style={{ minHeight: '80vh' }}>
         {pages[page] || pages.home}
@@ -52,6 +55,7 @@ export default function App() {
           property={detail}
           onClose={closeDetail}
           user={user}
+          onLoginRequired={() => setShowLogin(true)}
         />
       )}
     </>
