@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
   avatar_url:  { type: String, default: '' },
   is_verified: { type: Boolean, default: false },
   is_active:   { type: Boolean, default: true },
+  reset_password_code: { type: String, default: '' },
+  reset_password_expires: { type: Date },
 }, { timestamps: true });
 
 // Hash password before save

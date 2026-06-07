@@ -92,4 +92,113 @@ router.get('/me', authenticate, (req, res) => {
   res.json({ success: true, data: req.user });
 });
 
+// ── Password Reset Logic ─────────────────────────────────
+const nodemailer = require('nodemailer');
+
+async function sendResetEmail(email, code) {
+  const user = process.env.EMAIL_USER;
+  const pass = process.env.EMAIL_PASS;
+  
+  const text = `Hello,\n\nYour password reset verification code is: ${code}\n\nThis code will expire in 10 minutes.\n\nBest regards,\nChikoti Real Estate Team`;
+
+  console.log(`\n===============================================\n📧 RESET PASSWORD CODE FOR: ${email}\n🔑 CODE: ${code}\n===============================================\n`);
+
+  if (!user || !pass) {
+    console.warn('⚠️ SMTP email credentials (EMAIL_USER/EMAIL_PASS) are not set in .env. Falling back to console logging.');
+    return;
+  }
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user, pass }
+    });
+
+    await transporter.sendMail({
+      from: `"Chikoti Real Estate" <${user}>`,
+      to: email,
+      subject: 'Password Reset Verification Code - Chikoti Real Estate',
+      text: text
+    });
+    console.log(`📧 Reset email successfully sent to ${email}`);
+  } catch (error) {
+    console.error('❌ Failed to send reset email:', error);
+  }
+}
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: 'Email is required' });
+
+    const user = await User.findOne({ email: email.toLowerCase(), is_active: true });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found with this email address' });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    user.reset_password_code = code;
+    user.reset_password_expires = Date.now() + 10 * 60 * 1000;
+    await user.save();
+
+    await sendResetEmail(user.email, code);
+
+    res.json({ success: true, message: 'Verification code sent to email' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/verify-reset-code
+router.post('/verify-reset-code', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) return res.status(400).json({ error: 'Email and code are required' });
+
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+      reset_password_code: code,
+      reset_password_expires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired verification code' });
+    }
+
+    res.json({ success: true, message: 'Code verified successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, code, newPassword } = req.body;
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({ error: 'Email, verification code, and new password are required' });
+    }
+
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+      reset_password_code: code,
+      reset_password_expires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired verification code' });
+    }
+
+    user.password = newPassword;
+    user.reset_password_code = '';
+    user.reset_password_expires = undefined;
+    await user.save();
+
+    res.json({ success: true, message: 'Password reset successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

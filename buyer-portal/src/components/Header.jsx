@@ -12,6 +12,10 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
   const [err,  setErr]  = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [resetStep, setResetStep] = useState(1);
+  const [resetCode, setResetCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
   async function handleAuth(e) {
     e.preventDefault();
     setErr(''); setLoading(true);
@@ -34,6 +38,49 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
       setShowLogin(false);
     } catch (e) { setErr(e.message); }
     finally      { setLoading(false); }
+  }
+
+  async function handleForgotReset(e) {
+    e.preventDefault();
+    setErr(''); setLoading(true);
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      if (resetStep === 1) {
+        const res = await fetch(`${apiBase}/api/auth/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        setResetStep(2);
+      } else {
+        const res = await fetch(`${apiBase}/api/auth/reset-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email, code: resetCode, newPassword }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Auto-login after password reset
+        const loginRes = await fetch(`${apiBase}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email, password: newPassword }),
+        });
+        const loginData = await loginRes.json();
+        if (!loginRes.ok) throw new Error(loginData.error);
+        
+        onLogin(loginData.data.user, loginData.data.token);
+        setShowLogin(false);
+        setTab('login');
+      }
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -140,45 +187,84 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
             }}>✕</button>
 
             <h2 style={{ fontFamily:'Playfair Display', fontSize:'1.6rem', marginBottom:'0.25rem' }}>
-              {tab === 'login' ? 'Welcome back' : 'Create account'}
+              {tab === 'login' ? 'Welcome back' : tab === 'register' ? 'Create account' : 'Reset Password'}
             </h2>
             <p style={{ color:'#6B7280', fontSize:'0.9rem', marginBottom:'1.5rem' }}>
-              {tab === 'login' ? 'Sign in to your buyer account' : 'Start finding your dream property'}
+              {tab === 'login' ? 'Sign in to your buyer account' : tab === 'register' ? 'Start finding your dream property' : 'Verify your email to set a new password'}
             </p>
 
-            {/* Tabs */}
-            <div style={{ display:'flex', borderBottom:'2px solid #F3F4F6', marginBottom:'1.5rem' }}>
-              {['login','register'].map(t => (
-                <button key={t} onClick={() => setTab(t)} style={{
-                  flex:1, padding:'0.6rem', background:'none',
-                  color: tab===t ? '#C9A84C' : '#6B7280',
-                  borderBottom: tab===t ? '2px solid #C9A84C' : '2px solid transparent',
-                  fontWeight:600, fontSize:'0.9rem', marginBottom:'-2px',
-                }}>{t === 'login' ? 'Login' : 'Register'}</button>
-              ))}
-            </div>
+            {tab !== 'forgot' && (
+              /* Tabs */
+              <div style={{ display:'flex', borderBottom:'2px solid #F3F4F6', marginBottom:'1.5rem' }}>
+                {['login','register'].map(t => (
+                  <button key={t} onClick={() => { setTab(t); setErr(''); }} style={{
+                    flex:1, padding:'0.6rem', background:'none',
+                    color: tab===t ? '#C9A84C' : '#6B7280',
+                    borderBottom: tab===t ? '2px solid #C9A84C' : '2px solid transparent',
+                    fontWeight:600, fontSize:'0.9rem', marginBottom:'-2px',
+                  }}>{t === 'login' ? 'Login' : 'Register'}</button>
+                ))}
+              </div>
+            )}
 
-            <form onSubmit={handleAuth} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-              {tab === 'register' && (
-                <>
-                  <input className="form-input" placeholder="Full Name" required
-                    value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
-                  <input className="form-input" placeholder="Phone Number"
-                    value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
-                </>
-              )}
-              <input className="form-input" type="email" placeholder="Email Address" required
-                value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-              <input className="form-input" type="password" placeholder="Password" required
-                value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
-              {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
-              <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
-                {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Account'}
-              </button>
-              <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#9CA3AF' }}>
-                Demo: use any email & password to test
-              </p>
-            </form>
+            {tab === 'forgot' ? (
+              <form onSubmit={handleForgotReset} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+                {resetStep === 1 ? (
+                  <>
+                    <input className="form-input" type="email" placeholder="Email Address" required
+                      value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                    {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
+                    <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
+                      {loading ? 'Sending code…' : 'Send Verification Code'}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ color:'#059669', fontSize:'0.85rem', fontWeight:600 }}>✓ Verification code sent to {form.email}</p>
+                    <input className="form-input" placeholder="Enter 6-digit verification code" required
+                      value={resetCode} onChange={e => setResetCode(e.target.value)} />
+                    <input className="form-input" type="password" placeholder="Enter new password" required
+                      value={newPassword} onChange={e => setNewPassword(e.target.value)} />
+                    {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
+                    <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
+                      {loading ? 'Updating password…' : 'Reset Password'}
+                    </button>
+                  </>
+                )}
+                <button type="button" onClick={() => { setTab('login'); setErr(''); }} style={{ background:'none', color:'#C9A84C', fontSize:'0.88rem', fontWeight:600, marginTop:'0.5rem', cursor:'pointer' }}>
+                  ← Back to Login
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleAuth} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+                {tab === 'register' && (
+                  <>
+                    <input className="form-input" placeholder="Full Name" required
+                      value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
+                    <input className="form-input" placeholder="Phone Number"
+                      value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
+                  </>
+                )}
+                <input className="form-input" type="email" placeholder="Email Address" required
+                  value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                <input className="form-input" type="password" placeholder="Password" required
+                  value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
+                
+                {tab === 'login' && (
+                  <button type="button" onClick={() => { setTab('forgot'); setResetStep(1); setErr(''); }} style={{ background:'none', color:'#C9A84C', fontSize:'0.82rem', fontWeight:600, alignSelf:'flex-end', marginTop:'-0.5rem', marginBottom:'0.5rem', cursor:'pointer' }}>
+                    Forgot Password?
+                  </button>
+                )}
+
+                {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
+                <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
+                  {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Account'}
+                </button>
+                <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#9CA3AF' }}>
+                  Demo: use any email & password to test
+                </p>
+              </form>
+            )}
           </div>
         </div>
       )}
