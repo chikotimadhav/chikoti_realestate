@@ -7,7 +7,7 @@ function fmtPrice(n) {
   return `₹${(n/1_00_000).toFixed(1)}L`;
 }
 
-const TABS = ['all','pending','approved','rejected'];
+const TABS = ['all','pending','approved','rejected','sold'];
 
 export default function PropertiesPage() {
   const [tab,        setTab]        = useState('pending');
@@ -137,19 +137,27 @@ export default function PropertiesPage() {
                   </td>
                   <td>
                     <div style={{ display:'flex', gap:'0.3rem', flexWrap:'nowrap' }}>
-                      {p.status !== 'approved' && (
-                        <button className="btn btn-success btn-sm"
+                      {p.status !== 'approved' && p.status !== 'sold' && (
+                        <button className="btn btn-success btn-sm" title="Approve"
                           onClick={() => updateStatus(p.id,'approved', true)}>✓</button>
                       )}
-                      {p.status !== 'rejected' && (
-                        <button className="btn btn-danger btn-sm"
+                      {p.status !== 'rejected' && p.status !== 'sold' && (
+                        <button className="btn btn-danger btn-sm" title="Reject"
                           onClick={() => updateStatus(p.id,'rejected')}>✕</button>
                       )}
                       {p.status === 'approved' && (
-                        <button className="btn btn-warn btn-sm"
-                          onClick={() => updateStatus(p.id,'approved',!p.is_featured)}>
-                          {p.is_featured ? '★' : '☆'}
-                        </button>
+                        <>
+                          <button className="btn btn-warn btn-sm" title="Toggle Feature"
+                            onClick={() => updateStatus(p.id,'approved',!p.is_featured)}>
+                            {p.is_featured ? '★' : '☆'}
+                          </button>
+                          <button className="btn btn-indigo btn-sm" title="Mark as Sold"
+                            onClick={() => updateStatus(p.id,'sold')}>🤝</button>
+                        </>
+                      )}
+                      {p.status === 'sold' && (
+                        <button className="btn btn-ghost btn-sm" style={{ borderColor: 'var(--success)', color: 'var(--success)' }} title="Reactivate Property"
+                          onClick={() => updateStatus(p.id,'approved')}>Reactivate</button>
                       )}
                       <button className="btn btn-ghost btn-sm" onClick={() => setSelected(p)}>👁</button>
                       <button className="btn btn-danger btn-sm" onClick={() => deleteProperty(p.id)}>🗑</button>
@@ -199,16 +207,28 @@ export default function PropertiesPage() {
                 </p>
               )}
               <div style={{ display:'flex', gap:'0.75rem' }}>
-                {selected.status !== 'approved' && (
+                {selected.status !== 'approved' && selected.status !== 'sold' && (
                   <button className="btn btn-success" style={{ flex:1, justifyContent:'center' }}
                     onClick={() => updateStatus(selected.id,'approved',true)}>
                     ✓ Approve & Feature
                   </button>
                 )}
-                {selected.status !== 'rejected' && (
+                {selected.status !== 'rejected' && selected.status !== 'sold' && (
                   <button className="btn btn-danger" style={{ flex:1, justifyContent:'center' }}
                     onClick={() => updateStatus(selected.id,'rejected')}>
                     ✕ Reject
+                  </button>
+                )}
+                {selected.status === 'approved' && (
+                  <button className="btn btn-indigo" style={{ flex:1, justifyContent:'center' }}
+                    onClick={() => updateStatus(selected.id,'sold')}>
+                    🤝 Mark as Sold
+                  </button>
+                )}
+                {selected.status === 'sold' && (
+                  <button className="btn btn-success" style={{ flex:1, justifyContent:'center' }}
+                    onClick={() => updateStatus(selected.id,'approved')}>
+                    ✓ Reactivate Property
                   </button>
                 )}
               </div>

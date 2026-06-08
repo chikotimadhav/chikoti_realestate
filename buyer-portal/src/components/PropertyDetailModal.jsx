@@ -128,7 +128,29 @@ export default function PropertyDetailModal({ property: p, onClose, user, onLogi
           )}
 
           {/* Contact / Inquiry Area */}
-          {!user ? (
+          {p.status === 'sold' ? (
+            <div style={{
+              background: '#F9FAFB',
+              border: '1.5px solid #E5E7EB',
+              borderRadius: 16,
+              padding: '2rem 1.5rem',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.85rem',
+              marginTop: '1.5rem',
+              color: '#374151'
+            }}>
+              <div style={{ fontSize: '2.5rem' }}>🤝</div>
+              <h4 style={{ fontFamily: 'Playfair Display', fontSize: '1.25rem', fontWeight: 800 }}>
+                This Property Has Been Sold
+              </h4>
+              <p style={{ color: '#6B7280', fontSize: '0.88rem', maxWidth: 360, lineHeight: 1.5 }}>
+                Inquiries and seller contact information are no longer active for this listing. Thank you for your interest!
+              </p>
+            </div>
+          ) : !user ? (
             <div style={{
               background: 'rgba(201,168,76,0.06)',
               border: '1.5px dashed rgba(201,168,76,0.4)',

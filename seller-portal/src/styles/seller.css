@@ -70,6 +70,7 @@ input, select, textarea { font-family: inherit; outline: none; }
 .badge-pending  { background: #FEF3C7; color: #92400E; }
 .badge-approved { background: #D1FAE5; color: #065F46; }
 .badge-rejected { background: #FEE2E2; color: #991B1B; }
+.badge-sold     { background: #E0F2FE; color: #0369A1; }
 
 /* ── Tables ─────────────────────────────────────────────── */
 .table-wrap { overflow-x: auto; }

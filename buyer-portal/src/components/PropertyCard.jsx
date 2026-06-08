@@ -21,6 +21,18 @@ export default function PropertyCard({ property: p, onClick }) {
           onMouseEnter={e => e.target.style.transform='scale(1.07)'}
           onMouseLeave={e => e.target.style.transform='scale(1)'}
         />
+        {p.status === 'sold' && (
+          <div style={{
+            position:'absolute', top:0, left:0, right:0, bottom:0,
+            background:'rgba(15, 23, 42, 0.65)', backdropFilter:'blur(2px)',
+            display:'flex', alignItems:'center', justifyContent:'center',
+            color:'white', fontSize:'1.4rem', fontWeight:900,
+            letterSpacing:'3px', textTransform:'uppercase',
+            zIndex:2
+          }}>
+            <span style={{ border:'2px solid white', padding:'0.4rem 1.2rem', borderRadius:6 }}>SOLD</span>
+          </div>
+        )}
         <span style={{
           position:'absolute', top:12, left:12,
           background: TYPE_COLORS[p.land_type] || '#6B7280',

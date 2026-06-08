@@ -54,7 +54,7 @@ router.get('/properties', async (req, res) => {
 router.patch('/properties/:id/status', async (req, res) => {
   try {
     const { status, is_featured = false } = req.body;
-    if (!['approved', 'rejected', 'pending'].includes(status))
+    if (!['approved', 'rejected', 'pending', 'sold'].includes(status))
       return res.status(400).json({ error: 'Invalid status' });
     await Property.findByIdAndUpdate(req.params.id, { status, is_featured });
     res.json({ success: true, message: `Property ${status}` });

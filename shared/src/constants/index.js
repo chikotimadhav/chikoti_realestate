@@ -16,7 +16,7 @@ export const PORTALS = {
 
 export const PROPERTY_TYPES   = ['Agriculture', 'Commercial', 'Residential'];
 export const LISTING_TYPES    = ['Sale', 'Rent', 'Lease'];
-export const PROPERTY_STATUSES = ['pending', 'approved', 'rejected'];
+export const PROPERTY_STATUSES = ['pending', 'approved', 'rejected', 'sold'];
 
 export const SOIL_TYPES    = ['Black Soil','Red Soil','Alluvial','Laterite','Sandy','Clay'];
 export const WATER_SOURCES = ['Borewell','Open Well','Canal','River','Rainfed','Lake'];
@@ -35,6 +35,7 @@ export const STATUS_COLORS = {
   pending:  { bg: '#FEF3C7', text: '#D97706', label: 'Pending'  },
   approved: { bg: '#D1FAE5', text: '#059669', label: 'Approved' },
   rejected: { bg: '#FEE2E2', text: '#DC2626', label: 'Rejected' },
+  sold:     { bg: '#E0F2FE', text: '#0369A1', label: 'Sold'     },
 };
 
 export const COMPANY = {

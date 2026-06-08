@@ -18,7 +18,7 @@ const propertySchema = new mongoose.Schema({
   images:         [{ type: String }],        // array of URLs / base64
   contact_number: { type: String, required: true },
   whatsapp_number:{ type: String, default: '' },
-  status:         { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  status:         { type: String, enum: ['pending', 'approved', 'rejected', 'sold'], default: 'pending' },
   is_featured:    { type: Boolean, default: false },
   views:          { type: Number, default: 0 },
 

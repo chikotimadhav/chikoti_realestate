@@ -9,7 +9,7 @@ function formatPrice(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
-const STATUS_CLASS = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected' };
+const STATUS_CLASS = { pending:'badge-pending', approved:'badge-approved', rejected:'badge-rejected', sold:'badge-sold' };
 
 export default function DashboardPage({ user, navigate }) {
   const [props,    setProps]    = useState([]);

@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const { type, listing, search, sort, limit = 20, offset = 0 } = req.query;
-    const query = { status: 'approved' };
+    const query = { status: { $in: ['approved', 'sold'] } };
 
     if (type)    query.land_type    = type;
     if (listing) query.listing_type = listing;
