@@ -2,6 +2,8 @@
 // PROPERTY MODEL
 // ============================================================
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
+
 
 const propertySchema = new mongoose.Schema({
   seller_id:      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -47,7 +49,44 @@ const propertySchema = new mongoose.Schema({
   furnishing:     { type: String, enum: ['Unfurnished', 'Semi-furnished', 'Fully Furnished'] },
   res_floor:      { type: String },
   res_amenities:  [{ type: String }],
+  
+  tokenId:        { type: Number, unique: true },
 }, { timestamps: true });
+
+// Pre-save hook to generate sequential tokenId (e.g., 20260001, 20260002)
+propertySchema.pre('save', async function (next) {
+  const doc = this;
+  if (doc.isNew && !doc.tokenId) {
+    const Counter = mongoose.model('Counter');
+    const counter = await Counter.findOneAndUpdate(
+      { id: 'property_token_id' },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+    doc.tokenId = 20260000 + counter.seq;
+  }
+  next();
+});
+
+// Static method to migrate existing properties that lack a tokenId
+propertySchema.statics.migrateTokenIds = async function () {
+  const propertiesWithoutToken = await this.find({ tokenId: { $exists: false } });
+  if (propertiesWithoutToken.length > 0) {
+    console.log(`\n🔄 [MIGRATION] Found ${propertiesWithoutToken.length} properties without token ID. Assigning sequential IDs...`);
+    const Counter = mongoose.model('Counter');
+    for (const prop of propertiesWithoutToken) {
+      const counter = await Counter.findOneAndUpdate(
+        { id: 'property_token_id' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      prop.tokenId = 20260000 + counter.seq;
+      await prop.save();
+      console.log(`✅ [MIGRATION] Assigned tokenId #${prop.tokenId} to property: "${prop.title}"`);
+    }
+    console.log(`\n🎉 [MIGRATION] Completed tokenId migration.\n`);
+  }
+};
 
 // Text index for search
 propertySchema.index({ title: 'text', location: 'text', description: 'text' });
@@ -55,3 +94,4 @@ propertySchema.index({ status: 1, is_featured: 1 });
 propertySchema.index({ seller_id: 1 });
 
 module.exports = mongoose.model('Property', propertySchema);
+

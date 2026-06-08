@@ -67,9 +67,14 @@ export default function PropertyDetailModal({ property: p, onClose, user, onLogi
           {/* Title + Price */}
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1rem' }}>
             <div style={{ flex:1, marginRight:'1rem' }}>
-              <h2 style={{ fontFamily:'Playfair Display', fontSize:'1.4rem', color:'#0A1628', marginBottom:'0.3rem' }}>
+              <h2 style={{ fontFamily:'Playfair Display', fontSize:'1.4rem', color:'#0A1628', marginBottom:'0.2rem' }}>
                 {p.title}
               </h2>
+              {p.tokenId && (
+                <div style={{ color:'#C9A84C', fontSize:'0.82rem', fontWeight:800, textTransform:'uppercase', marginBottom:'0.4rem' }}>
+                  Property ID: #{p.tokenId}
+                </div>
+              )}
               <p style={{ color:'#6B7280', fontSize:'0.9rem' }}>
                 <i className="fas fa-map-marker-alt" style={{color:'#C9A84C', marginRight:4}} />
                 {p.location}

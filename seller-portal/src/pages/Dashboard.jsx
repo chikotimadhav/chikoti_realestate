@@ -125,7 +125,14 @@ export default function DashboardPage({ user, navigate }) {
                         : <div style={{ width:52,height:42,background:'#F1F5F9',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.2rem' }}>📷</div>
                       }
                     </td>
-                    <td style={{ fontWeight:600, maxWidth:200 }}>{p.title}</td>
+                    <td style={{ fontWeight:600, maxWidth:200 }}>
+                      <div>{p.title}</div>
+                      {p.tokenId && (
+                        <div style={{ fontSize:'0.75rem', color:'#8B6914', fontWeight:700, marginTop:'0.2rem' }}>
+                          ID: #{p.tokenId}
+                        </div>
+                      )}
+                    </td>
                     <td><span style={{ fontSize:'0.82rem', color:'#6B7280' }}>{p.land_type}</span></td>
                     <td style={{ fontWeight:700, color:'#0D9488' }}>{formatPrice(p.price)}</td>
                     <td><span className={`badge ${STATUS_CLASS[p.status] || ''}`}>{p.status}</span></td>

@@ -7,6 +7,7 @@ const cors     = require('cors');
 const path     = require('path');
 const connectDB = require('./config/db');
 const User      = require('./models/User');
+const Property  = require('./models/Property');
 
 const authRoutes      = require('./routes/auth');
 const propertyRoutes  = require('./routes/properties');
@@ -21,6 +22,7 @@ const PORT = process.env.PORT || 5000;
 // ── Connect to MongoDB, then start server ──────────────────
 connectDB().then(async () => {
   await User.seedAdmin();   // seed admin only if none exists
+  await Property.migrateTokenIds(); // migrate existing properties if they don't have token IDs
 
   // ── Middleware ─────────────────────────────────────────
   // Map _id to id recursively for all JSON responses for frontend compatibility

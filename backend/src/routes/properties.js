@@ -59,7 +59,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', authenticate, requireRole('seller', 'admin'), async (req, res) => {
   try {
     const property = await Property.create({ ...req.body, seller_id: req.user._id, status: 'pending' });
-    res.status(201).json({ success: true, data: { id: property._id }, message: 'Property submitted for review' });
+    res.status(201).json({ success: true, data: { id: property._id, tokenId: property.tokenId }, message: 'Property submitted for review' });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

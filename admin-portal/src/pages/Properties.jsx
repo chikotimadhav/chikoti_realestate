@@ -117,6 +117,11 @@ export default function PropertiesPage() {
                       }
                       <div>
                         <div style={{ fontWeight:600, fontSize:'0.875rem', maxWidth:180 }}>{p.title}</div>
+                        {p.tokenId && (
+                          <div style={{ color:'#4F46E5', fontSize:'0.72rem', fontWeight:700, margin:'0.1rem 0' }}>
+                            ID: #{p.tokenId}
+                          </div>
+                        )}
                         <div style={{ color:'#94A3B8', fontSize:'0.72rem' }}>{p.location?.split(',')[0]}</div>
                       </div>
                     </div>
@@ -172,6 +177,11 @@ export default function PropertiesPage() {
             )}
             <div style={{ padding:'1.5rem' }}>
               <h3 style={{ fontSize:'1.2rem', marginBottom:'0.25rem' }}>{selected.title}</h3>
+              {selected.tokenId && (
+                <div style={{ color:'#4F46E5', fontSize:'0.82rem', fontWeight:700, marginBottom:'0.4rem', textTransform:'uppercase' }}>
+                  Property ID: #{selected.tokenId}
+                </div>
+              )}
               <p style={{ color:'#6B7280', fontSize:'0.875rem', marginBottom:'1rem' }}>
                 📍 {selected.location}
               </p>

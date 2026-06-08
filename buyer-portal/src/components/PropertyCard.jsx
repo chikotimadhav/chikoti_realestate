@@ -38,6 +38,11 @@ export default function PropertyCard({ property: p, onClick }) {
 
       {/* Content */}
       <div style={{ padding:'1.25rem' }}>
+        {p.tokenId && (
+          <div style={{ color:'#C9A84C', fontSize:'0.75rem', fontWeight:800, textTransform:'uppercase', marginBottom:'0.25rem' }}>
+            ID: #{p.tokenId}
+          </div>
+        )}
         <h3 style={{ fontSize:'1.05rem', fontWeight:700, marginBottom:'0.4rem', color:'#0A1628', lineHeight:1.3 }}>
           {p.title}
         </h3>

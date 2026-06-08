@@ -14,6 +14,7 @@ export default function ListPage({ navigate }) {
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [createdTokenId, setCreatedTokenId] = useState(null);
   const [err, setErr] = useState('');
 
   const [form, setForm] = useState({
@@ -97,8 +98,11 @@ export default function ListPage({ navigate }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      if (data.data?.tokenId) {
+        setCreatedTokenId(data.data.tokenId);
+      }
       setSuccess(true);
-      setTimeout(() => navigate('dashboard'), 2500);
+      setTimeout(() => navigate('dashboard'), 4000);
     } catch (e) { setErr(e.message); }
     finally     { setSubmitting(false); }
   }
@@ -108,6 +112,11 @@ export default function ListPage({ navigate }) {
       <div style={{ textAlign:'center', background:'white', borderRadius:20, padding:'3rem', boxShadow:'0 8px 32px rgba(0,0,0,0.1)' }}>
         <div style={{ fontSize:'4rem', marginBottom:'1rem' }}>🎉</div>
         <h2 style={{ color:'#059669', marginBottom:'0.5rem' }}>Property Submitted!</h2>
+        {createdTokenId && (
+          <div style={{ margin: '1rem 0', padding: '0.5rem 1rem', background: '#FEF3C7', color: '#92400E', borderRadius: 8, fontWeight: 700, display: 'inline-block' }}>
+            Property ID: #{createdTokenId}
+          </div>
+        )}
         <p style={{ color:'#6B7280' }}>Awaiting admin approval. Redirecting to dashboard…</p>
       </div>
     </div>
