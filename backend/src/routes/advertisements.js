@@ -12,7 +12,7 @@ const router = express.Router();
 // GET /api/advertisements/active — Public: Get current active ad
 router.get('/active', async (_req, res) => {
   try {
-    const activeAd = await Advertisement.findOne({ isActive: true }).sort({ createdAt: -1 });
+    const activeAd = await Advertisement.findOne({ isActive: true }).sort({ createdAt: -1 }).lean();
     res.json({ success: true, data: activeAd });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -25,7 +25,7 @@ router.use(authenticate, requireRole('admin'));
 // GET /api/advertisements — Admin: Get all ads
 router.get('/', async (_req, res) => {
   try {
-    const ads = await Advertisement.find().sort({ createdAt: -1 });
+    const ads = await Advertisement.find().sort({ createdAt: -1 }).lean();
     res.json({ success: true, data: ads });
   } catch (err) {
     res.status(500).json({ error: err.message });

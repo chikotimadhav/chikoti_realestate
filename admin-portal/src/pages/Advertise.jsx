@@ -302,7 +302,7 @@ export default function AdvertisePage() {
                   </tr>
                 ) : (
                   ads.map((ad) => (
-                    <tr key={ad.id}>
+                    <tr key={ad.id || ad._id}>
                       <td style={{ width: '120px' }}>
                         <img 
                           src={getImageUrl(ad.imageUrl)} 
@@ -325,7 +325,7 @@ export default function AdvertisePage() {
                       </td>
                       <td>
                         <span 
-                          onClick={() => handleToggleActive(ad.id, ad.isActive)}
+                          onClick={() => handleToggleActive(ad.id || ad._id, ad.isActive)}
                           className={`badge ${ad.isActive ? 'badge-approved' : 'badge-rejected'}`}
                           style={{ cursor: 'pointer', userSelect: 'none' }}
                           title="Click to toggle status"
@@ -343,7 +343,7 @@ export default function AdvertisePage() {
                               background: 'transparent'
                             }}
                             disabled={ad.isActive}
-                            onClick={() => handleToggleActive(ad.id, ad.isActive)}
+                            onClick={() => handleToggleActive(ad.id || ad._id, ad.isActive)}
                             title={ad.isActive ? "Ad is already active" : "Set as active ad"}
                           >
                             Set Active
@@ -351,7 +351,7 @@ export default function AdvertisePage() {
                           <button 
                             className="btn btn-danger btn-sm"
                             style={{ padding: '0.35rem 0.5rem' }}
-                            onClick={() => handleDelete(ad.id)}
+                            onClick={() => handleDelete(ad.id || ad._id)}
                             title="Delete ad"
                           >
                             🗑
