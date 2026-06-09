@@ -12,6 +12,7 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem('ck_seller_user')); } catch { return null; }
   });
   const [page, setPage] = useState('dashboard');
+  const [editPropertyId, setEditPropertyId] = useState(null);
 
   const onLogin  = (userData, token) => {
     localStorage.setItem('ck_seller_user',  JSON.stringify(userData));
@@ -25,19 +26,24 @@ export default function App() {
     setUser(null);
   };
 
+  const navigate = (p, propertyId = null) => {
+    setEditPropertyId(propertyId);
+    setPage(p);
+  };
+
   if (!user || user.role === 'buyer') {
     return <LoginPage onLogin={onLogin} />;
   }
 
   const pages = {
-    dashboard:  <DashboardPage user={user} navigate={setPage} />,
-    list:       <ListPage      user={user} navigate={setPage} />,
+    dashboard:  <DashboardPage user={user} navigate={navigate} />,
+    list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
   };
 
   return (
     <>
-      <SellerHeader page={page} navigate={setPage} user={user} onLogout={onLogout} />
+      <SellerHeader page={page} navigate={navigate} user={user} onLogout={onLogout} />
       <main style={{ minHeight:'90vh', background:'#F1F5F9', paddingTop:72 }}>
         {pages[page] || pages.dashboard}
       </main>

@@ -139,6 +139,9 @@ export default function DashboardPage({ user, navigate }) {
                     <td style={{ color:'#6B7280' }}>{p.views || 0}</td>
                     <td>
                       <div style={{ display:'flex', gap:'0.4rem' }}>
+                        <button className="btn btn-ghost btn-sm" style={{ color: 'var(--teal)', borderColor: 'rgba(13,148,136,0.3)' }} onClick={() => navigate('list', p.id)}>
+                          Edit
+                        </button>
                         <button className="btn btn-ghost btn-sm" onClick={() => navigate('inquiries')}>
                           Inquiries
                         </button>

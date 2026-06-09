@@ -75,4 +75,25 @@ router.delete('/:id', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// PUT /api/properties/:id — seller updates their listing
+router.put('/:id', authenticate, requireRole('seller', 'admin'), async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ error: 'Property not found' });
+    if (property.seller_id.toString() !== req.user._id.toString() && req.user.role !== 'admin')
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+
+    const updateData = { ...req.body };
+    // Force status to pending for re-approval unless edited by admin
+    if (req.user.role !== 'admin') {
+      updateData.status = 'pending';
+    }
+
+    const updated = await Property.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    res.json({ success: true, data: updated, message: 'Property details updated successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

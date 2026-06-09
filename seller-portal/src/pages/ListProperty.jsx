@@ -6,13 +6,14 @@ const RES_AMENITIES   = ['Parking','Security','Gym','Swimming Pool','Lift','Gard
 
 function token() { return localStorage.getItem('ck_seller_token'); }
 
-export default function ListPage({ navigate }) {
+export default function ListPage({ navigate, editPropertyId }) {
   const mapRef    = useRef(null);
   const leafletRef= useRef(null);
   const markerRef = useRef(null);
 
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [fetchingProperty, setFetchingProperty] = useState(false);
   const [success, setSuccess] = useState(false);
   const [createdTokenId, setCreatedTokenId] = useState(null);
   const [err, setErr] = useState('');
@@ -43,13 +44,73 @@ export default function ListPage({ navigate }) {
     }));
   }
 
+  // Fetch property details for editing
+  useEffect(() => {
+    if (editPropertyId) {
+      setFetchingProperty(true);
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      fetch(`${apiBase}/api/properties/${editPropertyId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data) {
+            const prop = data.data;
+            setForm({
+              title: prop.title || '',
+              land_type: prop.land_type || '',
+              listing_type: prop.listing_type || 'Sale',
+              price: prop.price || '',
+              location: prop.location || '',
+              lat: prop.lat || 17.385044,
+              lng: prop.lng || 78.486671,
+              description: prop.description || '',
+              contact_number: prop.contact_number || '',
+              whatsapp_number: prop.whatsapp_number || '',
+              acres: prop.acres || '',
+              soil_type: prop.soil_type || '',
+              water_source: prop.water_source || '',
+              current_crop: prop.current_crop || '',
+              crop_yield: prop.crop_yield || '',
+              electricity: prop.electricity || 'Yes',
+              fencing: prop.fencing || '',
+              agri_facilities: prop.agri_facilities || [],
+              built_area: prop.built_area || '',
+              floor: prop.floor || '',
+              frontage: prop.frontage || '',
+              business_type: prop.business_type || '',
+              parking: prop.parking || 'Yes',
+              footfall: prop.footfall || 'Medium',
+              landmarks: prop.landmarks || '',
+              comm_amenities: prop.comm_amenities || [],
+              area_sqft: prop.area_sqft || '',
+              bedrooms: prop.bedrooms || 0,
+              bathrooms: prop.bathrooms || 0,
+              furnishing: prop.furnishing || 'Unfurnished',
+              res_floor: prop.res_floor || '',
+              res_amenities: prop.res_amenities || [],
+            });
+            setImages(prop.images || []);
+          }
+        })
+        .catch(err => console.error('Failed to load property:', err))
+        .finally(() => setFetchingProperty(false));
+    }
+  }, [editPropertyId]);
+
+  // Synchronize Leaflet map view & marker whenever form coordinates change
+  useEffect(() => {
+    if (leafletRef.current && markerRef.current && form.lat && form.lng) {
+      markerRef.current.setLatLng([form.lat, form.lng]);
+      leafletRef.current.setView([form.lat, form.lng], 13);
+    }
+  }, [form.lat, form.lng]);
+
   // Init Leaflet map
   useEffect(() => {
     if (leafletRef.current) return;
     import('leaflet').then(L => {
-      const map = L.default.map(mapRef.current).setView([17.385044, 78.486671], 13);
+      const map = L.default.map(mapRef.current).setView([form.lat, form.lng], 13);
       L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-      const marker = L.default.marker([17.385044, 78.486671], { draggable: true }).addTo(map);
+      const marker = L.default.marker([form.lat, form.lng], { draggable: true }).addTo(map);
       marker.on('dragend', e => updateCoords(e.target.getLatLng().lat, e.target.getLatLng().lng));
       map.on('click', e => { updateCoords(e.latlng.lat, e.latlng.lng); marker.setLatLng(e.latlng); });
       leafletRef.current = map;
@@ -91,8 +152,14 @@ export default function ListPage({ navigate }) {
 
       const payload = { ...form, price: parseFloat(form.price), images };
 
-      const res  = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties`, {
-        method: 'POST',
+      const url = editPropertyId 
+        ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties/${editPropertyId}`
+        : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties`;
+      
+      const method = editPropertyId ? 'PUT' : 'POST';
+
+      const res  = await fetch(url, {
+        method: method,
         headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token()}` },
         body: JSON.stringify(payload),
       });
@@ -107,17 +174,30 @@ export default function ListPage({ navigate }) {
     finally     { setSubmitting(false); }
   }
 
+  if (fetchingProperty) return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'80vh' }}>
+      <div style={{ textAlign:'center', color:'#94A3B8' }}>
+        <div style={{ fontSize:'2.5rem', marginBottom:'1rem' }}>⏳</div>
+        <h2>Loading property details…</h2>
+      </div>
+    </div>
+  );
+
   if (success) return (
     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'80vh' }}>
       <div style={{ textAlign:'center', background:'white', borderRadius:20, padding:'3rem', boxShadow:'0 8px 32px rgba(0,0,0,0.1)' }}>
         <div style={{ fontSize:'4rem', marginBottom:'1rem' }}>🎉</div>
-        <h2 style={{ color:'#059669', marginBottom:'0.5rem' }}>Property Submitted!</h2>
+        <h2 style={{ color:'#059669', marginBottom:'0.5rem' }}>
+          {editPropertyId ? 'Property Updated!' : 'Property Submitted!'}
+        </h2>
         {createdTokenId && (
           <div style={{ margin: '1rem 0', padding: '0.5rem 1rem', background: '#FEF3C7', color: '#92400E', borderRadius: 8, fontWeight: 700, display: 'inline-block' }}>
             Property ID: #{createdTokenId}
           </div>
         )}
-        <p style={{ color:'#6B7280' }}>Awaiting admin approval. Redirecting to dashboard…</p>
+        <p style={{ color:'#6B7280' }}>
+          {editPropertyId ? 'Changes saved successfully. Redirecting…' : 'Awaiting admin approval. Redirecting to dashboard…'}
+        </p>
       </div>
     </div>
   );
@@ -128,8 +208,12 @@ export default function ListPage({ navigate }) {
         <button className="btn btn-ghost btn-sm" onClick={() => navigate('dashboard')} style={{ marginBottom:'0.75rem' }}>
           ← Back to Dashboard
         </button>
-        <h1 style={{ fontSize:'1.5rem', fontWeight:800 }}>List New Property</h1>
-        <p style={{ color:'#64748B', fontSize:'0.9rem' }}>Fill in the details — your listing will be reviewed by admin.</p>
+        <h1 style={{ fontSize:'1.5rem', fontWeight:800 }}>
+          {editPropertyId ? 'Edit Property Listing' : 'List New Property'}
+        </h1>
+        <p style={{ color:'#64748B', fontSize:'0.9rem' }}>
+          {editPropertyId ? 'Update your property details below.' : 'Fill in the details — your listing will be reviewed by admin.'}
+        </p>
       </div>
 
       <form onSubmit={submit}>
@@ -421,7 +505,7 @@ export default function ListPage({ navigate }) {
           </button>
           <button type="submit" className="btn btn-teal" style={{ flex:1, justifyContent:'center', padding:'0.85rem' }}
             disabled={submitting}>
-            {submitting ? '⏳ Submitting…' : '🚀 Submit Property for Review'}
+            {submitting ? '⏳ Submitting…' : editPropertyId ? '💾 Update Property Details' : '🚀 Submit Property for Review'}
           </button>
         </div>
       </form>
