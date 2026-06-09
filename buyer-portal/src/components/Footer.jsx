@@ -18,7 +18,7 @@ export default function Footer({ navigate }) {
               </span>
             </div>
             <p style={{ fontSize:'0.88rem', lineHeight:1.65 }}>
-              Trusted partner in property investments since 2010.
+              Trusted partner in property investments since 2025.
             </p>
           </div>
           <div>
@@ -36,15 +36,12 @@ export default function Footer({ navigate }) {
               <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
                 style={{ color:'#94A3B8', fontSize:'0.9rem' }}>Seller Portal</a>
             </div>
-            <div style={{ marginTop:'0.4rem' }}>
-              <a href="https://admin.chikotirealestate.com" target="_blank" rel="noreferrer"
-                style={{ color:'#94A3B8', fontSize:'0.9rem' }}>Admin Portal</a>
-            </div>
+            
           </div>
           <div>
             <h4 style={{ color:'#C9A84C', fontWeight:700, marginBottom:'0.75rem' }}>Contact</h4>
-            <p style={{ fontSize:'0.9rem', marginBottom:'0.5rem' }}>📞 +91 98765 43210</p>
-            <p style={{ fontSize:'0.9rem', marginBottom:'0.5rem' }}>📧 info@chikotirealestate.com</p>
+            <p style={{ fontSize:'0.9rem', marginBottom:'0.5rem' }}>📞 +91 7013368379</p>
+            <p style={{ fontSize:'0.9rem', marginBottom:'0.5rem' }}>📧 chikotirealestates@gmail.com</p>
             <p style={{ fontSize:'0.9rem' }}>📍 Hyderabad, Telangana</p>
           </div>
         </div>

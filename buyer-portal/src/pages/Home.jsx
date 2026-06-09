@@ -75,10 +75,10 @@ export default function HomePage({ navigate, openDetail }) {
             fontWeight:900, color:'#F5F0E8', lineHeight:1.15, marginBottom:'1.25rem',
           }}>
             Find Your Perfect<br />
-            <span style={{ color:'#C9A84C' }}>Property in India</span>
+            <span style={{ color:'#C9A84C' }}>Property in Telangana</span>
           </h1>
           <p style={{ color:'#94A3B8', fontSize:'1.1rem', maxWidth:560, margin:'0 auto 2.5rem', lineHeight:1.7 }}>
-            Premium verified plots, residential lands, and commercial properties across India's fastest-growing corridors.
+            Premium verified plots, residential lands, and commercial properties across Telangana's fastest-growing corridors.
           </p>
           <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap' }}>
             <button onClick={() => navigate('properties')} className="btn-gold" style={{ fontSize:'1rem', padding:'0.9rem 2rem' }}>
