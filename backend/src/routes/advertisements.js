@@ -40,28 +40,12 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Image is required' });
     }
 
-    let imageUrl = image;
-    // If it's a base64 image data string, write it to file
-    if (image.startsWith('data:image')) {
-      const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
-      const ext        = image.match(/data:image\/(\w+);/)?.[1] || 'jpg';
-      const fname      = `ad_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-      const uploadDir  = path.join(__dirname, '../../uploads');
-
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      fs.writeFileSync(path.join(uploadDir, fname), base64Data, 'base64');
-
-      imageUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/uploads/${fname}`;
-    }
-
     // Set all existing ads to inactive
     await Advertisement.updateMany({}, { isActive: false });
 
-    // Create the new ad as active by default
+    // Create the new ad as active by default, storing base64 directly to support all envs
     const ad = await Advertisement.create({
-      imageUrl,
+      imageUrl: image,
       title: title || '',
       link: link || '',
       isActive: true,
