@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropertyCard from '../components/PropertyCard.jsx';
 
 const STATS = [
-  { icon:'🏠', value:'525+', label:'Properties Transacted' },
-  { icon:'👥', value:'1,280+', label:'Happy Buyers' },
-  { icon:'🏙️', value:'28', label:'Cities Covered' },
+  { icon:'🏠', value:'6', label:'Properties Transacted' },
+  { icon:'👥', value:'15', label:'Happy Buyers' },
+  { icon:'🏙️', value:'5', label:'Cities Covered' },
   { icon:'⭐', value:'15 yrs', label:'Of Excellence' },
 ];
 
@@ -15,9 +15,9 @@ const TYPES = [
 ];
 
 const TESTIMONIALS = [
-  { name:'Rajesh Kumar',    city:'Hyderabad', text:'Found my dream plot within 2 weeks! The team was incredibly professional.', rating:5 },
-  { name:'Priya Sharma',   city:'Bangalore',  text:'Best real estate platform in India. Transparent pricing, zero hidden costs.', rating:5 },
-  { name:'Amit Patel',     city:'Mumbai',     text:'Excellent service. Closed commercial deal in record time.', rating:5 },
+  { name:'Venu',    city:'Hyderabad', text:'Found my dream plot within 2 weeks! The team was incredibly professional.', rating:5 },
+  { name:'Ramesh',   city:'Siddipet',  text:'Best real estate platform in India. Transparent pricing, zero hidden costs.', rating:5 },
+  { name:'Ram Reddy',     city:'RagaReddy',     text:'Excellent service. Closed commercial deal in record time.', rating:5 },
 ];
 
 const PORTALS = [
