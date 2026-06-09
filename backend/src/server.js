@@ -15,6 +15,7 @@ const inquiryRoutes   = require('./routes/inquiries');
 const userRoutes      = require('./routes/users');
 const uploadRoutes    = require('./routes/upload');
 const adminRoutes     = require('./routes/admin');
+const advertisementRoutes = require('./routes/advertisements');
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -77,6 +78,7 @@ connectDB().then(async () => {
   app.use('/api/users',      userRoutes);
   app.use('/api/upload',     uploadRoutes);
   app.use('/api/admin',      adminRoutes);
+  app.use('/api/advertisements', advertisementRoutes);
 
   app.get('/api/health', (_req, res) => res.json({ status: 'ok', db: 'mongodb', time: new Date() }));
 

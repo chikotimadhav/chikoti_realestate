@@ -7,6 +7,7 @@ import OverviewPage    from './pages/Overview.jsx';
 import PropertiesPage  from './pages/Properties.jsx';
 import UsersPage       from './pages/Users.jsx';
 import InquiriesPage   from './pages/Inquiries.jsx';
+import AdvertisePage   from './pages/Advertise.jsx';
 
 export default function App() {
   const [user, setUser] = useState(() => {
@@ -32,6 +33,7 @@ export default function App() {
     properties: <PropertiesPage />,
     users:      <UsersPage      />,
     inquiries:  <InquiriesPage  />,
+    advertise:  <AdvertisePage  />,
   };
 
   return (
