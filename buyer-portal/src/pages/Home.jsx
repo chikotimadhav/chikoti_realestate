@@ -5,7 +5,7 @@ const STATS = [
   { icon:'🏠', value:'6', label:'Properties Transacted' },
   { icon:'👥', value:'15', label:'Happy Buyers' },
   { icon:'🏙️', value:'5', label:'Cities Covered' },
-  { icon:'⭐', value:'15 yrs', label:'Of Excellence' },
+  { icon:'⭐', value:'1 yrs', label:'Of Excellence' },
 ];
 
 const TYPES = [
