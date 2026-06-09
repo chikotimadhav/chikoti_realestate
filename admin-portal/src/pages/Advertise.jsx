@@ -14,6 +14,16 @@ export default function AdvertisePage() {
 
   const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('data:image')) return url;
+    if (url.includes('localhost:5000') && !apiBase.includes('localhost:5000')) {
+      const cleanBase = apiBase.replace(/\/api\/?$/, '');
+      return url.replace('http://localhost:5000', cleanBase);
+    }
+    return url;
+  };
+
   async function loadAds() {
     try {
       const res = await fetch(`${apiBase}/api/advertisements`, {
@@ -295,7 +305,7 @@ export default function AdvertisePage() {
                     <tr key={ad.id}>
                       <td style={{ width: '120px' }}>
                         <img 
-                          src={ad.imageUrl} 
+                          src={getImageUrl(ad.imageUrl)} 
                           alt="Ad" 
                           style={{ width: '100px', height: '65px', objectFit: 'cover', borderRadius: 'var(--radius)', border: '1px solid var(--gray-200)' }} 
                         />

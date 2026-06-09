@@ -33,12 +33,23 @@ export default function App() {
     navigate('home');
   };
 
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('data:image')) return url;
+    if (url.includes('localhost:5000') && !apiBase.includes('localhost:5000')) {
+      const cleanBase = apiBase.replace(/\/api\/?$/, '');
+      return url.replace('http://localhost:5000', cleanBase);
+    }
+    return url;
+  };
+
   // Advertisement display logic
   useEffect(() => {
     if (user) {
       const hasSeen = sessionStorage.getItem('ck_seen_ad');
       if (!hasSeen) {
-        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         fetch(`${apiBase}/api/advertisements/active`)
           .then(res => res.json())
           .then(data => {
@@ -186,7 +197,7 @@ export default function App() {
               }}
             >
               <img 
-                src={activeAd.imageUrl} 
+                src={getImageUrl(activeAd.imageUrl)} 
                 alt={activeAd.title || 'Advertisement'} 
                 style={{
                   display: 'block',
