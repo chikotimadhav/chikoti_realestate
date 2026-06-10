@@ -249,8 +249,7 @@ export default function ReelsPage() {
           position: relative;
           width: 90vw;
           max-width: 440px;
-          height: 85vh;
-          max-height: 780px;
+          max-height: 85vh;
           background: #000;
           border-radius: 24px;
           overflow: hidden;
@@ -259,13 +258,14 @@ export default function ReelsPage() {
           display: flex;
           flex-direction: column;
           animation: reelScaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+          margin: auto;
         }
         
         .reel-player-container {
-          flex: 1;
           width: 100%;
           position: relative;
           background: #000;
+          overflow: hidden;
         }
         
         .reel-player-iframe {
@@ -519,7 +519,7 @@ export default function ReelsPage() {
               {/* Close Button */}
               <button className="reel-lightbox-close" onClick={() => setActiveReel(null)}>✕</button>
 
-              <div className="reel-player-container">
+              <div className="reel-player-container" style={{ aspectRatio: activeReel.aspectRatio || '9/16' }}>
                 {details?.type === 'youtube' && (
                   <iframe 
                     className="reel-player-iframe"

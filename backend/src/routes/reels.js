@@ -33,7 +33,7 @@ router.get('/all', async (_req, res) => {
 // POST /api/reels — Admin: Add a new reel
 router.post('/', async (req, res) => {
   try {
-    const { title, videoUrl, description } = req.body;
+    const { title, videoUrl, description, aspectRatio } = req.body;
     if (!videoUrl) {
       return res.status(400).json({ error: 'Reel Video URL is required' });
     }
@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
       title: title || '',
       videoUrl,
       description: description || '',
+      aspectRatio: aspectRatio || '9/16',
       isActive: true,
     });
 
@@ -54,12 +55,13 @@ router.post('/', async (req, res) => {
 // PATCH /api/reels/:id — Admin: Update details or toggle active/inactive status
 router.patch('/:id', async (req, res) => {
   try {
-    const { title, videoUrl, description, isActive } = req.body;
+    const { title, videoUrl, description, aspectRatio, isActive } = req.body;
     
     const updateData = {};
     if (title !== undefined) updateData.title = title;
     if (videoUrl !== undefined) updateData.videoUrl = videoUrl;
     if (description !== undefined) updateData.description = description;
+    if (aspectRatio !== undefined) updateData.aspectRatio = aspectRatio;
     if (isActive !== undefined) updateData.isActive = isActive;
 
     const reel = await Reel.findByIdAndUpdate(

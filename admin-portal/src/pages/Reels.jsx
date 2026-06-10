@@ -9,6 +9,7 @@ export default function ReelsPage() {
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [aspectRatio, setAspectRatio] = useState('9/16');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -55,7 +56,8 @@ export default function ReelsPage() {
         body: JSON.stringify({
           title,
           videoUrl,
-          description
+          description,
+          aspectRatio
         })
       });
 
@@ -66,6 +68,7 @@ export default function ReelsPage() {
       setTitle('');
       setVideoUrl('');
       setDescription('');
+      setAspectRatio('9/16');
       
       loadReels();
     } catch (err) {
@@ -172,6 +175,20 @@ export default function ReelsPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Video Aspect Ratio *</label>
+              <select 
+                className="form-input" 
+                value={aspectRatio} 
+                onChange={e => setAspectRatio(e.target.value)}
+                style={{ background: 'var(--gray-50)', color: 'var(--gray-800)' }}
+              >
+                <option value="9/16">Portrait (9:16) - Instagram Reels / YouTube Shorts</option>
+                <option value="1/1">Square (1:1)</option>
+                <option value="16/9">Landscape (16:9)</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Description (Optional)</label>
               <textarea 
                 className="form-input" 
@@ -257,6 +274,9 @@ export default function ReelsPage() {
                             {reel.description}
                           </div>
                         )}
+                        <div style={{ fontSize: '0.7rem', color: 'var(--gray-400)', marginTop: '0.2rem' }}>
+                          Layout Ratio: <strong>{reel.aspectRatio || '9/16'}</strong>
+                        </div>
                         <div style={{ fontSize: '0.72rem', color: 'var(--indigo)', marginTop: '0.2rem', wordBreak: 'break-all' }}>
                           🔗 <a href={reel.videoUrl} target="_blank" rel="noreferrer">{reel.videoUrl}</a>
                         </div>
