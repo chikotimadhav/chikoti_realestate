@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const NAV = [
   { label: 'Home',       page: 'home' },
   { label: 'Properties', page: 'properties' },
+  { label: 'Reels',      page: 'reels' },
 ];
 
 export default function Header({ page, navigate, user, onLogin, onLogout, showLogin, setShowLogin }) {

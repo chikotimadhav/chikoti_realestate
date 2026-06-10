@@ -4,6 +4,7 @@ import Footer      from './components/Footer.jsx';
 import HomePage    from './pages/Home.jsx';
 import PropertiesPage from './pages/Properties.jsx';
 import PropertyDetailModal from './components/PropertyDetailModal.jsx';
+import ReelsPage from './pages/Reels.jsx';
 
 export default function App() {
   const [page,     setPage]     = useState('home');
@@ -80,6 +81,7 @@ export default function App() {
   const pages = {
     home:       <HomePage    navigate={navigate} openDetail={openDetail} />,
     properties: <PropertiesPage navigate={navigate} openDetail={openDetail} user={user} />,
+    reels:      <ReelsPage />,
   };
 
   return (

@@ -8,6 +8,7 @@ import PropertiesPage  from './pages/Properties.jsx';
 import UsersPage       from './pages/Users.jsx';
 import InquiriesPage   from './pages/Inquiries.jsx';
 import AdvertisePage   from './pages/Advertise.jsx';
+import ReelsPage       from './pages/Reels.jsx';
 
 export default function App() {
   const [user, setUser] = useState(() => {
@@ -34,6 +35,7 @@ export default function App() {
     users:      <UsersPage      />,
     inquiries:  <InquiriesPage  />,
     advertise:  <AdvertisePage  />,
+    reels:      <ReelsPage      />,
   };
 
   return (

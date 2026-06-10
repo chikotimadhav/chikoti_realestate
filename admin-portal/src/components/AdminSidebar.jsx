@@ -8,6 +8,7 @@ const NAV = [
   { page:'users',      label:'Users',       icon:'👥' },
   { page:'inquiries',  label:'Inquiries',   icon:'📩' },
   { page:'advertise',  label:'Advertise',   icon:'📢' },
+  { page:'reels',      label:'Reels',       icon:'🎥' },
 ];
 
 export default function AdminSidebar({ page, navigate }) {
