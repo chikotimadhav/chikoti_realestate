@@ -34,7 +34,7 @@ export default function ReelsPage() {
       const id = ytMatch[1];
       return {
         type: 'youtube',
-        embedUrl: `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`,
+        embedUrl: `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&enablejsapi=1&rel=0`,
         thumbnail: `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
       };
     }
@@ -536,6 +536,8 @@ export default function ReelsPage() {
                     src={details.embedUrl}
                     title="Instagram Reel Player"
                     allowFullScreen
+                    allow="autoplay"
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
                     scrolling="no"
                     frameBorder="0"
                   />
@@ -546,6 +548,7 @@ export default function ReelsPage() {
                     src={details.embedUrl}
                     controls 
                     autoPlay
+                    muted
                     playsInline
                     style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }}
                   />
