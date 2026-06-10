@@ -329,6 +329,61 @@ export default function ReelsPage() {
           to { transform: scale(1); opacity: 1; }
         }
 
+        .reel-lightbox-nav {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          color: white;
+          font-size: 2.2rem;
+          font-weight: 300;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          z-index: 10005;
+          backdrop-filter: blur(8px);
+          user-select: none;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+          line-height: 1;
+          padding-bottom: 4px;
+        }
+        
+        .reel-lightbox-nav:hover {
+          background: #C9A84C;
+          border-color: #C9A84C;
+          color: #0A1628;
+          transform: translateY(-50%) scale(1.1);
+          box-shadow: 0 0 20px rgba(201, 168, 76, 0.5);
+        }
+        
+        .reel-lightbox-nav-left {
+          left: 40px;
+        }
+        
+        .reel-lightbox-nav-right {
+          right: 40px;
+        }
+
+        @media (max-width: 768px) {
+          .reel-lightbox-nav {
+            width: 44px;
+            height: 44px;
+            font-size: 1.8rem;
+          }
+          .reel-lightbox-nav-left {
+            left: 15px;
+          }
+          .reel-lightbox-nav-right {
+            right: 15px;
+          }
+        }
+
         @media (max-width: 480px) {
           .reel-lightbox-content {
             width: 100vw;
@@ -343,6 +398,9 @@ export default function ReelsPage() {
             background: rgba(10, 22, 40, 0.7);
             border-color: rgba(255, 255, 255, 0.3);
             z-index: 10001;
+          }
+          .reel-lightbox-nav {
+            top: 40%;
           }
         }
       `}</style>
@@ -438,8 +496,24 @@ export default function ReelsPage() {
       {/* Lightbox / Video Modal */}
       {activeReel && (() => {
         const details = getEmbedDetails(activeReel.videoUrl);
+        const activeIndex = reels.findIndex(r => (r.id || r._id) === (activeReel?.id || activeReel?._id));
         return (
           <div className="reel-lightbox" onClick={() => setActiveReel(null)}>
+            {/* Left Nav Button */}
+            {reels.length > 1 && (
+              <button 
+                className="reel-lightbox-nav reel-lightbox-nav-left"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const prevIndex = (activeIndex - 1 + reels.length) % reels.length;
+                  setActiveReel(reels[prevIndex]);
+                }}
+                title="Previous Reel"
+              >
+                ‹
+              </button>
+            )}
+
             <div className="reel-lightbox-content" onClick={e => e.stopPropagation()}>
               
               {/* Close Button */}
@@ -504,6 +578,21 @@ export default function ReelsPage() {
               </div>
 
             </div>
+
+            {/* Right Nav Button */}
+            {reels.length > 1 && (
+              <button 
+                className="reel-lightbox-nav reel-lightbox-nav-right"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const nextIndex = (activeIndex + 1) % reels.length;
+                  setActiveReel(reels[nextIndex]);
+                }}
+                title="Next Reel"
+              >
+                ›
+              </button>
+            )}
           </div>
         );
       })()}
