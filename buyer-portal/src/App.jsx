@@ -47,7 +47,7 @@ export default function App() {
 
   // Advertisement display logic
   useEffect(() => {
-    if (user) {
+    if (!user && !showLogin) {
       const hasSeen = sessionStorage.getItem('ck_seen_ad');
       if (!hasSeen) {
         fetch(`${apiBase}/api/advertisements/active`)
@@ -61,11 +61,13 @@ export default function App() {
           .catch(err => console.error('Error fetching active ad:', err));
       }
     } else {
-      sessionStorage.removeItem('ck_seen_ad');
+      if (user) {
+        sessionStorage.removeItem('ck_seen_ad');
+      }
       setShowAd(false);
       setActiveAd(null);
     }
-  }, [user]);
+  }, [user, showLogin]);
 
   const handleAdClick = () => {
     sessionStorage.setItem('ck_seen_ad', 'true');

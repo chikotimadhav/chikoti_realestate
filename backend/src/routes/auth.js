@@ -65,13 +65,21 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const emailLower = email?.toLowerCase();
+    const identifier = email?.trim().toLowerCase();
     
-    const user = await User.findOne({ email: emailLower, is_active: true }).select('+password');
+    // Find user by either email or phone
+    const user = await User.findOne({
+      $or: [
+        { email: identifier },
+        { phone: identifier }
+      ],
+      is_active: true
+    }).select('+password');
+
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // Enforce admin login and email restrictions
-    const is_admin_email = ALLOWED_ADMIN_EMAILS.includes(emailLower);
+    // Enforce admin login and email restrictions using the registered user's email
+    const is_admin_email = ALLOWED_ADMIN_EMAILS.includes(user.email);
     if (is_admin_email && user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied: Authorized admin emails cannot be used for buyer or seller accounts.' });
     }

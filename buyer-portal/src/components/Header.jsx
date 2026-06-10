@@ -245,8 +245,13 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
                       value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
                   </>
                 )}
-                <input className="form-input" type="email" placeholder="Email Address" required
-                  value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                {tab === 'register' ? (
+                  <input key="reg-email" className="form-input" type="email" placeholder="Email Address" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                ) : (
+                  <input key="login-email" className="form-input" type="text" placeholder="Email Address or Phone Number" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                )}
                 <input className="form-input" type="password" placeholder="Password" required
                   value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
                 
