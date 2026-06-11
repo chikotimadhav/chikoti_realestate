@@ -4,6 +4,7 @@ const NAV = [
   { label: 'Home',       page: 'home' },
   { label: 'Properties', page: 'properties' },
   { label: 'Reels',      page: 'reels' },
+  { label: 'SEO Guide',  page: 'seo-guide' },
 ];
 
 export default function Header({ page, navigate, user, onLogin, onLogout, showLogin, setShowLogin }) {

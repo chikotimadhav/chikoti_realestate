@@ -23,13 +23,17 @@ export default function Footer({ navigate }) {
           </div>
           <div>
             <h4 style={{ color:'#C9A84C', fontWeight:700, marginBottom:'0.75rem' }}>Quick Links</h4>
-            {['Home','Properties'].map(l => (
-              <div key={l} style={{ marginBottom:'0.4rem' }}>
-                <button onClick={() => navigate(l.toLowerCase())} style={{
+            {[
+              { label: 'Home', page: 'home' },
+              { label: 'Properties', page: 'properties' },
+              { label: 'SEO Guide', page: 'seo-guide' }
+            ].map(l => (
+              <div key={l.page} style={{ marginBottom:'0.4rem' }}>
+                <button onClick={() => navigate(l.page)} style={{
                   background:'none', color:'#94A3B8', fontSize:'0.9rem', transition:'color 0.2s',
                 }}
                 onMouseEnter={e => e.target.style.color='#C9A84C'}
-                onMouseLeave={e => e.target.style.color='#94A3B8'}>{l}</button>
+                onMouseLeave={e => e.target.style.color='#94A3B8'}>{l.label}</button>
               </div>
             ))}
             <div style={{ marginTop:'0.4rem' }}>
