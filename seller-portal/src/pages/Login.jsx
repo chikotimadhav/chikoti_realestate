@@ -9,6 +9,8 @@ export default function LoginPage({ onLogin }) {
   const [resetStep, setResetStep] = useState(1);
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [regStep, setRegStep] = useState(1);
+  const [regCode, setRegCode] = useState('');
 
   async function handle(e) {
     e.preventDefault(); setErr(''); setLoading(true);
@@ -25,12 +27,66 @@ export default function LoginPage({ onLogin }) {
         body: JSON.stringify(body),
       });
       const data = await res.json();
+      if (!res.ok) {
+        if (tab === 'login' && data.email_unverified) {
+          setTab('register');
+          setRegStep(2);
+          setErr('');
+          return;
+        }
+        throw new Error(data.error);
+      }
+      if (tab === 'register') {
+        setRegStep(2);
+      } else {
+        if (data.data.user.role === 'buyer')
+          throw new Error('This portal is for sellers. Please register as a seller.');
+        onLogin(data.data.user, data.data.token);
+      }
+    } catch (e) { setErr(e.message); }
+    finally     { setLoading(false); }
+  }
+
+  async function handleVerifyEmail(e) {
+    e.preventDefault();
+    setErr(''); setLoading(true);
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/auth/verify-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, code: regCode }),
+      });
+      const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       if (data.data.user.role === 'buyer')
         throw new Error('This portal is for sellers. Please register as a seller.');
+
       onLogin(data.data.user, data.data.token);
-    } catch (e) { setErr(e.message); }
-    finally     { setLoading(false); }
+      setRegStep(1);
+      setRegCode('');
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleResendVerification() {
+    setErr('');
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBase}/api/auth/resend-verification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert('A new verification code has been sent to your email.');
+    } catch (e) {
+      setErr(e.message);
+    }
   }
 
   async function handleForgotReset(e) {
@@ -85,13 +141,11 @@ export default function LoginPage({ onLogin }) {
       <div style={{ width:'100%', maxWidth:440 }}>
         {/* Logo */}
         <div style={{ textAlign:'center', marginBottom:'2rem' }}>
-          <div style={{
-            width:60, height:60, borderRadius:'50%',
-            background:'linear-gradient(135deg,#0D9488,#14B8A6)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            margin:'0 auto 0.75rem',
-            fontSize:'1.6rem', fontWeight:900, color:'white', fontFamily:'serif',
-          }}>C</div>
+          <img 
+            src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
+            alt="Chikoti Real Estate Logo" 
+            style={{ width:64, height:64, objectFit:'contain', margin:'0 auto 0.75rem', display:'block' }}
+          />
           <h1 style={{ fontFamily:'Plus Jakarta Sans', fontWeight:800, fontSize:'1.4rem', color:'white' }}>
             Chikoti Seller Portal
           </h1>
@@ -102,7 +156,7 @@ export default function LoginPage({ onLogin }) {
 
         {/* Card */}
         <div style={{ background:'white', borderRadius:20, padding:'2rem', boxShadow:'0 25px 60px rgba(0,0,0,0.4)' }}>
-          {tab !== 'forgot' && (
+          {tab !== 'forgot' && regStep === 1 && (
             /* Tabs */
             <div style={{ display:'flex', marginBottom:'1.5rem', borderBottom:'2px solid #F1F5F9' }}>
               {['login','register'].map(t => (
@@ -148,38 +202,60 @@ export default function LoginPage({ onLogin }) {
               </button>
             </form>
           ) : (
-            <form onSubmit={handle} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-              {tab === 'register' && (
-                <>
-                  <input className="form-input" placeholder="Full Name" required
-                    value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
-                  <input className="form-input" placeholder="Phone Number"
-                    value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
-                </>
-              )}
-              {tab === 'register' ? (
-                <input key="reg-email" className="form-input" type="email" placeholder="Email Address" required
-                  value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-              ) : (
-                <input key="login-email" className="form-input" type="text" placeholder="Email Address or Phone Number" required
-                  value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-              )}
-              <input className="form-input" type="password" placeholder="Password" required
-                value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
-              
-              {tab === 'login' && (
-                <button type="button" onClick={() => { setTab('forgot'); setResetStep(1); setErr(''); }} style={{ background:'none', color:'#0D9488', fontSize:'0.82rem', fontWeight:700, alignSelf:'flex-end', marginTop:'-0.5rem', marginBottom:'0.5rem', cursor:'pointer' }}>
-                  Forgot Password?
+            tab === 'register' && regStep === 2 ? (
+              <form onSubmit={handleVerifyEmail} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Verify Email</h2>
+                <p style={{ color: '#64748B', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Confirm your verification code to complete registration</p>
+                <p style={{ color:'#10B981', fontSize:'0.85rem', fontWeight:600 }}>✓ Verification code sent to {form.email}</p>
+                <input className="form-input" placeholder="Enter 6-digit verification code" required
+                  value={regCode} onChange={e => setRegCode(e.target.value)} />
+                {err && <p style={{ color:'#EF4444', fontSize:'0.85rem' }}>{err}</p>}
+                <button type="submit" className="btn btn-teal" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
+                  {loading ? 'Verifying…' : 'Verify & Register'}
                 </button>
-              )}
+                <div style={{ display:'flex', justifyContent:'space-between', marginTop:'0.5rem' }}>
+                  <button type="button" onClick={handleResendVerification} style={{ background:'none', color:'#0D9488', fontSize:'0.85rem', fontWeight:700, cursor:'pointer' }}>
+                    Resend Code
+                  </button>
+                  <button type="button" onClick={() => { setRegStep(1); setErr(''); }} style={{ background:'none', color:'#64748B', fontSize:'0.85rem', cursor:'pointer' }}>
+                    ← Back
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handle} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+                {tab === 'register' && (
+                  <>
+                    <input className="form-input" placeholder="Full Name" required
+                      value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
+                    <input className="form-input" placeholder="Phone Number"
+                      value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
+                  </>
+                )}
+                {tab === 'register' ? (
+                  <input key="reg-email" className="form-input" type="email" placeholder="Email Address" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                ) : (
+                  <input key="login-email" className="form-input" type="text" placeholder="Email Address or Phone Number" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                )}
+                <input className="form-input" type="password" placeholder="Password" required
+                  value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
+                
+                {tab === 'login' && (
+                  <button type="button" onClick={() => { setTab('forgot'); setResetStep(1); setErr(''); }} style={{ background:'none', color:'#0D9488', fontSize:'0.82rem', fontWeight:700, alignSelf:'flex-end', marginTop:'-0.5rem', marginBottom:'0.5rem', cursor:'pointer' }}>
+                    Forgot Password?
+                  </button>
+                )}
 
-              {err && <p style={{ color:'#EF4444', fontSize:'0.85rem' }}>{err}</p>}
-              <button type="submit" className="btn btn-teal"
-                style={{ justifyContent:'center', padding:'0.8rem', fontSize:'0.95rem' }}
-                disabled={loading}>
-                {loading ? 'Please wait…' : tab === 'login' ? 'Sign In to Seller Portal' : 'Create Seller Account'}
-              </button>
-            </form>
+                {err && <p style={{ color:'#EF4444', fontSize:'0.85rem' }}>{err}</p>}
+                <button type="submit" className="btn btn-teal"
+                  style={{ justifyContent:'center', padding:'0.8rem', fontSize:'0.95rem' }}
+                  disabled={loading}>
+                  {loading ? 'Please wait…' : tab === 'login' ? 'Sign In to Seller Portal' : 'Create Seller Account'}
+                </button>
+              </form>
+            )
           )}
         </div>
 

@@ -6,6 +6,7 @@ import LoginPage      from './pages/Login.jsx';
 import DashboardPage  from './pages/Dashboard.jsx';
 import ListPage       from './pages/ListProperty.jsx';
 import InquiriesPage  from './pages/Inquiries.jsx';
+import AboutPage      from './pages/About.jsx';
 
 export default function App() {
   const [user,  setUser]  = useState(() => {
@@ -39,6 +40,7 @@ export default function App() {
     dashboard:  <DashboardPage user={user} navigate={navigate} />,
     list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
+    about:      <AboutPage      navigate={navigate} />,
   };
 
   return (
@@ -47,7 +49,7 @@ export default function App() {
       <main style={{ minHeight:'90vh', background:'#F1F5F9', paddingTop:72 }}>
         {pages[page] || pages.dashboard}
       </main>
-      <Footer />
+      <Footer navigate={navigate} />
     </>
   );
 }

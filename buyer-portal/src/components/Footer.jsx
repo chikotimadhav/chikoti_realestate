@@ -7,12 +7,11 @@ export default function Footer({ navigate }) {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:'2rem', marginBottom:'2rem' }}>
           <div>
             <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:'0.75rem' }}>
-              <div style={{
-                width:36, height:36, borderRadius:'50%',
-                background:'linear-gradient(135deg,#C9A84C,#F0C040)',
-                display:'flex', alignItems:'center', justifyContent:'center',
-                fontFamily:'Playfair Display', fontWeight:900, fontSize:18, color:'#0A1628',
-              }}>C</div>
+              <img 
+                src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
+                alt="Chikoti Real Estate Logo" 
+                style={{ width:36, height:36, objectFit:'contain' }}
+              />
               <span style={{ fontFamily:'Playfair Display', fontWeight:700, color:'#F5F0E8', fontSize:'1.1rem' }}>
                 Chikoti Real Estate
               </span>
@@ -23,9 +22,9 @@ export default function Footer({ navigate }) {
           </div>
           <div>
             <h4 style={{ color:'#C9A84C', fontWeight:700, marginBottom:'0.75rem' }}>Quick Links</h4>
-            {['Home','Properties'].map(l => (
+            {['Home','Properties','About Us'].map(l => (
               <div key={l} style={{ marginBottom:'0.4rem' }}>
-                <button onClick={() => navigate(l.toLowerCase())} style={{
+                <button onClick={() => navigate(l === 'About Us' ? 'about' : l.toLowerCase())} style={{
                   background:'none', color:'#94A3B8', fontSize:'0.9rem', transition:'color 0.2s',
                 }}
                 onMouseEnter={e => e.target.style.color='#C9A84C'}

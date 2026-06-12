@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
   is_active:   { type: Boolean, default: true },
   reset_password_code: { type: String, default: '' },
   reset_password_expires: { type: Date },
+  verification_code: { type: String, default: '' },
+  verification_code_expires: { type: Date },
 }, { timestamps: true });
 
 // Hash password before save
@@ -39,7 +41,7 @@ userSchema.methods.toJSON = function () {
 // Seed permanent admins on first run
 userSchema.statics.seedAdmin = async function () {
   const allowedAdminEmails = [
-    'madhavchikoti92@gmail.com',
+    'madhav800811@gmail.com',
     'admin2@chikotirealestate.com',
     'admin3@chikotirealestate.com'
   ];
@@ -50,7 +52,7 @@ userSchema.statics.seedAdmin = async function () {
     const exists = await this.findOne({ email });
     if (!exists) {
       await this.create({
-        name: email === 'madhavchikoti92@gmail.com' ? 'Madhav Chikoti' : `Admin (${email.split('@')[0]})`,
+        name: email === 'madhav800811@gmail.com' ? 'Madhav Chikoti' : `Admin (${email.split('@')[0]})`,
         email: email,
         password: adminPassword,
         role: 'admin',

@@ -5,6 +5,7 @@ import HomePage    from './pages/Home.jsx';
 import PropertiesPage from './pages/Properties.jsx';
 import PropertyDetailModal from './components/PropertyDetailModal.jsx';
 import ReelsPage from './pages/Reels.jsx';
+import AboutPage from './pages/About.jsx';
 
 export default function App() {
   const [page,     setPage]     = useState('home');
@@ -82,6 +83,7 @@ export default function App() {
     home:       <HomePage    navigate={navigate} openDetail={openDetail} />,
     properties: <PropertiesPage navigate={navigate} openDetail={openDetail} user={user} />,
     reels:      <ReelsPage />,
+    about:      <AboutPage   navigate={navigate} />,
   };
 
   return (

@@ -16,12 +16,11 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
       padding:'0 1.5rem',
     }}>
       <div style={{ display:'flex', alignItems:'center', gap:10, marginRight:'2rem' }}>
-        <div style={{
-          width:36, height:36, borderRadius:'50%',
-          background:'linear-gradient(135deg,#0D9488,#14B8A6)',
-          display:'flex', alignItems:'center', justifyContent:'center',
-          fontWeight:900, fontSize:18, color:'white', fontFamily:'serif',
-        }}>C</div>
+        <img 
+          src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
+          alt="Chikoti Real Estate Logo" 
+          style={{ width:36, height:36, objectFit:'contain' }}
+        />
         <div>
           <div style={{ color:'white', fontWeight:800, fontSize:'0.95rem', lineHeight:1.2 }}>
             Chikoti Seller Portal

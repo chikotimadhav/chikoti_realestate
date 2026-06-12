@@ -1,10 +1,33 @@
 import React from 'react';
 
-export default function Footer({ hasSidebar }) {
+export default function Footer({ hasSidebar, navigate }) {
   return (
     <footer className={`main-footer ${hasSidebar ? 'sidebar-footer' : ''}`}>
-      <div>
-        © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Seller Portal
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
+        <div>
+          © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Seller Portal
+        </div>
+        {navigate && (
+          <div>
+            <button 
+              onClick={() => navigate('about')} 
+              style={{ 
+                background: 'none', 
+                color: 'var(--teal)', 
+                fontWeight: 600, 
+                fontSize: '0.85rem', 
+                border: 'none', 
+                padding: 0, 
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+              onMouseEnter={e => e.target.style.color = 'var(--teal-dark)'}
+              onMouseLeave={e => e.target.style.color = 'var(--teal)'}
+            >
+              About Us
+            </button>
+          </div>
+        )}
       </div>
       <div className="designer-credit">
         <span>designed by</span>
