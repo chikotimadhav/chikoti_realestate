@@ -8,24 +8,33 @@ export default function Footer({ hasSidebar, navigate }) {
           © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Seller Portal
         </div>
         {navigate && (
-          <div>
-            <button 
-              onClick={() => navigate('about')} 
-              style={{ 
-                background: 'none', 
-                color: 'var(--teal)', 
-                fontWeight: 600, 
-                fontSize: '0.85rem', 
-                border: 'none', 
-                padding: 0, 
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
-              onMouseEnter={e => e.target.style.color = 'var(--teal-dark)'}
-              onMouseLeave={e => e.target.style.color = 'var(--teal)'}
-            >
-              About Us
-            </button>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.2rem' }}>
+            {[
+              { label: 'About Us', page: 'about' },
+              { label: 'Terms & Conditions', page: 'terms' },
+              { label: 'Privacy Policy', page: 'privacy' },
+              { label: 'Disclaimer', page: 'disclaimer' }
+            ].map(l => (
+              <button 
+                key={l.page}
+                onClick={() => navigate(l.page)} 
+                style={{ 
+                  background: 'none', 
+                  color: 'var(--teal)', 
+                  fontWeight: 600, 
+                  fontSize: '0.85rem', 
+                  border: 'none', 
+                  padding: 0, 
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  transition: 'color 0.2s'
+                }}
+                onMouseEnter={e => e.target.style.color = 'var(--teal-dark)'}
+                onMouseLeave={e => e.target.style.color = 'var(--teal)'}
+              >
+                {l.label}
+              </button>
+            ))}
           </div>
         )}
       </div>

@@ -35,7 +35,22 @@ export default function Footer({ navigate }) {
               <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
                 style={{ color:'#94A3B8', fontSize:'0.9rem' }}>Seller Portal</a>
             </div>
-            
+          </div>
+          <div>
+            <h4 style={{ color:'#C9A84C', fontWeight:700, marginBottom:'0.75rem' }}>Legal</h4>
+            {[
+              { label: 'Terms & Conditions', page: 'terms' },
+              { label: 'Privacy Policy', page: 'privacy' },
+              { label: 'Disclaimer', page: 'disclaimer' }
+            ].map(l => (
+              <div key={l.page} style={{ marginBottom:'0.4rem' }}>
+                <button onClick={() => navigate(l.page)} style={{
+                  background:'none', color:'#94A3B8', fontSize:'0.9rem', transition:'color 0.2s',
+                }}
+                onMouseEnter={e => e.target.style.color='#C9A84C'}
+                onMouseLeave={e => e.target.style.color='#94A3B8'}>{l.label}</button>
+              </div>
+            ))}
           </div>
           <div>
             <h4 style={{ color:'#C9A84C', fontWeight:700, marginBottom:'0.75rem' }}>Contact</h4>

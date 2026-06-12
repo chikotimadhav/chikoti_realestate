@@ -6,6 +6,9 @@ import PropertiesPage from './pages/Properties.jsx';
 import PropertyDetailModal from './components/PropertyDetailModal.jsx';
 import ReelsPage from './pages/Reels.jsx';
 import AboutPage from './pages/About.jsx';
+import TermsPage from './pages/Terms.jsx';
+import PrivacyPage from './pages/Privacy.jsx';
+import DisclaimerPage from './pages/Disclaimer.jsx';
 
 export default function App() {
   const [page,     setPage]     = useState('home');
@@ -84,6 +87,9 @@ export default function App() {
     properties: <PropertiesPage navigate={navigate} openDetail={openDetail} user={user} />,
     reels:      <ReelsPage />,
     about:      <AboutPage   navigate={navigate} />,
+    terms:      <TermsPage   navigate={navigate} />,
+    privacy:    <PrivacyPage navigate={navigate} />,
+    disclaimer: <DisclaimerPage navigate={navigate} />,
   };
 
   return (

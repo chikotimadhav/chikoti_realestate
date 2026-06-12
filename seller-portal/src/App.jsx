@@ -7,6 +7,9 @@ import DashboardPage  from './pages/Dashboard.jsx';
 import ListPage       from './pages/ListProperty.jsx';
 import InquiriesPage  from './pages/Inquiries.jsx';
 import AboutPage      from './pages/About.jsx';
+import TermsPage      from './pages/Terms.jsx';
+import PrivacyPage    from './pages/Privacy.jsx';
+import DisclaimerPage from './pages/Disclaimer.jsx';
 
 export default function App() {
   const [user,  setUser]  = useState(() => {
@@ -41,6 +44,9 @@ export default function App() {
     list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
     about:      <AboutPage      navigate={navigate} />,
+    terms:      <TermsPage      navigate={navigate} />,
+    privacy:    <PrivacyPage    navigate={navigate} />,
+    disclaimer: <DisclaimerPage navigate={navigate} />,
   };
 
   return (
