@@ -19,6 +19,17 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('data:image')) return url;
+    if (url.includes('localhost:5000') && !apiBase.includes('localhost:5000')) {
+      const cleanBase = apiBase.replace(/\/api\/?$/, '');
+      return url.replace('http://localhost:5000', cleanBase);
+    }
+    return url;
+  };
+
   const handleNavClick = (p) => {
     navigate(p);
     setMobileOpen(false);
@@ -89,7 +100,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
                   <span>
                     {n.page === 'profile' && user?.avatar_url ? (
                       <img 
-                        src={user.avatar_url} 
+                        src={getImageUrl(user.avatar_url)} 
                         alt="" 
                         style={{ width:18, height:18, borderRadius:'50%', objectFit:'cover', verticalAlign:'middle' }} 
                       />
@@ -147,7 +158,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
                 <span>
                   {n.page === 'profile' && user?.avatar_url ? (
                     <img 
-                      src={user.avatar_url} 
+                      src={getImageUrl(user.avatar_url)} 
                       alt="" 
                       style={{ width:16, height:16, borderRadius:'50%', objectFit:'cover', verticalAlign:'middle' }} 
                     />
@@ -188,7 +199,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
             >
               {user?.avatar_url ? (
                 <img 
-                  src={user.avatar_url} 
+                  src={getImageUrl(user.avatar_url)} 
                   alt="Profile" 
                   style={{ width:24, height:24, borderRadius:'50%', objectFit:'cover', border:'1px solid #14B8A6' }} 
                 />

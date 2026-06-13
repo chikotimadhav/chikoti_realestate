@@ -9,7 +9,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
   const [address, setAddress] = useState(user?.address || '');
   const [avatarUrl, setAvatarUrl] = useState(user?.avatar_url || '');
   const [imagePreview, setImagePreview] = useState(user?.avatar_url || '');
-  
+
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -236,7 +236,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
       <div className="profile-container">
         <div className="profile-card">
           <div className="profile-header">
-            <h1 className="profile-title">👤 Edit Profile Settings</h1>
+            <h1 className="profile-title">Profile Settings</h1>
             <p className="profile-subtitle">Update your personal preferences, photo, and contact details</p>
           </div>
 
@@ -251,7 +251,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
                 )}
                 <div className="avatar-overlay">Change Photo</div>
               </div>
-              <input 
+              <input
                 id="avatar-input"
                 type="file"
                 accept="image/*"
@@ -284,7 +284,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
             <div className="form-row">
               <div className="form-field">
                 <label className="field-label">Full Name *</label>
-                <input 
+                <input
                   type="text"
                   className="field-input"
                   required
@@ -295,7 +295,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
               <div className="form-field">
                 <label className="field-label">Email Address (Read-only)</label>
-                <input 
+                <input
                   type="email"
                   className="field-input"
                   disabled
@@ -306,7 +306,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
             <div className="form-field">
               <label className="field-label">Phone Number *</label>
-              <input 
+              <input
                 type="tel"
                 className="field-input"
                 required
@@ -317,7 +317,7 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
             <div className="form-field">
               <label className="field-label">Living Address</label>
-              <textarea 
+              <textarea
                 className="field-input"
                 rows={3}
                 style={{ resize: 'vertical', fontFamily: 'inherit' }}

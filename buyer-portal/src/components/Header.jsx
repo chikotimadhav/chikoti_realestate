@@ -17,6 +17,17 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const getImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('data:image')) return url;
+    if (url.includes('localhost:5000') && !apiBase.includes('localhost:5000')) {
+      const cleanBase = apiBase.replace(/\/api\/?$/, '');
+      return url.replace('http://localhost:5000', cleanBase);
+    }
+    return url;
+  };
+
   async function handleAuth(e) {
     e.preventDefault();
     setErr(''); setLoading(true);
@@ -132,7 +143,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
                 >
                   {user.avatar_url ? (
                     <img 
-                      src={user.avatar_url} 
+                      src={getImageUrl(user.avatar_url)} 
                       alt="Profile" 
                       style={{ width:24, height:24, borderRadius:'50%', objectFit:'cover', border:'1px solid #C9A84C' }} 
                     />
@@ -183,7 +194,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
               >
                 {user.avatar_url ? (
                   <img 
-                    src={user.avatar_url} 
+                    src={getImageUrl(user.avatar_url)} 
                     alt="Profile" 
                     style={{ width:28, height:28, borderRadius:'50%', objectFit:'cover', border:'1px solid #C9A84C' }} 
                   />
