@@ -61,20 +61,9 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
     try {
       let finalAvatarUrl = avatarUrl;
-
-      // If avatar preview is a new base64 string, upload it first
+      // If avatar preview is a new base64 string, save it directly in the DB
       if (imagePreview && imagePreview.startsWith('data:image')) {
-        const uploadRes = await fetch(`${apiBase}/api/upload/base64`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token()}`
-          },
-          body: JSON.stringify({ image: imagePreview })
-        });
-        const uploadData = await uploadRes.json();
-        if (!uploadRes.ok) throw new Error(uploadData.error || 'Failed to upload profile picture');
-        finalAvatarUrl = uploadData.data.url;
+        finalAvatarUrl = imagePreview;
         setAvatarUrl(finalAvatarUrl);
       } else if (!imagePreview) {
         finalAvatarUrl = '';
