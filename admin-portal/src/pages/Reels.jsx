@@ -5,13 +5,9 @@ function token() { return localStorage.getItem('ck_admin_token'); }
 export default function ReelsPage() {
   const [reels, setReels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [title, setTitle] = useState('');
-  const [videoUrl, setVideoUrl] = useState('');
-  const [description, setDescription] = useState('');
-  const [aspectRatio, setAspectRatio] = useState('9/16');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [filterProp, setFilterProp] = useState('all'); // 'all', 'pending', 'approved', 'rejected'
 
   const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -35,46 +31,26 @@ export default function ReelsPage() {
     loadReels();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!videoUrl) {
-      setError('Please provide a Reel video URL.');
-      return;
-    }
-
-    setSubmitting(true);
+  const handleUpdateStatus = async (id, newStatus) => {
     setError('');
     setSuccess('');
-
     try {
-      const res = await fetch(`${apiBase}/api/reels`, {
-        method: 'POST',
+      const res = await fetch(`${apiBase}/api/reels/${id}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token()}`
         },
-        body: JSON.stringify({
-          title,
-          videoUrl,
-          description,
-          aspectRatio
-        })
+        body: JSON.stringify({ status: newStatus })
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to add Reel');
+      if (!res.ok) throw new Error(data.error || 'Failed to update reel status');
 
-      setSuccess('Reel added and published successfully!');
-      setTitle('');
-      setVideoUrl('');
-      setDescription('');
-      setAspectRatio('9/16');
-      
+      setSuccess(`Reel status updated to ${newStatus} successfully!`);
       loadReels();
     } catch (err) {
       setError(err.message);
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -92,9 +68,9 @@ export default function ReelsPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to update reel status');
+      if (!res.ok) throw new Error(data.error || 'Failed to update reel visibility');
 
-      setSuccess(`Reel ${!currentActive ? 'activated' : 'deactivated'} successfully!`);
+      setSuccess(`Reel visibility toggled successfully!`);
       loadReels();
     } catch (err) {
       setError(err.message);
@@ -130,130 +106,94 @@ export default function ReelsPage() {
     return '🔗 Web Link';
   };
 
+  const filteredReels = filterProp === 'all'
+    ? reels
+    : reels.filter(r => r.status === filterProp || (!r.status && filterProp === 'pending'));
+
+  const STATUS_BADGE = {
+    pending: { label: 'Pending Approval', style: { background: '#FEF3C7', color: '#B45309' } },
+    approved: { label: 'Approved', style: { background: '#D1FAE5', color: '#065F46' } },
+    rejected: { label: 'Rejected', style: { background: '#FEE2E2', color: '#991B1B' } },
+  };
+
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
         <div>
-          <div className="page-title">🎥 Reels Portal</div>
-          <div className="page-sub">Manage short video links and reels showing on the buyer portal</div>
+          <div className="page-title">🎥 Reels Portal (Admin Approval)</div>
+          <div className="page-sub">Review, approve, or reject short video uploads submitted by sellers</div>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '2rem', alignItems: 'start' }}>
-        
-        {/* Reel Form Card */}
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span>➕</span> Add New Reel Link
-          </h3>
-          
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Reel Video URL *</label>
-              <input 
-                type="url" 
-                className="form-input" 
-                placeholder="e.g. https://www.instagram.com/reel/C8..." 
-                value={videoUrl} 
-                onChange={e => setVideoUrl(e.target.value)} 
-                required
-              />
-              <span style={{ fontSize: '0.7rem', color: 'var(--gray-400)' }}>
-                Supports Instagram Reels, YouTube Shorts/Videos, or direct video file URLs (.mp4)
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Reel Title (Optional)</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                placeholder="e.g. Luxury Villa Tour in Siddipet" 
-                value={title} 
-                onChange={e => setTitle(e.target.value)} 
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Video Aspect Ratio *</label>
-              <select 
-                className="form-input" 
-                value={aspectRatio} 
-                onChange={e => setAspectRatio(e.target.value)}
-                style={{ background: 'var(--gray-50)', color: 'var(--gray-800)' }}
-              >
-                <option value="9/16">Portrait (9:16) - Instagram Reels / YouTube Shorts</option>
-                <option value="1/1">Square (1:1)</option>
-                <option value="16/9">Landscape (16:9)</option>
-              </select>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-600)' }}>Description (Optional)</label>
-              <textarea 
-                className="form-input" 
-                rows={3}
-                placeholder="Brief description of the reel..." 
-                value={description} 
-                onChange={e => setDescription(e.target.value)} 
-                style={{ resize: 'vertical', fontFamily: 'inherit' }}
-              />
-            </div>
-
-            {error && (
-              <div style={{ background: '#FEF2F2', color: 'var(--danger)', fontSize: '0.8rem', padding: '0.6rem 0.8rem', borderRadius: 'var(--radius)', fontWeight: 500 }}>
-                ⚠️ {error}
-              </div>
-            )}
-
-            {success && (
-              <div style={{ background: '#ECFDF5', color: 'var(--success)', fontSize: '0.8rem', padding: '0.6rem 0.8rem', borderRadius: 'var(--radius)', fontWeight: 500 }}>
-                ✅ {success}
-              </div>
-            )}
-
-            <button 
-              type="submit" 
-              className="btn btn-indigo" 
-              style={{ justifyContent: 'center', padding: '0.75rem', marginTop: '0.5rem' }}
-              disabled={submitting}
+      {/* Filter and Messages */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', background: '#F1F5F9', padding: '0.25rem', borderRadius: 8 }}>
+          {['all', 'pending', 'approved', 'rejected'].map(f => (
+            <button
+              key={f}
+              onClick={() => setFilterProp(f)}
+              style={{
+                padding: '0.4rem 1rem', borderRadius: 6, fontSize: '0.82rem', fontWeight: 700, border: 'none',
+                background: filterProp === f ? 'white' : 'none',
+                color: filterProp === f ? '#0F172A' : '#64748B',
+                boxShadow: filterProp === f ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                cursor: 'pointer', transition: 'all 0.2s'
+              }}
             >
-              {submitting ? 'Adding Reel...' : '🚀 Publish Reel'}
+              {f.charAt(0).toUpperCase() + f.slice(1)} ({f === 'all' ? reels.length : reels.filter(r => r.status === f || (!r.status && f === 'pending')).length})
             </button>
-          </form>
+          ))}
         </div>
 
-        {/* Reels List Card */}
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span>📋</span> Active & Past Reels
-          </h3>
+        {error && (
+          <div style={{ background: '#FEF2F2', color: 'var(--danger)', fontSize: '0.8rem', padding: '0.5rem 1rem', borderRadius: 8, fontWeight: 600 }}>
+            ⚠️ {error}
+          </div>
+        )}
+        {success && (
+          <div style={{ background: '#ECFDF5', color: 'var(--success)', fontSize: '0.8rem', padding: '0.5rem 1rem', borderRadius: 8, fontWeight: 600 }}>
+            ✅ {success}
+          </div>
+        )}
+      </div>
 
-          <div className="table-wrap">
-            <table>
-              <thead>
+      {/* Reels List Card */}
+      <div className="card" style={{ padding: '1.5rem' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span>📋</span> Reels Approval Pipeline
+        </h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Seller</th>
+                <th>Reel Details</th>
+                <th>Status</th>
+                <th>Visibility</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
                 <tr>
-                  <th>Type</th>
-                  <th>Details</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-400)' }}>
+                    Loading reels...
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan={4} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-400)' }}>
-                      Loading reels...
-                    </td>
-                  </tr>
-                ) : reels.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-400)' }}>
-                      No reels added yet.
-                    </td>
-                  </tr>
-                ) : (
-                  reels.map((reel) => (
+              ) : filteredReels.length === 0 ? (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-400)' }}>
+                    No reels found matching this filter.
+                  </td>
+                </tr>
+              ) : (
+                filteredReels.map((reel) => {
+                  const currStatus = reel.status || 'pending';
+                  const badge = STATUS_BADGE[currStatus] || STATUS_BADGE.pending;
+                  
+                  return (
                     <tr key={reel.id || reel._id}>
                       <td style={{ width: '130px', fontWeight: 600, fontSize: '0.75rem' }}>
                         <span style={{
@@ -264,6 +204,19 @@ export default function ReelsPage() {
                         }}>
                           {getUrlTypeLabel(reel.videoUrl)}
                         </span>
+                      </td>
+                      <td style={{ maxWidth: '180px' }}>
+                        {reel.seller_id ? (
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--navy)' }}>{reel.seller_id.name}</div>
+                            <div style={{ fontSize: '0.72rem', color: 'var(--gray-500)' }}>{reel.seller_id.email}</div>
+                            <span style={{ fontSize: '0.65rem', background: '#E2E8F0', padding: '0.1rem 0.3rem', borderRadius: 4, fontWeight: 700 }}>
+                              {reel.seller_id.role?.toUpperCase()}
+                            </span>
+                          </div>
+                        ) : (
+                          <div style={{ color: 'var(--gray-400)', fontStyle: 'italic', fontSize: '0.85rem' }}>Seeded/Admin</div>
+                        )}
                       </td>
                       <td>
                         <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--navy)' }}>
@@ -283,45 +236,71 @@ export default function ReelsPage() {
                       </td>
                       <td>
                         <span 
+                          className="badge" 
+                          style={{
+                            padding: '0.25rem 0.6rem',
+                            borderRadius: '999px',
+                            fontSize: '0.7rem',
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.3px',
+                            ...badge.style
+                          }}
+                        >
+                          {badge.label}
+                        </span>
+                      </td>
+                      <td>
+                        <span 
                           onClick={() => handleToggleActive(reel.id || reel._id, reel.isActive)}
                           className={`badge ${reel.isActive ? 'badge-approved' : 'badge-rejected'}`}
                           style={{ cursor: 'pointer', userSelect: 'none' }}
-                          title="Click to toggle status"
+                          title="Click to toggle active status"
                         >
                           {reel.isActive ? '🟢 Active' : '🔴 Inactive'}
                         </span>
                       </td>
                       <td>
-                        <div style={{ display: 'flex', gap: '0.4rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', width: '110px' }}>
+                          {currStatus !== 'approved' && (
+                            <button 
+                              className="btn btn-teal btn-sm"
+                              style={{ padding: '0.3rem 0.5rem', fontSize: '0.75rem', justifyContent: 'center', background: '#0D9488', color: 'white' }}
+                              onClick={() => handleUpdateStatus(reel.id || reel._id, 'approved')}
+                            >
+                              ✓ Approve
+                            </button>
+                          )}
+                          {currStatus !== 'rejected' && (
+                            <button 
+                              className="btn btn-danger btn-sm"
+                              style={{ padding: '0.3rem 0.5rem', fontSize: '0.75rem', justifyContent: 'center' }}
+                              onClick={() => handleUpdateStatus(reel.id || reel._id, 'rejected')}
+                            >
+                              ✕ Reject
+                            </button>
+                          )}
                           <button 
                             className="btn btn-ghost btn-sm"
-                            style={{
+                            style={{ 
+                              padding: '0.3rem 0.5rem', fontSize: '0.75rem', justifyContent: 'center',
                               borderColor: 'var(--gray-200)',
-                              color: reel.isActive ? 'var(--gray-400)' : 'var(--indigo)',
+                              color: 'var(--slate-600)',
                               background: 'transparent'
                             }}
-                            onClick={() => handleToggleActive(reel.id || reel._id, reel.isActive)}
-                          >
-                            {reel.isActive ? 'Deactivate' : 'Activate'}
-                          </button>
-                          <button 
-                            className="btn btn-danger btn-sm"
-                            style={{ padding: '0.35rem 0.5rem' }}
                             onClick={() => handleDelete(reel.id || reel._id)}
-                            title="Delete reel"
                           >
-                            🗑
+                            🗑 Delete
                           </button>
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
         </div>
-
       </div>
     </>
   );

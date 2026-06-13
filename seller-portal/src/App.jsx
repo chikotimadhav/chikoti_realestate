@@ -10,6 +10,7 @@ import AboutPage      from './pages/About.jsx';
 import TermsPage      from './pages/Terms.jsx';
 import PrivacyPage    from './pages/Privacy.jsx';
 import DisclaimerPage from './pages/Disclaimer.jsx';
+import ReelsPage      from './pages/Reels.jsx';
 
 export default function App() {
   const [user,  setUser]  = useState(() => {
@@ -43,6 +44,7 @@ export default function App() {
     dashboard:  <DashboardPage user={user} navigate={navigate} />,
     list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
+    reels:      <ReelsPage     user={user} />,
     about:      <AboutPage      navigate={navigate} />,
     terms:      <TermsPage      navigate={navigate} />,
     privacy:    <PrivacyPage    navigate={navigate} />,

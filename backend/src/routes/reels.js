@@ -7,31 +7,28 @@ const { authenticate, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-// GET /api/reels — Public: Get all active reels
+// GET /api/reels — Public: Get all active & approved reels for the buyer portal
 router.get('/', async (_req, res) => {
   try {
-    const activeReels = await Reel.find({ isActive: true }).sort({ createdAt: -1 }).lean();
+    const activeReels = await Reel.find({ status: 'approved', isActive: true }).sort({ createdAt: -1 }).lean();
     res.json({ success: true, data: activeReels });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Admin management endpoints below
-router.use(authenticate, requireRole('admin'));
-
-// GET /api/reels/all — Admin: Get all reels (active & inactive)
-router.get('/all', async (_req, res) => {
+// GET /api/reels/seller/mine — Seller: Get all reels uploaded by this seller
+router.get('/seller/mine', authenticate, requireRole('seller', 'admin'), async (req, res) => {
   try {
-    const allReels = await Reel.find().sort({ createdAt: -1 }).lean();
-    res.json({ success: true, data: allReels });
+    const mine = await Reel.find({ seller_id: req.user._id }).sort({ createdAt: -1 }).lean();
+    res.json({ success: true, data: mine });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST /api/reels — Admin: Add a new reel
-router.post('/', async (req, res) => {
+// POST /api/reels — Seller/Admin: Create a new reel (pending approval for sellers)
+router.post('/', authenticate, requireRole('seller', 'admin'), async (req, res) => {
   try {
     const { title, videoUrl, description, aspectRatio } = req.body;
     if (!videoUrl) {
@@ -44,6 +41,8 @@ router.post('/', async (req, res) => {
       description: description || '',
       aspectRatio: aspectRatio || '9/16',
       isActive: true,
+      seller_id: req.user._id,
+      status: req.user.role === 'admin' ? 'approved' : 'pending'
     });
 
     res.status(201).json({ success: true, data: reel });
@@ -52,42 +51,70 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PATCH /api/reels/:id — Admin: Update details or toggle active/inactive status
-router.patch('/:id', async (req, res) => {
+// PATCH /api/reels/:id — Seller/Admin: Edit details or update status (admin-only fields status/isActive)
+router.patch('/:id', authenticate, requireRole('seller', 'admin'), async (req, res) => {
   try {
-    const { title, videoUrl, description, aspectRatio, isActive } = req.body;
-    
-    const updateData = {};
-    if (title !== undefined) updateData.title = title;
-    if (videoUrl !== undefined) updateData.videoUrl = videoUrl;
-    if (description !== undefined) updateData.description = description;
-    if (aspectRatio !== undefined) updateData.aspectRatio = aspectRatio;
-    if (isActive !== undefined) updateData.isActive = isActive;
-
-    const reel = await Reel.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true }
-    );
-
+    const reel = await Reel.findById(req.params.id);
     if (!reel) {
       return res.status(404).json({ error: 'Reel not found' });
     }
 
-    res.json({ success: true, data: reel });
+    // Check ownership: sellers can only edit their own reels
+    if (reel.seller_id?.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized: You do not own this reel' });
+    }
+
+    const { title, videoUrl, description, aspectRatio, isActive, status } = req.body;
+    const updateData = {};
+
+    if (title !== undefined)       updateData.title = title;
+    if (videoUrl !== undefined)    updateData.videoUrl = videoUrl;
+    if (description !== undefined)  updateData.description = description;
+    if (aspectRatio !== undefined)  updateData.aspectRatio = aspectRatio;
+
+    if (req.user.role === 'admin') {
+      if (isActive !== undefined) updateData.isActive = isActive;
+      if (status !== undefined)   updateData.status = status;
+    } else {
+      // Sellers editing resets status back to pending
+      updateData.status = 'pending';
+    }
+
+    const updated = await Reel.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    res.json({ success: true, data: updated });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// DELETE /api/reels/:id — Admin: Delete a reel
-router.delete('/:id', async (req, res) => {
+// DELETE /api/reels/:id — Seller/Admin: Delete a reel
+router.delete('/:id', authenticate, requireRole('seller', 'admin'), async (req, res) => {
   try {
-    const reel = await Reel.findByIdAndDelete(req.params.id);
+    const reel = await Reel.findById(req.params.id);
     if (!reel) {
       return res.status(404).json({ error: 'Reel not found' });
     }
+
+    // Check ownership: sellers can only delete their own reels
+    if (reel.seller_id?.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Unauthorized: You do not own this reel' });
+    }
+
+    await reel.deleteOne();
     res.json({ success: true, message: 'Reel deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/reels/all — Admin: Get all reels (including inactive/pending/rejected) with uploader info
+router.get('/all', authenticate, requireRole('admin'), async (_req, res) => {
+  try {
+    const allReels = await Reel.find()
+      .populate('seller_id', 'name email role')
+      .sort({ createdAt: -1 })
+      .lean();
+    res.json({ success: true, data: allReels });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

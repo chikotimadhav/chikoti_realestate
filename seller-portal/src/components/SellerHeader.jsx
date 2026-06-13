@@ -4,6 +4,7 @@ const NAV = [
   { label:'Dashboard',  page:'dashboard', icon:'🏠' },
   { label:'List Property', page:'list',   icon:'➕' },
   { label:'Inquiries',  page:'inquiries', icon:'📩' },
+  { label:'Reels',      page:'reels',     icon:'🎥' },
 ];
 
 export default function SellerHeader({ page, navigate, user, onLogout }) {
