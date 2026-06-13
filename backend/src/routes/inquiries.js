@@ -45,4 +45,33 @@ router.get('/seller', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// PUT /api/inquiries/:id — update inquiry status (Lead CRM Pipeline)
+router.put('/:id', authenticate, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const allowedStatuses = ['New', 'Contacted', 'Site Visit Scheduled', 'Negotiation', 'Closed', 'new', 'read', 'replied'];
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const inquiry = await Inquiry.findById(req.params.id);
+    if (!inquiry) {
+      return res.status(404).json({ error: 'Inquiry not found' });
+    }
+
+    // Check that the property owner is the logged-in seller
+    const property = await Property.findById(inquiry.property_id);
+    if (!property || property.seller_id.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: 'Unauthorized: You do not own the property associated with this inquiry' });
+    }
+
+    inquiry.status = status;
+    await inquiry.save();
+
+    res.json({ success: true, data: inquiry, message: `Status updated to ${status}` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

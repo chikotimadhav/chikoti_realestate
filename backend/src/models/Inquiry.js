@@ -9,7 +9,7 @@ const inquirySchema = new mongoose.Schema({
   buyer_email: { type: String, required: true, lowercase: true },
   buyer_phone: { type: String, required: true },
   message:     { type: String, default: '' },
-  status:      { type: String, enum: ['new', 'read', 'replied'], default: 'new' },
+  status:      { type: String, enum: ['New', 'Contacted', 'Site Visit Scheduled', 'Negotiation', 'Closed', 'new', 'read', 'replied'], default: 'New' },
 }, { timestamps: true });
 
 inquirySchema.index({ property_id: 1 });

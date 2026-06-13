@@ -5,7 +5,12 @@ export default function Footer({ hasSidebar, navigate }) {
     <footer className={`main-footer ${hasSidebar ? 'sidebar-footer' : ''}`}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
         <div>
-          © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Seller Portal
+          © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Seller Portal | {' '}
+          <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noreferrer" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'underline' }}
+             onMouseEnter={e => e.target.style.color = 'var(--teal-dark)'}
+             onMouseLeave={e => e.target.style.color = 'var(--teal)'}>
+            Buyer Portal ↗
+          </a>
         </div>
         {navigate && (
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.2rem' }}>

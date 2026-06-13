@@ -3,6 +3,7 @@
 // ============================================================
 const express  = require('express');
 const Property = require('../models/Property');
+const Inquiry  = require('../models/Inquiry');
 const { authenticate, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
@@ -42,6 +43,79 @@ router.get('/seller/mine', authenticate, requireRole('seller', 'admin'), async (
     const data = await Property.find({ seller_id: req.user._id }).sort({ createdAt: -1 }).lean();
     res.json({ success: true, data });
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// GET /api/properties/seller/analytics (must be before /:id)
+router.get('/seller/analytics', authenticate, requireRole('seller', 'admin'), async (req, res) => {
+  try {
+    const myProps = await Property.find({ seller_id: req.user._id }).lean();
+    const propIds = myProps.map(p => p._id);
+
+    const inquiries = await Inquiry.find({ property_id: { $in: propIds } }).lean();
+
+    // 1. Total Views
+    const totalViews = myProps.reduce((sum, p) => sum + (p.views || 0), 0);
+
+    // 2. Total Leads / Inquiries
+    const totalLeads = inquiries.length;
+
+    // 3. Inquiry Conversion Rate
+    const conversionRate = totalViews > 0 ? ((totalLeads / totalViews) * 100).toFixed(1) : 0;
+
+    // 4. Most Viewed Property
+    let mostViewed = null;
+    if (myProps.length > 0) {
+      mostViewed = myProps.reduce((max, p) => (p.views || 0) > (max.views || 0) ? p : max, myProps[0]);
+    }
+
+    // 5. Weekly Trend (Inquiries over the last 7 days)
+    const weeklyTrend = [];
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dayName = daysOfWeek[d.getDay()];
+      const dateString = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      
+      const count = inquiries.filter(inq => {
+        const inqDate = new Date(inq.createdAt || inq.created_at);
+        return inqDate.getDate() === d.getDate() &&
+               inqDate.getMonth() === d.getMonth() &&
+               inqDate.getFullYear() === d.getFullYear();
+      }).length;
+
+      weeklyTrend.push({ day: dayName, date: dateString, leads: count });
+    }
+
+    // 6. Per-property breakdown
+    const propertiesBreakdown = myProps.map(p => {
+      const pInqs = inquiries.filter(inq => inq.property_id.toString() === p._id.toString());
+      const leadsCount = pInqs.length;
+      const siteVisitsCount = pInqs.filter(inq => inq.status === 'Site Visit Scheduled').length;
+      return {
+        id: p._id.toString(),
+        title: p.title,
+        views: p.views || 0,
+        leads: leadsCount,
+        siteVisits: siteVisitsCount,
+        conversion: p.views > 0 ? ((leadsCount / p.views) * 100).toFixed(1) : 0
+      };
+    });
+
+    res.json({
+      success: true,
+      data: {
+        totalViews,
+        totalLeads,
+        conversionRate,
+        mostViewed: mostViewed ? { id: mostViewed._id, title: mostViewed.title, views: mostViewed.views } : null,
+        weeklyTrend,
+        propertiesBreakdown
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // GET /api/properties/:id — increment views

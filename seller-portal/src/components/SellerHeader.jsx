@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const NAV = [
   { label:'Dashboard',  page:'dashboard', icon:'🏠' },
@@ -7,15 +7,32 @@ const NAV = [
 ];
 
 export default function SellerHeader({ page, navigate, user, onLogout }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleNavClick = (p) => {
+    navigate(p);
+    setMobileOpen(false);
+  };
+
   return (
     <header style={{
       position:'fixed', top:0, left:0, right:0, zIndex:200,
       background:'#0F172A',
       borderBottom:'1px solid rgba(13,148,136,0.2)',
       height:72, display:'flex', alignItems:'center',
+      justifyContent:'space-between',
       padding:'0 1.5rem',
     }}>
-      <div style={{ display:'flex', alignItems:'center', gap:10, marginRight:'2rem' }}>
+      {/* Brand Logo Container */}
+      <div style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }} onClick={() => handleNavClick('dashboard')}>
         <img 
           src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
           alt="Chikoti Real Estate Logo" 
@@ -31,35 +48,132 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
         </div>
       </div>
 
-      <nav style={{ display:'flex', gap:'0.25rem', flex:1 }}>
-        {NAV.map(n => (
-          <button key={n.page} onClick={() => navigate(n.page)} style={{
-            background: page === n.page ? 'rgba(13,148,136,0.2)' : 'none',
-            color: page === n.page ? '#14B8A6' : '#94A3B8',
-            padding:'0.5rem 1rem', borderRadius:8,
-            fontWeight:600, fontSize:'0.88rem',
-            display:'flex', alignItems:'center', gap:'0.4rem',
-            transition:'all 0.2s',
-            border: page === n.page ? '1px solid rgba(13,148,136,0.3)' : '1px solid transparent',
-          }}>
-            <span>{n.icon}</span> {n.label}
+      {isMobile ? (
+        /* Mobile Layout: Hamburger Menu Button */
+        <>
+          <button 
+            onClick={() => setMobileOpen(!mobileOpen)}
+            style={{
+              background:'none', color:'#14B8A6', border:'none',
+              fontSize:'1.5rem', padding:'0.5rem', cursor:'pointer',
+              display:'flex', alignItems:'center', justifyContent:'center'
+            }}
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileOpen ? '✕' : '☰'}
           </button>
-        ))}
-      </nav>
 
-      <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginLeft:'auto' }}>
-        <span style={{ color:'#64748B', fontSize:'0.85rem' }}>
-          👤 {user?.name?.split(' ')[0]}
-        </span>
-        <button onClick={onLogout} style={{
-          background:'rgba(239,68,68,0.1)', color:'#F87171',
-          border:'1px solid rgba(239,68,68,0.2)',
-          padding:'0.4rem 0.9rem', borderRadius:8,
-          fontSize:'0.82rem', fontWeight:700, transition:'all 0.2s',
-        }}>
-          Logout
-        </button>
-      </div>
+          {/* Mobile Dropdown Overlay */}
+          {mobileOpen && (
+            <div style={{
+              position:'absolute', top:72, left:0, right:0,
+              background:'#0F172A',
+              borderBottom:'2px solid rgba(13,148,136,0.3)',
+              boxShadow:'0 10px 15px rgba(0,0,0,0.5)',
+              display:'flex', flexDirection:'column', padding:'1rem 0'
+            }}>
+              {NAV.map(n => (
+                <button 
+                  key={n.page} 
+                  onClick={() => handleNavClick(n.page)}
+                  style={{
+                    background: page === n.page ? 'rgba(13,148,136,0.15)' : 'none',
+                    color: page === n.page ? '#14B8A6' : '#94A3B8',
+                    padding:'0.8rem 2rem', fontSize:'0.95rem', fontWeight:600,
+                    textAlign:'left', border:'none', display:'flex', alignItems:'center', gap:'0.75rem',
+                    width:'100%', cursor:'pointer', transition:'all 0.2s'
+                  }}
+                >
+                  <span>{n.icon}</span> {n.label}
+                </button>
+              ))}
+              
+              {/* Buyer Portal Navigation Link */}
+              <a 
+                href="https://chikotirealestate.vercel.app/" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  color:'#E2E8F0', padding:'0.8rem 2rem', fontSize:'0.95rem', fontWeight:700,
+                  display:'flex', alignItems:'center', gap:'0.75rem', textDecoration:'none',
+                  borderTop:'1px solid rgba(255,255,255,0.05)', marginTop:'0.5rem', paddingTop:'1rem'
+                }}
+              >
+                <span>🌐</span> Visit Buyer Portal ↗
+              </a>
+
+              {/* Logout Button */}
+              <button 
+                onClick={() => { onLogout(); setMobileOpen(false); }}
+                style={{
+                  background:'rgba(239,68,68,0.1)', color:'#F87171',
+                  padding:'0.8rem 2rem', fontSize:'0.95rem', fontWeight:700,
+                  textAlign:'left', border:'none', display:'flex', alignItems:'center', gap:'0.75rem',
+                  width:'100%', cursor:'pointer', marginTop:'0.5rem'
+                }}
+              >
+                <span>🚪</span> Logout ({user?.name?.split(' ')[0]})
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        /* Desktop Layout: Inline Navigation Row */
+        <>
+          <nav style={{ display:'flex', gap:'0.25rem', flex:1, alignItems:'center', marginLeft:'1.5rem' }}>
+            {NAV.map(n => (
+              <button key={n.page} onClick={() => handleNavClick(n.page)} style={{
+                background: page === n.page ? 'rgba(13,148,136,0.2)' : 'none',
+                color: page === n.page ? '#14B8A6' : '#94A3B8',
+                padding:'0.5rem 1rem', borderRadius:8,
+                fontWeight:600, fontSize:'0.88rem',
+                display:'flex', alignItems:'center', gap:'0.4rem',
+                transition:'all 0.2s',
+                border: page === n.page ? '1px solid rgba(13,148,136,0.3)' : '1px solid transparent',
+                cursor:'pointer'
+              }}>
+                <span>{n.icon}</span> {n.label}
+              </button>
+            ))}
+            
+            {/* Buyer Portal Navigation Link */}
+            <a 
+              href="https://chikotirealestate.vercel.app/" 
+              target="_blank" 
+              rel="noreferrer" 
+              style={{
+                color: '#94A3B8',
+                padding:'0.5rem 1rem', borderRadius:8,
+                fontWeight:600, fontSize:'0.88rem',
+                display:'flex', alignItems:'center', gap:'0.4rem',
+                transition:'all 0.2s',
+                border: '1px solid transparent',
+                textDecoration: 'none'
+              }}
+              onMouseEnter={e => e.currentTarget.style.color='#14B8A6'}
+              onMouseLeave={e => e.currentTarget.style.color='#94A3B8'}
+            >
+              🌐 Buyer Portal ↗
+            </a>
+          </nav>
+
+          {/* User Profile & Logout */}
+          <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginLeft:'auto' }}>
+            <span style={{ color:'#64748B', fontSize:'0.85rem' }}>
+              👤 {user?.name?.split(' ')[0]}
+            </span>
+            <button onClick={onLogout} style={{
+              background:'rgba(239,68,68,0.1)', color:'#F87171',
+              border:'1px solid rgba(239,68,68,0.2)',
+              padding:'0.4rem 0.9rem', borderRadius:8,
+              fontSize:'0.82rem', fontWeight:700, transition:'all 0.2s',
+              cursor:'pointer'
+            }}>
+              Logout
+            </button>
+          </div>
+        </>
+      )}
     </header>
   );
 }

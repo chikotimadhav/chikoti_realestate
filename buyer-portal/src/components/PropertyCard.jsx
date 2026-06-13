@@ -2,7 +2,7 @@ import React from 'react';
 
 const TYPE_COLORS = { Agriculture:'#059669', Commercial:'#D97706', Residential:'#2563EB' };
 
-export default function PropertyCard({ property: p, onClick }) {
+export default function PropertyCard({ property: p, onClick, user, onLoginRequired }) {
   const img = p.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400';
 
   function formatPrice(n) {
@@ -11,6 +11,40 @@ export default function PropertyCard({ property: p, onClick }) {
     if (n >= 1_00_000)    return `₹${(n/1_00_000).toFixed(1)} L`;
     return '₹' + Number(n).toLocaleString('en-IN');
   }
+
+  const handleQuickContact = async (e, channel) => {
+    e.stopPropagation(); // Stop details modal from opening
+    if (!user) {
+      onLoginRequired(); // Trigger login modal for guest users
+      return;
+    }
+    
+    // Log inquiry/lead in the database silently
+    try {
+      const msg = `Buyer initiated quick contact via ${channel} directly from properties list card.`;
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/inquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          property_id: p.id,
+          buyer_name: user.name,
+          buyer_email: user.email,
+          buyer_phone: user.phone || '9999999999',
+          message: msg
+        })
+      });
+    } catch (err) {
+      console.error('Failed to log quick CRM lead:', err);
+    }
+    
+    // Direct link trigger
+    if (channel === 'Call') {
+      window.location.href = `tel:${p.contact_number}`;
+    } else if (channel === 'WhatsApp') {
+      const whatsappUrl = `https://wa.me/91${p.whatsapp_number || p.contact_number}`;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <div className="card" style={{ cursor:'pointer' }} onClick={onClick}>
@@ -68,10 +102,52 @@ export default function PropertyCard({ property: p, onClick }) {
             <i className="fas fa-eye" /> {p.views || 0} views
           </span>
         </div>
-        <button className="btn-gold" style={{
-          width:'100%', justifyContent:'center', marginTop:'1rem',
-          padding:'0.65rem', fontSize:'0.9rem',
-        }}>View Details</button>
+        
+        {p.status === 'sold' ? (
+          <button className="btn-gold" style={{
+            width:'100%', justifyContent:'center', marginTop:'1rem',
+            padding:'0.65rem', fontSize:'0.9rem', background:'#4B5563', cursor:'not-allowed'
+          }} disabled>Sold</button>
+        ) : (
+          <div style={{ display:'flex', gap:'0.5rem', marginTop:'1rem', alignItems:'center' }}>
+            <button className="btn-gold" style={{
+              flex:1, justifyContent:'center',
+              padding:'0.65rem 0.5rem', fontSize:'0.85rem', whiteSpace:'nowrap', margin:0
+            }} onClick={(e) => { e.stopPropagation(); onClick(); }}>
+              View Details
+            </button>
+            <button
+              onClick={(e) => handleQuickContact(e, 'Call')}
+              style={{
+                width:44, height:44, borderRadius:12,
+                background:'#3B82F6', color:'white',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                fontSize:'1rem', flexShrink:0, transition:'all 0.2s', border:'none', outline:'none', cursor:'pointer'
+              }}
+              title="Call Seller Now"
+              onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+              onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+            >
+              <i className="fas fa-phone" />
+            </button>
+            {p.whatsapp_number && (
+              <button
+                onClick={(e) => handleQuickContact(e, 'WhatsApp')}
+                style={{
+                  width:44, height:44, borderRadius:12,
+                  background:'#25D366', color:'white',
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  fontSize:'1.1rem', flexShrink:0, transition:'all 0.2s', border:'none', outline:'none', cursor:'pointer'
+                }}
+                title="WhatsApp Seller Now"
+                onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
+              >
+                <i className="fab fa-whatsapp" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

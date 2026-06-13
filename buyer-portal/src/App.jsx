@@ -84,7 +84,7 @@ export default function App() {
 
   const pages = {
     home:       <HomePage    navigate={navigate} openDetail={openDetail} />,
-    properties: <PropertiesPage navigate={navigate} openDetail={openDetail} user={user} />,
+    properties: <PropertiesPage navigate={navigate} openDetail={openDetail} user={user} onLoginRequired={() => setShowLogin(true)} />,
     reels:      <ReelsPage />,
     about:      <AboutPage   navigate={navigate} />,
     terms:      <TermsPage   navigate={navigate} />,
