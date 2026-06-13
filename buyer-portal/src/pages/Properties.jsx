@@ -126,7 +126,7 @@ export default function PropertiesPage({ openDetail, user, onLoginRequired }) {
                     <select className="form-input" style={{ margin:0, background:'#F3F4F6' }}
                       value={listing} onChange={e => setListing(e.target.value)}>
                       <option value="">Sale / Rent / Lease</option>
-                      {LISTINGS.filter(Boolean).map(l => <option key={l}>For {l}</option>)}
+                      {LISTINGS.filter(Boolean).map(l => <option key={l} value={l}>For {l}</option>)}
                     </select>
                   </div>
                   <div>
@@ -168,7 +168,7 @@ export default function PropertiesPage({ openDetail, user, onLoginRequired }) {
               <select className="form-input" style={{ flex:'0 0 auto', width:'auto', margin:0 }}
                 value={listing} onChange={e => setListing(e.target.value)}>
                 <option value="">Sale / Rent / Lease</option>
-                {LISTINGS.filter(Boolean).map(l => <option key={l}>For {l}</option>)}
+                {LISTINGS.filter(Boolean).map(l => <option key={l} value={l}>For {l}</option>)}
               </select>
               <select className="form-input" style={{ flex:'0 0 auto', width:'auto', margin:0 }}
                 value={sort} onChange={e => setSort(e.target.value)}>
