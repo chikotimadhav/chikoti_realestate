@@ -127,10 +127,19 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
               <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
                 <span 
                   onClick={() => navigate('profile')}
-                  style={{ color:'#C9A84C', fontWeight:600, fontSize:'0.9rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'4px' }}
+                  style={{ color:'#C9A84C', fontWeight:600, fontSize:'0.9rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'6px' }}
                   title="View Profile settings"
                 >
-                  👤 {user.name.split(' ')[0]}
+                  {user.avatar_url ? (
+                    <img 
+                      src={user.avatar_url} 
+                      alt="Profile" 
+                      style={{ width:24, height:24, borderRadius:'50%', objectFit:'cover', border:'1px solid #C9A84C' }} 
+                    />
+                  ) : (
+                    <span>👤</span>
+                  )}
+                  {user.name.split(' ')[0]}
                 </span>
                 <button onClick={onLogout} className="btn-outline" style={{ padding:'0.4rem 1rem', fontSize:'0.85rem' }}>
                   Logout
@@ -169,10 +178,19 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
             <div style={{ display:'flex', flexDirection:'column', gap:'1rem', marginTop:'0.5rem' }}>
               <span 
                 onClick={() => { navigate('profile'); setMobileOpen(false); }}
-                style={{ color:'#C9A84C', fontWeight:600, fontSize:'1.1rem', cursor:'pointer' }}
+                style={{ color:'#C9A84C', fontWeight:600, fontSize:'1.1rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px' }}
                 title="View Profile settings"
               >
-                👤 {user.name}
+                {user.avatar_url ? (
+                  <img 
+                    src={user.avatar_url} 
+                    alt="Profile" 
+                    style={{ width:28, height:28, borderRadius:'50%', objectFit:'cover', border:'1px solid #C9A84C' }} 
+                  />
+                ) : (
+                  <span>👤</span>
+                )}
+                {user.name}
               </span>
               <button onClick={() => { onLogout(); setMobileOpen(false); }} className="btn-outline" style={{ padding:'0.6rem 1.5rem', width:'100%', textAlign:'center' }}>
                 Logout

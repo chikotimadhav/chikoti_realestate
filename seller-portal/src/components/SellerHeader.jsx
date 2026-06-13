@@ -86,7 +86,17 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
                     width:'100%', cursor:'pointer', transition:'all 0.2s'
                   }}
                 >
-                  <span>{n.icon}</span> {n.label}
+                  <span>
+                    {n.page === 'profile' && user?.avatar_url ? (
+                      <img 
+                        src={user.avatar_url} 
+                        alt="" 
+                        style={{ width:18, height:18, borderRadius:'50%', objectFit:'cover', verticalAlign:'middle' }} 
+                      />
+                    ) : (
+                      n.icon
+                    )}
+                  </span> {n.label}
                 </button>
               ))}
               
@@ -134,7 +144,17 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
                 border: page === n.page ? '1px solid rgba(13,148,136,0.3)' : '1px solid transparent',
                 cursor:'pointer'
               }}>
-                <span>{n.icon}</span> {n.label}
+                <span>
+                  {n.page === 'profile' && user?.avatar_url ? (
+                    <img 
+                      src={user.avatar_url} 
+                      alt="" 
+                      style={{ width:16, height:16, borderRadius:'50%', objectFit:'cover', verticalAlign:'middle' }} 
+                    />
+                  ) : (
+                    n.icon
+                  )}
+                </span> {n.label}
               </button>
             ))}
             
@@ -163,10 +183,19 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
           <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginLeft:'auto' }}>
             <span 
               onClick={() => navigate('profile')}
-              style={{ color:'#64748B', fontSize:'0.85rem', cursor:'pointer' }}
+              style={{ color:'#64748B', fontSize:'0.85rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'6px' }}
               title="View Profile settings"
             >
-              👤 {user?.name?.split(' ')[0]}
+              {user?.avatar_url ? (
+                <img 
+                  src={user.avatar_url} 
+                  alt="Profile" 
+                  style={{ width:24, height:24, borderRadius:'50%', objectFit:'cover', border:'1px solid #14B8A6' }} 
+                />
+              ) : (
+                <span>👤</span>
+              )}
+              {user?.name?.split(' ')[0]}
             </span>
             <button onClick={onLogout} style={{
               background:'rgba(239,68,68,0.1)', color:'#F87171',
