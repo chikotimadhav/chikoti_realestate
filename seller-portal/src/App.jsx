@@ -11,6 +11,7 @@ import TermsPage      from './pages/Terms.jsx';
 import PrivacyPage    from './pages/Privacy.jsx';
 import DisclaimerPage from './pages/Disclaimer.jsx';
 import ReelsPage      from './pages/Reels.jsx';
+import ProfilePage    from './pages/Profile.jsx';
 
 export default function App() {
   const [user,  setUser]  = useState(() => {
@@ -31,6 +32,11 @@ export default function App() {
     setUser(null);
   };
 
+  const onUserUpdate = (updatedUser) => {
+    localStorage.setItem('ck_seller_user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
+
   const navigate = (p, propertyId = null) => {
     setEditPropertyId(propertyId);
     setPage(p);
@@ -45,6 +51,7 @@ export default function App() {
     list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
     reels:      <ReelsPage     user={user} />,
+    profile:    <ProfilePage   user={user} onUserUpdate={onUserUpdate} />,
     about:      <AboutPage      navigate={navigate} />,
     terms:      <TermsPage      navigate={navigate} />,
     privacy:    <PrivacyPage    navigate={navigate} />,

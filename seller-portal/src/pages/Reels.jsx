@@ -6,6 +6,8 @@ export default function ReelsPage() {
   const [reels, setReels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadType, setUploadType] = useState('file'); // 'file' or 'link'
+  const [videoFile, setVideoFile] = useState(null);
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [description, setDescription] = useState('');
@@ -40,9 +42,19 @@ export default function ReelsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!videoUrl) {
-      setError('Please provide a video URL.');
-      return;
+    
+    let finalVideoUrl = videoUrl;
+
+    if (uploadType === 'file') {
+      if (!videoFile) {
+        setError('Please select a video file to upload.');
+        return;
+      }
+    } else {
+      if (!videoUrl) {
+        setError('Please provide a video URL.');
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -50,6 +62,24 @@ export default function ReelsPage() {
     setSuccess('');
 
     try {
+      if (uploadType === 'file') {
+        // Upload the file first
+        const formData = new FormData();
+        formData.append('video', videoFile);
+
+        const uploadRes = await fetch(`${apiBase}/api/upload/video`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token()}`
+          },
+          body: formData
+        });
+
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok) throw new Error(uploadData.error || 'Failed to upload video file');
+        finalVideoUrl = uploadData.data.url;
+      }
+
       const res = await fetch(`${apiBase}/api/reels`, {
         method: 'POST',
         headers: {
@@ -58,7 +88,7 @@ export default function ReelsPage() {
         },
         body: JSON.stringify({
           title,
-          videoUrl,
+          videoUrl: finalVideoUrl,
           description,
           aspectRatio
         })
@@ -70,6 +100,10 @@ export default function ReelsPage() {
       setSuccess('Reel submitted successfully! Awaiting administrator approval.');
       setTitle('');
       setVideoUrl('');
+      setVideoFile(null);
+      const fileInput = document.getElementById('video-file-input');
+      if (fileInput) fileInput.value = '';
+
       setDescription('');
       setAspectRatio('9/16');
       
@@ -105,7 +139,7 @@ export default function ReelsPage() {
     if (!url) return '';
     if (url.includes('instagram.com/')) return '📸 Instagram Reel';
     if (url.includes('youtube.com/') || url.includes('youtu.be/')) return '🎥 YouTube Short';
-    if (url.match(/\.(mp4|webm|ogg|mov)(?:\?|$)/i)) return '💾 Direct MP4 Video';
+    if (url.match(/\.(mp4|webm|ogg|mov)(?:\?|$)/i) || url.includes('/uploads/')) return '💾 Direct MP4 Video';
     return '🔗 Web Link';
   };
 
@@ -128,25 +162,81 @@ export default function ReelsPage() {
         
         {/* Submit form card */}
         <div className="card" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, marginBottom: '1.25rem' }}>
-            ➕ Submit Reel Video Link
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, marginBottom: '1rem' }}>
+            ➕ Submit Reel Video
           </h3>
 
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem', background: '#F1F5F9', padding: '0.25rem', borderRadius: '8px' }}>
+            <button
+              type="button"
+              onClick={() => { setUploadType('file'); setError(''); }}
+              style={{
+                flex: 1,
+                padding: '0.5rem',
+                borderRadius: '6px',
+                border: 'none',
+                fontWeight: 600,
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                background: uploadType === 'file' ? '#0F172A' : 'transparent',
+                color: uploadType === 'file' ? '#FFFFFF' : '#475569',
+                transition: 'all 0.2s'
+              }}
+            >
+              📹 Upload Video File
+            </button>
+            <button
+              type="button"
+              onClick={() => { setUploadType('link'); setError(''); }}
+              style={{
+                flex: 1,
+                padding: '0.5rem',
+                borderRadius: '6px',
+                border: 'none',
+                fontWeight: 600,
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                background: uploadType === 'link' ? '#0F172A' : 'transparent',
+                color: uploadType === 'link' ? '#FFFFFF' : '#475569',
+                transition: 'all 0.2s'
+              }}
+            >
+              🔗 Paste Video Link
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <label className="form-label" style={{ margin: 0 }}>Reel Video URL *</label>
-              <input 
-                type="url" 
-                className="form-input" 
-                placeholder="e.g. https://www.instagram.com/reel/..." 
-                value={videoUrl} 
-                onChange={e => setVideoUrl(e.target.value)} 
-                required
-              />
-              <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
-                Supports Instagram Reels, YouTube Shorts, or direct video file links (.mp4)
-              </span>
-            </div>
+            {uploadType === 'file' ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label className="form-label" style={{ margin: 0 }}>Select Video File *</label>
+                <input 
+                  id="video-file-input"
+                  type="file" 
+                  accept="video/*"
+                  className="form-input" 
+                  onChange={e => setVideoFile(e.target.files[0])}
+                  required
+                />
+                <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                  Supports MP4, MOV, WebM, etc. Recommended: portrait (9:16) format. Max 50MB.
+                </span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <label className="form-label" style={{ margin: 0 }}>Reel Video URL *</label>
+                <input 
+                  type="url" 
+                  className="form-input" 
+                  placeholder="e.g. https://www.instagram.com/reel/..." 
+                  value={videoUrl} 
+                  onChange={e => setVideoUrl(e.target.value)} 
+                  required
+                />
+                <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
+                  Supports Instagram Reels, YouTube Shorts, or direct video file links (.mp4)
+                </span>
+              </div>
+            )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <label className="form-label" style={{ margin: 0 }}>Reel Title (Optional)</label>

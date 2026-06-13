@@ -55,33 +55,30 @@ router.post('/register', async (req, res) => {
 
         return res.status(409).json({ error: 'Email already registered' });
       } else {
-        // Email exists but is unverified - overwrite/update details and send new code
+        // If the email exists but is currently unverified (legacy users),
+        // instantly verify the account and log them in
+        exists.is_verified = true;
         exists.name = name;
         exists.password = password;
         if (phone !== undefined) exists.phone = phone;
         exists.role = role;
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        exists.verification_code = code;
-        exists.verification_code_expires = Date.now() + 10 * 60 * 1000;
         await exists.save();
-        await sendVerificationEmail(exists.email, code);
-        return res.status(200).json({ success: true, message: 'Verification code sent to email', is_verified: false });
+        const token = makeToken(exists);
+        return res.status(200).json({ success: true, data: { user: exists, token } });
       }
     }
 
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
     const user = await User.create({
       name,
       email: emailLower,
       phone,
       password,
       role,
-      is_verified: false,
-      verification_code: code,
-      verification_code_expires: Date.now() + 10 * 60 * 1000
+      is_verified: true
     });
-    await sendVerificationEmail(user.email, code);
-    res.status(201).json({ success: true, message: 'Verification code sent to email', is_verified: false });
+    
+    const token = makeToken(user);
+    res.status(201).json({ success: true, data: { user, token } });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -113,10 +110,6 @@ router.post('/login', async (req, res) => {
 
     const match = await user.comparePassword(password);
     if (!match) return res.status(401).json({ error: 'Invalid credentials' });
-
-    if (!user.is_verified && user.role !== 'admin') {
-      return res.status(403).json({ error: 'Please verify your email address before logging in.', email_unverified: true });
-    }
 
     const token = makeToken(user);
     res.json({ success: true, data: { user, token } });

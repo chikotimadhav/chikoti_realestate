@@ -9,6 +9,7 @@ import AboutPage from './pages/About.jsx';
 import TermsPage from './pages/Terms.jsx';
 import PrivacyPage from './pages/Privacy.jsx';
 import DisclaimerPage from './pages/Disclaimer.jsx';
+import ProfilePage    from './pages/Profile.jsx';
 
 export default function App() {
   const [page,     setPage]     = useState('home');
@@ -38,6 +39,11 @@ export default function App() {
     navigate('home');
   };
 
+  const onUserUpdate = (updatedUser) => {
+    localStorage.setItem('ck_user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
+
   const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const getImageUrl = (url) => {
@@ -52,27 +58,24 @@ export default function App() {
 
   // Advertisement display logic
   useEffect(() => {
-    if (!user && !showLogin) {
-      const hasSeen = sessionStorage.getItem('ck_seen_ad');
-      if (!hasSeen) {
-        fetch(`${apiBase}/api/advertisements/active`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.success && data.data) {
-              setActiveAd(data.data);
-              setShowAd(true);
-            }
-          })
-          .catch(err => console.error('Error fetching active ad:', err));
-      }
-    } else {
-      if (user) {
-        sessionStorage.removeItem('ck_seen_ad');
-      }
+    if (showLogin) {
       setShowAd(false);
       setActiveAd(null);
+      return;
     }
-  }, [user, showLogin]);
+    const hasSeen = sessionStorage.getItem('ck_seen_ad');
+    if (!hasSeen) {
+      fetch(`${apiBase}/api/advertisements/active`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.data) {
+            setActiveAd(data.data);
+            setShowAd(true);
+          }
+        })
+        .catch(err => console.error('Error fetching active ad:', err));
+    }
+  }, [showLogin]);
 
   const handleAdClick = () => {
     sessionStorage.setItem('ck_seen_ad', 'true');
@@ -90,6 +93,7 @@ export default function App() {
     terms:      <TermsPage   navigate={navigate} />,
     privacy:    <PrivacyPage navigate={navigate} />,
     disclaimer: <DisclaimerPage navigate={navigate} />,
+    profile:    <ProfilePage user={user} onUserUpdate={onUserUpdate} />,
   };
 
   return (

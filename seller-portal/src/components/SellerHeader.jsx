@@ -5,6 +5,7 @@ const NAV = [
   { label:'List Property', page:'list',   icon:'➕' },
   { label:'Inquiries',  page:'inquiries', icon:'📩' },
   { label:'Reels',      page:'reels',     icon:'🎥' },
+  { label:'Profile',    page:'profile',   icon:'👤' },
 ];
 
 export default function SellerHeader({ page, navigate, user, onLogout }) {
@@ -160,7 +161,11 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
 
           {/* User Profile & Logout */}
           <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginLeft:'auto' }}>
-            <span style={{ color:'#64748B', fontSize:'0.85rem' }}>
+            <span 
+              onClick={() => navigate('profile')}
+              style={{ color:'#64748B', fontSize:'0.85rem', cursor:'pointer' }}
+              title="View Profile settings"
+            >
               👤 {user?.name?.split(' ')[0]}
             </span>
             <button onClick={onLogout} style={{

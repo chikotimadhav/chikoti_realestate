@@ -16,8 +16,6 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
   const [resetStep, setResetStep] = useState(1);
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [regStep, setRegStep] = useState(1);
-  const [regCode, setRegCode] = useState('');
 
   async function handleAuth(e) {
     e.preventDefault();
@@ -36,64 +34,12 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) {
-        if (tab === 'login' && data.email_unverified) {
-          setTab('register');
-          setRegStep(2);
-          setErr('');
-          return;
-        }
-        throw new Error(data.error);
-      }
-      if (tab === 'register') {
-        setRegStep(2);
-      } else {
-        onLogin(data.data.user, data.data.token);
-        setShowLogin(false);
-      }
-    } catch (e) { setErr(e.message); }
-    finally      { setLoading(false); }
-  }
-
-  async function handleVerifyEmail(e) {
-    e.preventDefault();
-    setErr(''); setLoading(true);
-    try {
-      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${apiBase}/api/auth/verify-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, code: regCode }),
-      });
-      const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
       onLogin(data.data.user, data.data.token);
       setShowLogin(false);
-      setRegStep(1);
-      setRegCode('');
-    } catch (e) {
-      setErr(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleResendVerification() {
-    setErr('');
-    try {
-      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${apiBase}/api/auth/resend-verification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      alert('A new verification code has been sent to your email.');
-    } catch (e) {
-      setErr(e.message);
-    }
+    } catch (e) { setErr(e.message); }
+    finally      { setLoading(false); }
   }
 
   async function handleForgotReset(e) {
@@ -179,7 +125,11 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
             </a>
             {user ? (
               <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
-                <span style={{ color:'#C9A84C', fontWeight:600, fontSize:'0.9rem' }}>
+                <span 
+                  onClick={() => navigate('profile')}
+                  style={{ color:'#C9A84C', fontWeight:600, fontSize:'0.9rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'4px' }}
+                  title="View Profile settings"
+                >
                   👤 {user.name.split(' ')[0]}
                 </span>
                 <button onClick={onLogout} className="btn-outline" style={{ padding:'0.4rem 1rem', fontSize:'0.85rem' }}>
@@ -217,7 +167,11 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
           </a>
           {user ? (
             <div style={{ display:'flex', flexDirection:'column', gap:'1rem', marginTop:'0.5rem' }}>
-              <span style={{ color:'#C9A84C', fontWeight:600, fontSize:'1.1rem' }}>
+              <span 
+                onClick={() => { navigate('profile'); setMobileOpen(false); }}
+                style={{ color:'#C9A84C', fontWeight:600, fontSize:'1.1rem', cursor:'pointer' }}
+                title="View Profile settings"
+              >
                 👤 {user.name}
               </span>
               <button onClick={() => { onLogout(); setMobileOpen(false); }} className="btn-outline" style={{ padding:'0.6rem 1.5rem', width:'100%', textAlign:'center' }}>
@@ -242,13 +196,13 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
             }}>✕</button>
 
             <h2 style={{ fontFamily:'Playfair Display', fontSize:'1.6rem', marginBottom:'0.25rem' }}>
-              {tab === 'login' ? 'Welcome back' : tab === 'register' ? (regStep === 2 ? 'Verify email' : 'Create account') : 'Reset Password'}
+              {tab === 'login' ? 'Welcome back' : tab === 'register' ? 'Create account' : 'Reset Password'}
             </h2>
             <p style={{ color:'#6B7280', fontSize:'0.9rem', marginBottom:'1.5rem' }}>
-              {tab === 'login' ? 'Sign in to your buyer account' : tab === 'register' ? (regStep === 2 ? 'Confirm your verification code to complete registration' : 'Start finding your dream property') : 'Verify your email to set a new password'}
+              {tab === 'login' ? 'Sign in to your buyer account' : tab === 'register' ? 'Start finding your dream property' : 'Verify your email to set a new password'}
             </p>
 
-            {tab !== 'forgot' && regStep === 1 && (
+            {tab !== 'forgot' && (
               /* Tabs */
               <div style={{ display:'flex', borderBottom:'2px solid #F3F4F6', marginBottom:'1.5rem' }}>
                 {['login','register'].map(t => (
@@ -267,7 +221,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
                 {resetStep === 1 ? (
                   <>
                     <input className="form-input" type="email" placeholder="Email Address" required
-                      value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                       value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
                     {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
                     <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
                       {loading ? 'Sending code…' : 'Send Verification Code'}
@@ -291,59 +245,39 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
                 </button>
               </form>
             ) : (
-              tab === 'register' && regStep === 2 ? (
-                <form onSubmit={handleVerifyEmail} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-                  <p style={{ color:'#059669', fontSize:'0.85rem', fontWeight:600 }}>✓ Verification code sent to {form.email}</p>
-                  <input className="form-input" placeholder="Enter 6-digit verification code" required
-                    value={regCode} onChange={e => setRegCode(e.target.value)} />
-                  {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
-                  <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
-                    {loading ? 'Verifying…' : 'Verify & Register'}
+              <form onSubmit={handleAuth} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+                {tab === 'register' && (
+                  <>
+                    <input className="form-input" placeholder="Full Name" required
+                      value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
+                    <input className="form-input" placeholder="Phone Number"
+                      value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
+                  </>
+                )}
+                {tab === 'register' ? (
+                  <input key="reg-email" className="form-input" type="email" placeholder="Email Address" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                ) : (
+                  <input key="login-email" className="form-input" type="text" placeholder="Email Address or Phone Number" required
+                    value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
+                )}
+                <input className="form-input" type="password" placeholder="Password" required
+                  value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
+                
+                {tab === 'login' && (
+                  <button type="button" onClick={() => { setTab('forgot'); setResetStep(1); setErr(''); }} style={{ background:'none', color:'#C9A84C', fontSize:'0.82rem', fontWeight:600, alignSelf:'flex-end', marginTop:'-0.5rem', marginBottom:'0.5rem', cursor:'pointer' }}>
+                    Forgot Password?
                   </button>
-                  <div style={{ display:'flex', justifyContent:'space-between', marginTop:'0.5rem' }}>
-                    <button type="button" onClick={handleResendVerification} style={{ background:'none', color:'#C9A84C', fontSize:'0.85rem', fontWeight:600, cursor:'pointer' }}>
-                      Resend Code
-                    </button>
-                    <button type="button" onClick={() => { setRegStep(1); setErr(''); }} style={{ background:'none', color:'#6B7280', fontSize:'0.85rem', cursor:'pointer' }}>
-                      ← Back
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <form onSubmit={handleAuth} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-                  {tab === 'register' && (
-                    <>
-                      <input className="form-input" placeholder="Full Name" required
-                        value={form.name} onChange={e => setForm({...form, name:e.target.value})} />
-                      <input className="form-input" placeholder="Phone Number"
-                        value={form.phone} onChange={e => setForm({...form, phone:e.target.value})} />
-                    </>
-                  )}
-                  {tab === 'register' ? (
-                    <input key="reg-email" className="form-input" type="email" placeholder="Email Address" required
-                      value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-                  ) : (
-                    <input key="login-email" className="form-input" type="text" placeholder="Email Address or Phone Number" required
-                      value={form.email} onChange={e => setForm({...form, email:e.target.value})} />
-                  )}
-                  <input className="form-input" type="password" placeholder="Password" required
-                    value={form.password} onChange={e => setForm({...form, password:e.target.value})} />
-                  
-                  {tab === 'login' && (
-                    <button type="button" onClick={() => { setTab('forgot'); setResetStep(1); setErr(''); }} style={{ background:'none', color:'#C9A84C', fontSize:'0.82rem', fontWeight:600, alignSelf:'flex-end', marginTop:'-0.5rem', marginBottom:'0.5rem', cursor:'pointer' }}>
-                      Forgot Password?
-                    </button>
-                  )}
+                )}
 
-                  {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
-                  <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
-                    {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Account'}
-                  </button>
-                  <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#9CA3AF' }}>
-                    Demo: use any email & password to test
-                  </p>
-                </form>
-              )
+                {err && <p style={{ color:'#DC2626', fontSize:'0.85rem' }}>{err}</p>}
+                <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
+                  {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Account'}
+                </button>
+                <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#9CA3AF' }}>
+                  Demo: use any email & password to test
+                </p>
+              </form>
             )}
           </div>
         </div>

@@ -531,16 +531,42 @@ export default function ReelsPage() {
                 )}
                 
                 {details?.type === 'instagram' && (
-                  <iframe 
-                    className="reel-player-iframe"
-                    src={details.embedUrl}
-                    title="Instagram Reel Player"
-                    allowFullScreen
-                    allow="autoplay"
-                    sandbox="allow-scripts allow-same-origin allow-presentation"
-                    scrolling="no"
-                    frameBorder="0"
-                  />
+                  <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '350px' }}>
+                    <iframe 
+                      className="reel-player-iframe"
+                      src={details.embedUrl}
+                      title="Instagram Reel Player"
+                      allowFullScreen
+                      allow="autoplay"
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      scrolling="no"
+                      frameBorder="0"
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '15px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'rgba(8, 17, 32, 0.95)',
+                      color: '#C9A84C',
+                      padding: '0.4rem 0.8rem',
+                      borderRadius: '20px',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      border: '1px solid rgba(201, 168, 76, 0.4)',
+                      textAlign: 'center',
+                      pointerEvents: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                      whiteSpace: 'nowrap',
+                      zIndex: 10,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px'
+                    }}>
+                      <span style={{ fontSize: '0.85rem' }}>🛡️</span> Protected: Locked to Chikoti Portal
+                    </div>
+                  </div>
                 )}
 
                 {details?.type === 'video' && (
