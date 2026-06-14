@@ -150,7 +150,8 @@ export default function ListPage({ navigate, editPropertyId }) {
       if (!form.land_type) throw new Error('Please select Land Type');
       if (images.length === 0) throw new Error('Please upload at least one photo');
 
-      const payload = { ...form, price: parseFloat(form.price), images };
+      const finalWhatsAppNumber = (form.whatsapp_number || '').trim() || (form.contact_number || '').trim();
+      const payload = { ...form, whatsapp_number: finalWhatsAppNumber, price: parseFloat(form.price), images };
 
       const url = editPropertyId 
         ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/properties/${editPropertyId}`

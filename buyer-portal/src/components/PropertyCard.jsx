@@ -130,7 +130,7 @@ export default function PropertyCard({ property: p, onClick, user, onLoginRequir
             >
               <i className="fas fa-phone" />
             </button>
-            {p.whatsapp_number && (
+            {(p.whatsapp_number || p.contact_number) && (
               <button
                 onClick={(e) => handleQuickContact(e, 'WhatsApp')}
                 style={{

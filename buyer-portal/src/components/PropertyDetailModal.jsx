@@ -181,8 +181,8 @@ export default function PropertyDetailModal({ property: p, onClose, user, onLogi
                 <a href={`tel:${p.contact_number}`} className="btn-gold" style={{ flex:1, justifyContent:'center', padding:'0.65rem' }}>
                   <i className="fas fa-phone" /> {p.contact_number}
                 </a>
-                {p.whatsapp_number && (
-                  <a href={`https://wa.me/91${p.whatsapp_number}`} target="_blank" rel="noreferrer"
+                {(p.whatsapp_number || p.contact_number) && (
+                  <a href={`https://wa.me/91${p.whatsapp_number || p.contact_number}`} target="_blank" rel="noreferrer"
                     style={{
                       flex:1, justifyContent:'center', padding:'0.65rem',
                       background:'#25D366', color:'white', borderRadius:12,
