@@ -51,7 +51,7 @@ export default function App() {
     list:       <ListPage      user={user} navigate={navigate} editPropertyId={editPropertyId} />,
     inquiries:  <InquiriesPage user={user} />,
     reels:      <ReelsPage     user={user} />,
-    profile:    <ProfilePage   user={user} onUserUpdate={onUserUpdate} />,
+    profile:    <ProfilePage   user={user} onUserUpdate={onUserUpdate} onClose={() => navigate('dashboard')} />,
     about:      <AboutPage      navigate={navigate} />,
     terms:      <TermsPage      navigate={navigate} />,
     privacy:    <PrivacyPage    navigate={navigate} />,

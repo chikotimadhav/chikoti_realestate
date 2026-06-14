@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function token() { return localStorage.getItem('ck_token'); }
 
-export default function ProfilePage({ user, onUserUpdate }) {
+export default function ProfilePage({ user, onUserUpdate, onClose }) {
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
@@ -105,11 +105,33 @@ export default function ProfilePage({ user, onUserUpdate }) {
           padding: 4rem 1.5rem;
         }
         .profile-card {
+          position: relative;
           background: #0d1e36;
           border: 1px solid rgba(201, 168, 76, 0.2);
           border-radius: 24px;
           padding: 2.5rem;
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 30px rgba(201, 168, 76, 0.05);
+        }
+        .profile-close-btn {
+          position: absolute;
+          top: 1.25rem;
+          right: 1.25rem;
+          background: none;
+          border: none;
+          color: #94A3B8;
+          font-size: 1.25rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          transition: all 0.2s;
+        }
+        .profile-close-btn:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #F5F0E8;
         }
         .profile-header {
           text-align: center;
@@ -224,6 +246,16 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
       <div className="profile-container">
         <div className="profile-card">
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="profile-close-btn"
+              title="Close Profile"
+            >
+              ✕
+            </button>
+          )}
           <div className="profile-header">
             <h1 className="profile-title">Profile Settings</h1>
             <p className="profile-subtitle">Update your personal preferences, photo, and contact details</p>

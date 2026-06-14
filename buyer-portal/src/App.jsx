@@ -93,7 +93,7 @@ export default function App() {
     terms:      <TermsPage   navigate={navigate} />,
     privacy:    <PrivacyPage navigate={navigate} />,
     disclaimer: <DisclaimerPage navigate={navigate} />,
-    profile:    <ProfilePage user={user} onUserUpdate={onUserUpdate} />,
+    profile:    <ProfilePage user={user} onUserUpdate={onUserUpdate} onClose={() => navigate('home')} />,
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function token() { return localStorage.getItem('ck_seller_token'); }
 
-export default function ProfilePage({ user, onUserUpdate }) {
+export default function ProfilePage({ user, onUserUpdate, onClose }) {
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
@@ -98,11 +98,43 @@ export default function ProfilePage({ user, onUserUpdate }) {
 
   return (
     <div style={{ padding: '2rem 1.5rem', maxWidth: 800, margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.25rem' }}>👤 Profile Settings</h1>
-        <p style={{ color: '#64748B', fontSize: '0.9rem' }}>
-          Update your contact details, living address, and profile photo
-        </p>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '0.25rem' }}>👤 Profile Settings</h1>
+          <p style={{ color: '#64748B', fontSize: '0.9rem' }}>
+            Update your contact details, living address, and profile photo
+          </p>
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#64748B',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = '#E2E8F0';
+              e.currentTarget.style.color = '#0F172A';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'none';
+              e.currentTarget.style.color = '#64748B';
+            }}
+            title="Close Profile"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <div className="card" style={{ padding: '2rem' }}>

@@ -303,9 +303,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
                 <button type="submit" className="btn-gold" style={{ justifyContent:'center', padding:'0.8rem' }} disabled={loading}>
                   {loading ? 'Please wait…' : tab === 'login' ? 'Sign In' : 'Create Account'}
                 </button>
-                <p style={{ textAlign:'center', fontSize:'0.8rem', color:'#9CA3AF' }}>
-                  Demo: use any email & password to test
-                </p>
+
               </form>
             )}
           </div>
