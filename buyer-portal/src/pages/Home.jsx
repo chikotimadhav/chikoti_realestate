@@ -49,26 +49,15 @@ export default function HomePage({ navigate, openDetail }) {
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section style={{
-        minHeight: '92vh',
-        background: 'linear-gradient(160deg, #0A1628 0%, #132040 40%, #1a2f52 100%)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        position: 'relative', overflow: 'hidden',
-        padding: '4rem 1.5rem',
-      }}>
+      <section className="hero-section">
         {/* Background texture */}
         <div style={{
           position:'absolute', inset:0, opacity:0.04,
           backgroundImage:'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
           backgroundSize:'32px 32px',
         }} />
-        <div style={{
-          position:'absolute', bottom:'-100px', right:'-100px',
-          width:500, height:500, borderRadius:'50%',
-          background:'radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)',
-        }} />
 
-        <div className="container fade-up" style={{ textAlign:'center', position:'relative', zIndex:1 }}>
+        <div className="container fade-up hero-content">
           <span className="section-tag">Premium Real Estate</span>
           <h1 style={{
             fontFamily:'Playfair Display', fontSize:'clamp(2.2rem, 5vw, 4rem)',
@@ -77,10 +66,10 @@ export default function HomePage({ navigate, openDetail }) {
             Find Your Perfect<br />
             <span style={{ color:'#C9A84C' }}>Property in Telangana</span>
           </h1>
-          <p style={{ color:'#94A3B8', fontSize:'1.1rem', maxWidth:560, margin:'0 auto 2.5rem', lineHeight:1.7 }}>
+          <p className="hero-subtitle">
             Premium verified plots, residential lands, and commercial properties across Telangana's fastest-growing corridors.
           </p>
-          <div style={{ display:'flex', gap:'1rem', justifyContent:'center', flexWrap:'wrap' }}>
+          <div className="hero-buttons">
             <button onClick={() => navigate('properties')} className="btn-gold" style={{ fontSize:'1rem', padding:'0.9rem 2rem' }}>
               <i className="fas fa-search" /> Explore Listings
             </button>
