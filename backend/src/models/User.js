@@ -48,7 +48,7 @@ userSchema.statics.seedAdmin = async function () {
     'admin3@chikotirealestate.com'
   ];
 
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Madhav@2007';
 
   for (const email of allowedAdminEmails) {
     const exists = await this.findOne({ email });
