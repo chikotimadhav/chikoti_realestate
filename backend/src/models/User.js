@@ -61,6 +61,13 @@ userSchema.statics.seedAdmin = async function () {
         is_verified: true,
       });
       console.log(`👤 Permanent admin seeded: ${email}`);
+    } else {
+      // Force update role and password to match env/default config
+      exists.role = 'admin';
+      exists.password = adminPassword;
+      exists.is_verified = true;
+      await exists.save();
+      console.log(`👤 Permanent admin updated and synchronized: ${email}`);
     }
   }
 };
