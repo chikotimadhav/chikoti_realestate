@@ -11,6 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'chikoti_secret_2024';
 
 const ALLOWED_ADMIN_EMAILS = [
   'madhav800811@gmail.com',
+  'madhavchikoti92@gmail.com',
   'admin2@chikotirealestate.com',
   'admin3@chikotirealestate.com'
 ];

@@ -43,6 +43,7 @@ userSchema.methods.toJSON = function () {
 userSchema.statics.seedAdmin = async function () {
   const allowedAdminEmails = [
     'madhav800811@gmail.com',
+    'madhavchikoti92@gmail.com',
     'admin2@chikotirealestate.com',
     'admin3@chikotirealestate.com'
   ];
@@ -53,7 +54,7 @@ userSchema.statics.seedAdmin = async function () {
     const exists = await this.findOne({ email });
     if (!exists) {
       await this.create({
-        name: email === 'madhav800811@gmail.com' ? 'Madhav Chikoti' : `Admin (${email.split('@')[0]})`,
+        name: (email === 'madhav800811@gmail.com' || email === 'madhavchikoti92@gmail.com') ? 'Madhav Chikoti' : `Admin (${email.split('@')[0]})`,
         email: email,
         password: adminPassword,
         role: 'admin',
