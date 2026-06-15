@@ -17,6 +17,12 @@ async function request(path, options = {}) {
       ...options.headers,
     },
   });
+  if (res.status === 401 && !path.includes('/auth/')) {
+    console.warn('401 Unauthorized interceptor triggered in shared API service. Clearing session and reloading...');
+    localStorage.removeItem('ck_token');
+    localStorage.removeItem('ck_user');
+    window.location.reload();
+  }
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
