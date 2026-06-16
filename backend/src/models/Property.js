@@ -53,17 +53,19 @@ const propertySchema = new mongoose.Schema({
   tokenId:        { type: Number, unique: true },
 }, { timestamps: true });
 
-// Pre-save hook to generate sequential tokenId (e.g., 20260001, 20260002)
+// Pre-save hook to generate sequential tokenId based on existing properties count
 propertySchema.pre('save', async function (next) {
   const doc = this;
   if (doc.isNew && !doc.tokenId) {
-    const Counter = mongoose.model('Counter');
-    const counter = await Counter.findOneAndUpdate(
-      { id: 'property_token_id' },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
-    doc.tokenId = 20260000 + counter.seq;
+    const PropertyModel = mongoose.model('Property');
+    const totalCount = await PropertyModel.countDocuments({});
+    let nextTokenId = 20260000 + totalCount + 1;
+    
+    // Ensure uniqueness in case of deleted properties causing duplicate IDs
+    while (await PropertyModel.exists({ tokenId: nextTokenId })) {
+      nextTokenId++;
+    }
+    doc.tokenId = nextTokenId;
   }
   next();
 });
@@ -73,14 +75,14 @@ propertySchema.statics.migrateTokenIds = async function () {
   const propertiesWithoutToken = await this.find({ tokenId: { $exists: false } });
   if (propertiesWithoutToken.length > 0) {
     console.log(`\n🔄 [MIGRATION] Found ${propertiesWithoutToken.length} properties without token ID. Assigning sequential IDs...`);
-    const Counter = mongoose.model('Counter');
+    const PropertyModel = this;
     for (const prop of propertiesWithoutToken) {
-      const counter = await Counter.findOneAndUpdate(
-        { id: 'property_token_id' },
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true }
-      );
-      prop.tokenId = 20260000 + counter.seq;
+      const totalCount = await PropertyModel.countDocuments({ tokenId: { $exists: true } });
+      let nextTokenId = 20260000 + totalCount + 1;
+      while (await PropertyModel.exists({ tokenId: nextTokenId })) {
+        nextTokenId++;
+      }
+      prop.tokenId = nextTokenId;
       await prop.save();
       console.log(`✅ [MIGRATION] Assigned tokenId #${prop.tokenId} to property: "${prop.title}"`);
     }
