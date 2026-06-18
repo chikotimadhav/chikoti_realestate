@@ -15,9 +15,18 @@ const TYPES = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Venu', city: 'Hyderabad', text: 'Found my dream plot within 2 weeks! The team was incredibly professional.', rating: 5 },
-  { name: 'Ramesh', city: 'Siddipet', text: 'Best real estate platform in India. Transparent pricing, zero hidden costs.', rating: 5 },
-  { name: 'Ram Reddy', city: 'RagaReddy', text: 'Excellent service. Closed commercial deal in record time.', rating: 5 },
+  {
+    name: 'Your Review Here',
+    city: '',
+    text: 'Customer reviews will appear here as our community grows.',
+    rating: 5
+  },
+  {
+    name: 'Coming Soon',
+    city: '',
+    text: 'Be among the first users to buy or sell property through Chikoti Real Estate.',
+    rating: 5
+  }
 ];
 
 const PORTALS = [
