@@ -54,7 +54,6 @@ export default function Footer({ navigate }) {
           </div>
           <div>
             <h4 style={{ color: '#C9A84C', fontWeight: 700, marginBottom: '0.75rem' }}>Contact</h4>
-            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>📞 +91 7013368379</p>
             <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>📧 chikotirealestates@gmail.com</p>
             <p style={{ fontSize: '0.9rem' }}>📍 Hyderabad, Telangana</p>
           </div>
