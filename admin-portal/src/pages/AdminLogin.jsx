@@ -60,7 +60,7 @@ export default function AdminLogin({ onLogin }) {
               <input
                 type="email" required value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="admin@chikotirealestate.com"
+                placeholder="admin@estatehub.com"
                 style={{
                   width:'100%', padding:'0.75rem 1rem',
                   background:'rgba(255,255,255,0.08)',

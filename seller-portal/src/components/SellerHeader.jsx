@@ -47,7 +47,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
       {/* Brand Logo Container */}
       <div style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }} onClick={() => handleNavClick('dashboard')}>
         <img 
-          src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
+          src="/logo.jpg" 
           alt="EstateHub Logo" 
           style={{ width:36, height:36, objectFit:'contain' }}
         />
