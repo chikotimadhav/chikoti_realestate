@@ -73,7 +73,7 @@ export default function PropertiesPage({ openDetail, user, onLoginRequired }) {
                 <input
                   className="form-input"
                   style={{ flex:1, margin:0, padding:'0.8rem 1rem', fontSize:'0.95rem' }}
-                  placeholder="🔍 Search location or name…"
+                  placeholder="🔍 Search by ID, location or name…"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                 />
@@ -156,7 +156,7 @@ export default function PropertiesPage({ openDetail, user, onLoginRequired }) {
               <input
                 className="form-input"
                 style={{ flex:'1 1 240px', margin:0 }}
-                placeholder="🔍  Search by location or name…"
+                placeholder="🔍  Search by ID, location or name…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />

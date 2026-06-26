@@ -16,7 +16,23 @@ router.get('/', async (req, res) => {
 
     if (type)    query.land_type    = type;
     if (listing) query.listing_type = listing;
-    if (search)  query.$text = { $search: search };
+    if (search) {
+      const trimmedSearch = search.trim();
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(trimmedSearch);
+      const isNumeric = /^\d+$/.test(trimmedSearch);
+
+      const conditions = [];
+      conditions.push({ $text: { $search: trimmedSearch } });
+
+      if (isObjectId) {
+        conditions.push({ _id: trimmedSearch });
+      }
+      if (isNumeric) {
+        conditions.push({ tokenId: Number(trimmedSearch) });
+      }
+
+      query.$or = conditions;
+    }
 
     let q = Property.find(query).skip(Number(offset)).limit(Number(limit));
     if (sort === 'price_asc')  q = q.sort({ price:  1 });

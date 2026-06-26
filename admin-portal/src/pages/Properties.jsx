@@ -59,7 +59,9 @@ export default function PropertiesPage() {
   const filtered = properties.filter(p =>
     !search || p.title?.toLowerCase().includes(search.toLowerCase()) ||
     p.location?.toLowerCase().includes(search.toLowerCase()) ||
-    p.seller_name?.toLowerCase().includes(search.toLowerCase())
+    p.seller_name?.toLowerCase().includes(search.toLowerCase()) ||
+    p.tokenId?.toString().includes(search.trim()) ||
+    p.id?.toString().toLowerCase() === search.trim().toLowerCase()
   );
 
   return (
@@ -87,7 +89,7 @@ export default function PropertiesPage() {
       {/* Search */}
       <div style={{ marginBottom:'1.25rem' }}>
         <input className="form-input" style={{ maxWidth:340 }}
-          placeholder="🔍  Search title, location, seller…"
+          placeholder="🔍  Search ID, title, location, seller…"
           value={search} onChange={e => setSearch(e.target.value)} />
       </div>
 
