@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="main-footer">
       <div>
-        © {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | Admin Portal
+        © {new Date().getFullYear()} EstateHub. All rights reserved. | Admin Portal
       </div>
       <div className="designer-credit">
         <span>designed by</span>

@@ -39,10 +39,10 @@ export const STATUS_COLORS = {
 };
 
 export const COMPANY = {
-  name: 'Chikoti Real Estate',
+  name: 'EstateHub',
   tagline: 'Your Trusted Partner in Property Investments',
   phone: '+91 7013368379',
-  email: 'chikoticreations@gmail.com',
+  email: 'estatehub@gmail.com',
   address: 'Hyderabad, Telangana, India',
   whatsapp: '7013368379',
   mapCenter: { lat: 17.385044, lng: 78.486671 },

@@ -9,11 +9,11 @@ export default function Footer({ navigate }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '0.75rem' }}>
               <img
                 src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb"
-                alt="Chikoti Real Estate Logo"
+                alt="EstateHub Logo"
                 style={{ width: 36, height: 36, objectFit: 'contain' }}
               />
               <span style={{ fontFamily: 'Playfair Display', fontWeight: 700, color: '#F5F0E8', fontSize: '1.1rem' }}>
-                Chikoti Real Estate
+                EstateHub
               </span>
             </div>
             <p style={{ fontSize: '0.88rem', lineHeight: 1.65 }}>
@@ -54,12 +54,12 @@ export default function Footer({ navigate }) {
           </div>
           <div>
             <h4 style={{ color: '#C9A84C', fontWeight: 700, marginBottom: '0.75rem' }}>Contact</h4>
-            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>📧 chikotirealestates@gmail.com</p>
+            <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem' }}>📧 estatehub@gmail.com</p>
             <p style={{ fontSize: '0.9rem' }}>📍 Hyderabad, Telangana</p>
           </div>
         </div>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.25rem', textAlign: 'center', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-          <div>© {new Date().getFullYear()} Chikoti Real Estate. All rights reserved. | RERA Certified</div>
+          <div>© {new Date().getFullYear()} EstateHub. All rights reserved. | RERA Certified</div>
           <div className="designer-credit">
             <span>designed by</span>
             <a href="https://www.instagram.com/chikoti_creations?igsh=MWU3eGZ6c3Zyam1taA%3D%3D" target="_blank" rel="noopener noreferrer" className="instagram-icon-link">

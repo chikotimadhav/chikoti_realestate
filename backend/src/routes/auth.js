@@ -129,7 +129,7 @@ async function sendResetEmail(email, code) {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
   
-  const text = `Hello,\n\nYour password reset verification code is: ${code}\n\nThis code will expire in 10 minutes.\n\nBest regards,\nChikoti Real Estate Team`;
+  const text = `Hello,\n\nYour password reset verification code is: ${code}\n\nThis code will expire in 10 minutes.\n\nBest regards,\nEstateHub Team`;
 
   console.log(`\n===============================================\n📧 RESET PASSWORD CODE FOR: ${email}\n🔑 CODE: ${code}\n===============================================\n`);
 
@@ -149,9 +149,9 @@ async function sendResetEmail(email, code) {
   });
 
   await transporter.sendMail({
-    from: `"Chikoti Real Estate" <${user}>`,
+    from: `"EstateHub" <${user}>`,
     to: email,
-    subject: 'Password Reset Verification Code - Chikoti Real Estate',
+    subject: 'Password Reset Verification Code - EstateHub',
     text: text
   });
   console.log(`📧 Reset email successfully sent to ${email}`);
@@ -161,7 +161,7 @@ async function sendVerificationEmail(email, code) {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
   
-  const text = `Hello,\n\nYour email verification code is: ${code}\n\nThis code will expire in 10 minutes.\n\nBest regards,\nChikoti Real Estate Team`;
+  const text = `Hello,\n\nYour email verification code is: ${code}\n\nThis code will expire in 10 minutes.\n\nBest regards,\nEstateHub Team`;
 
   console.log(`\n===============================================\n📧 EMAIL VERIFICATION CODE FOR: ${email}\n🔑 CODE: ${code}\n===============================================\n`);
 
@@ -181,9 +181,9 @@ async function sendVerificationEmail(email, code) {
   });
 
   await transporter.sendMail({
-    from: `"Chikoti Real Estate" <${user}>`,
+    from: `"EstateHub" <${user}>`,
     to: email,
-    subject: 'Email Verification Code - Chikoti Real Estate',
+    subject: 'Email Verification Code - EstateHub',
     text: text
   });
   console.log(`📧 Verification email successfully sent to ${email}`);

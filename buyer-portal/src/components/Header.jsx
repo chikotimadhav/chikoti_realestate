@@ -110,11 +110,11 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
           <div onClick={() => navigate('home')} style={{ cursor:'pointer', display:'flex', alignItems:'center', gap:10 }}>
             <img 
               src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
-              alt="Chikoti Real Estate Logo" 
+              alt="EstateHub Logo" 
               style={{ width:40, height:40, objectFit:'contain' }}
             />
             <span style={{ fontFamily:'Playfair Display', fontWeight:700, fontSize:'1.2rem', color:'#F5F0E8', letterSpacing:'0.5px' }}>
-              Chikoti Real Estate
+              EstateHub
             </span>
           </div>
 

@@ -42,7 +42,7 @@ export default function AdminLogin({ onLogin }) {
             Admin Control Panel
           </h1>
           <p style={{ color:'#A5B4FC', fontSize:'0.88rem' }}>
-            Chikoti Real Estate Management System
+            EstateHub Management System
           </p>
         </div>
 

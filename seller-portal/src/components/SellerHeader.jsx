@@ -48,12 +48,12 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
       <div style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }} onClick={() => handleNavClick('dashboard')}>
         <img 
           src="https://res.cloudinary.com/dpkaoxtz3/image/upload/c_crop,w_634,h_545,x_180,y_197/f_auto,q_auto/ChatGPT_Image_Jun_12_2026_10_13_59_PM_kzlegb" 
-          alt="Chikoti Real Estate Logo" 
+          alt="EstateHub Logo" 
           style={{ width:36, height:36, objectFit:'contain' }}
         />
         <div>
           <div style={{ color:'white', fontWeight:800, fontSize:'0.95rem', lineHeight:1.2 }}>
-            Chikoti Seller Portal
+            EstateHub Seller Portal
           </div>
           <div style={{ color:'#14B8A6', fontSize:'0.72rem', fontWeight:600 }}>
             {user?.email}

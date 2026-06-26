@@ -24,7 +24,7 @@ const TESTIMONIALS = [
   {
     name: 'Coming Soon',
     city: '',
-    text: 'Be among the first users to buy or sell property through Chikoti Real Estate.',
+    text: 'Be among the first users to buy or sell property through EstateHub.',
     rating: 5
   }
 ];

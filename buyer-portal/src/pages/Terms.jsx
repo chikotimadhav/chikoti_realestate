@@ -26,21 +26,21 @@ export default function TermsPage({ navigate }) {
           color: '#374151'
         }}>
           <p style={{ marginBottom: '1.5rem' }}>
-            Welcome to Chikoti Real Estate. By accessing or using our website, mobile applications, and services, you agree to comply with and be bound by these Terms and Conditions.
+            Welcome to EstateHub. By accessing or using our website, mobile applications, and services, you agree to comply with and be bound by these Terms and Conditions.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
             1. Acceptance of Terms
           </h2>
           <p style={{ marginBottom: '1.5rem' }}>
-            By using Chikoti Real Estate, you acknowledge that you have read, understood, and agree to these Terms and Conditions. If you do not agree, please do not use our services.
+            By using EstateHub, you acknowledge that you have read, understood, and agree to these Terms and Conditions. If you do not agree, please do not use our services.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
             2. About the Platform
           </h2>
           <p style={{ marginBottom: '1.5rem' }}>
-            Chikoti Real Estate is an online platform that enables property owners, agents, brokers, and buyers to discover, list, and inquire about real estate properties. We act solely as a technology platform and do not own, sell, purchase, lease, or broker properties unless explicitly stated.
+            EstateHub is an online platform that enables property owners, agents, brokers, and buyers to discover, list, and inquire about real estate properties. We act solely as a technology platform and do not own, sell, purchase, lease, or broker properties unless explicitly stated.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
@@ -77,7 +77,7 @@ export default function TermsPage({ navigate }) {
             5. Property Information Disclaimer
           </h2>
           <p style={{ marginBottom: '0.75rem' }}>
-            Chikoti Real Estate does not guarantee the accuracy, completeness, legality, ownership status, market value, or availability of any property listed on the platform. Users must independently verify:
+            EstateHub does not guarantee the accuracy, completeness, legality, ownership status, market value, or availability of any property listed on the platform. Users must independently verify:
           </p>
           <ul style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <li>Property ownership</li>
@@ -126,7 +126,7 @@ export default function TermsPage({ navigate }) {
             9. Intellectual Property
           </h2>
           <p style={{ marginBottom: '1.5rem' }}>
-            All website content, branding, logos, software, graphics, and designs are the property of Chikoti Real Estate or its licensors. Users may not copy, distribute, modify, or reproduce content without prior written permission.
+            All website content, branding, logos, software, graphics, and designs are the property of EstateHub or its licensors. Users may not copy, distribute, modify, or reproduce content without prior written permission.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
@@ -140,7 +140,7 @@ export default function TermsPage({ navigate }) {
             11. Limitation of Liability
           </h2>
           <p style={{ marginBottom: '0.75rem' }}>
-            To the maximum extent permitted by law, Chikoti Real Estate shall not be liable for:
+            To the maximum extent permitted by law, EstateHub shall not be liable for:
           </p>
           <ul style={{ paddingLeft: '1.5rem', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <li>Property disputes</li>
@@ -158,7 +158,7 @@ export default function TermsPage({ navigate }) {
             12. Indemnification
           </h2>
           <p style={{ marginBottom: '1.5rem' }}>
-            You agree to indemnify and hold harmless Chikoti Real Estate, its founders, employees, and affiliates from claims, damages, liabilities, and expenses arising from your use of the platform or violation of these Terms.
+            You agree to indemnify and hold harmless EstateHub, its founders, employees, and affiliates from claims, damages, liabilities, and expenses arising from your use of the platform or violation of these Terms.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
@@ -189,8 +189,8 @@ export default function TermsPage({ navigate }) {
             For questions regarding these Terms and Conditions, contact:
           </p>
           <address style={{ fontStyle: 'normal', color: '#374151' }}>
-            <strong>Chikoti Real Estate</strong><br />
-            Email: <a href="mailto:chikoticreations@gmail.com" style={{ color: '#C9A84C' }}>chikoticreations@gmail.com</a><br />
+            <strong>EstateHub</strong><br />
+            Email: <a href="mailto:estatehub@gmail.com" style={{ color: '#C9A84C' }}>estatehub@gmail.com</a><br />
             Website: <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>chikotirealestate.vercel.app</a><br />
             Location: Telangana, India
           </address>

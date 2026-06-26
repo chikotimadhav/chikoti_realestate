@@ -43,7 +43,7 @@ export default function DisclaimerPage({ navigate }) {
           color: '#475569'
         }}>
           <p style={{ marginBottom: '1.25rem', fontWeight: 600, color: '#0F172A' }}>
-            Chikoti Real Estate is an online property listing platform.
+            EstateHub is an online property listing platform.
           </p>
 
           <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', marginTop: '1.5rem', marginBottom: '0.5rem' }}>
@@ -82,7 +82,7 @@ export default function DisclaimerPage({ navigate }) {
             Listing Accuracy
           </h2>
           <p style={{ marginBottom: '1.25rem' }}>
-            Property descriptions, images, pricing, location details, and ownership claims are provided by sellers, agents, or listing owners. Chikoti Real Estate does not guarantee the accuracy or completeness of such information.
+            Property descriptions, images, pricing, location details, and ownership claims are provided by sellers, agents, or listing owners. EstateHub does not guarantee the accuracy or completeness of such information.
           </p>
 
           <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', marginTop: '1.5rem', marginBottom: '0.5rem' }}>
@@ -96,7 +96,7 @@ export default function DisclaimerPage({ navigate }) {
             Limitation of Liability
           </h2>
           <p style={{ marginBottom: '0.5rem' }}>
-            Chikoti Real Estate shall not be liable for:
+            EstateHub shall not be liable for:
           </p>
           <ul style={{ paddingLeft: '1.5rem', marginBottom: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
             <li>Property disputes</li>

@@ -63,7 +63,7 @@ export default function AboutPage({ navigate }) {
             lineHeight: 1.2,
             animation: 'fadeInDown 0.8s ease-out 0.1s both'
           }}>
-            About Chikoti Real Estate
+            About EstateHub
           </h1>
           <p style={{
             fontSize: '1.2rem',
@@ -101,7 +101,7 @@ export default function AboutPage({ navigate }) {
             Our Vision & Mission
           </h2>
           <p style={{ fontSize: '1.05rem', lineHeight: 1.75, color: '#374151', marginBottom: '1.5rem' }}>
-            Chikoti Real Estate is a digital property platform focused on helping buyers, sellers, and investors discover real estate opportunities in Telangana. Our mission is to make property discovery easier by providing verified listings, transparent information, and modern technology tools that help users make informed decisions.
+            EstateHub is a digital property platform focused on helping buyers, sellers, and investors discover real estate opportunities in Telangana. Our mission is to make property discovery easier by providing verified listings, transparent information, and modern technology tools that help users make informed decisions.
           </p>
           <p style={{ fontSize: '1.05rem', lineHeight: 1.75, color: '#374151', marginBottom: '1.5rem' }}>
             The platform allows property owners and authorized representatives to list agricultural lands, residential plots, commercial properties, and investment opportunities while enabling buyers to connect directly with sellers.
@@ -209,10 +209,10 @@ export default function AboutPage({ navigate }) {
               <span style={{ fontSize: '1.5rem' }}>📧</span>
               <div>
                 <div style={{ fontSize: '0.8rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '1px' }}>Email</div>
-                <a href="mailto:chikoticreations@gmail.com" style={{ color: '#F0C040', fontWeight: 600, fontSize: '0.95rem', transition: 'color 0.2s' }}
+                <a href="mailto:estatehub@gmail.com" style={{ color: '#F0C040', fontWeight: 600, fontSize: '0.95rem', transition: 'color 0.2s' }}
                    onMouseEnter={e => e.target.style.color = '#F5F0E8'}
                    onMouseLeave={e => e.target.style.color = '#F0C040'}>
-                  chikoticreations@gmail.com
+                  estatehub@gmail.com
                 </a>
               </div>
             </div>

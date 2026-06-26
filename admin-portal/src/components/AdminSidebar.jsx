@@ -24,7 +24,7 @@ export default function AdminSidebar({ page, navigate }) {
             fontSize:'1.2rem',
           }}>🏛️</div>
           <div>
-            <div style={{ color:'white', fontWeight:800, fontSize:'0.92rem' }}>Chikoti Admin</div>
+            <div style={{ color:'white', fontWeight:800, fontSize:'0.92rem' }}>EstateHub Admin</div>
             <div style={{ color:'#6366F1', fontSize:'0.68rem', fontWeight:600 }}>Management System</div>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function AdminSidebar({ page, navigate }) {
       {/* Footer */}
       <div style={{ padding:'1rem 1.5rem', borderTop:'1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ color:'#4338CA', fontSize:'0.72rem', fontWeight:600 }}>
-          Chikoti Real Estate v1.0
+          EstateHub v1.0
         </div>
         <div style={{ color:'#4338CA', fontSize:'0.65rem', marginTop:'0.15rem' }}>
           © {new Date().getFullYear()} All rights reserved

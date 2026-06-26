@@ -31,7 +31,7 @@ export default function PrivacyPage({ navigate }) {
           <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' }}>
             Privacy Policy
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '0.95rem' }}>Chikoti Real Estate Commitment</p>
+          <p style={{ color: '#94A3B8', fontSize: '0.95rem' }}>EstateHub Commitment</p>
         </div>
 
         {/* Content Card */}
@@ -43,7 +43,7 @@ export default function PrivacyPage({ navigate }) {
           color: '#475569'
         }}>
           <p style={{ marginBottom: '1.25rem' }}>
-            Chikoti Real Estate ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
+            EstateHub ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
           </p>
 
           <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', marginTop: '1.5rem', marginBottom: '0.5rem' }}>
@@ -135,7 +135,7 @@ export default function PrivacyPage({ navigate }) {
             Contact
           </h2>
           <address style={{ fontStyle: 'normal', color: '#475569' }}>
-            Email: <a href="mailto:chikoticreations@gmail.com" style={{ color: 'var(--teal)' }}>chikoticreations@gmail.com</a><br />
+            Email: <a href="mailto:estatehub@gmail.com" style={{ color: 'var(--teal)' }}>estatehub@gmail.com</a><br />
             Website: <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--teal)' }}>chikotirealestate.vercel.app</a>
           </address>
         </div>

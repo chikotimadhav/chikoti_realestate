@@ -58,7 +58,7 @@ export default function AboutPage({ navigate }) {
               Seller Resource
             </span>
             <h1 style={{ color: 'white', fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-              About Chikoti Real Estate
+              About EstateHub
             </h1>
             <p style={{ color: '#94A3B8', fontSize: '1rem', maxWidth: 700, lineHeight: 1.5 }}>
               Connecting verified property sellers directly with prospective buyers and smart investors across Telangana.
@@ -76,7 +76,7 @@ export default function AboutPage({ navigate }) {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', lineHeight: 1.7, color: '#475569', fontSize: '0.95rem' }}>
               <p>
-                Chikoti Real Estate is a digital property platform focused on helping buyers, sellers, and investors discover real estate opportunities in Telangana.
+                EstateHub is a digital property platform focused on helping buyers, sellers, and investors discover real estate opportunities in Telangana.
               </p>
               <p>
                 Our mission is to make property discovery easier by providing verified listings, transparent information, and modern technology tools that help users make informed decisions.
@@ -148,8 +148,8 @@ export default function AboutPage({ navigate }) {
                 <span style={{ fontSize: '1.5rem' }}>✉️</span>
                 <div>
                   <div style={{ fontSize: '0.75rem', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Email Support</div>
-                  <a href="mailto:chikoticreations@gmail.com" style={{ color: '#5EEAD4', fontWeight: 600, fontSize: '0.92rem' }}>
-                    chikoticreations@gmail.com
+                  <a href="mailto:estatehub@gmail.com" style={{ color: '#5EEAD4', fontWeight: 600, fontSize: '0.92rem' }}>
+                    estatehub@gmail.com
                   </a>
                 </div>
               </div>

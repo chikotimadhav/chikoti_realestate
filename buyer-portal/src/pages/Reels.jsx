@@ -479,7 +479,7 @@ export default function ReelsPage() {
                       )}
                       
                       <h3 className="reel-title">
-                        {reel.title || 'Chikoti Real Estate Tour'}
+                        {reel.title || 'EstateHub Tour'}
                       </h3>
                       {reel.description && (
                         <p className="reel-desc">{reel.description}</p>
@@ -600,7 +600,7 @@ export default function ReelsPage() {
 
               {/* Reel Info */}
               <div className="reel-lightbox-info">
-                <h4 className="reel-lightbox-title">{activeReel.title || 'Chikoti Real Estate Tour'}</h4>
+                <h4 className="reel-lightbox-title">{activeReel.title || 'EstateHub Tour'}</h4>
                 {activeReel.description && (
                   <p className="reel-lightbox-desc">{activeReel.description}</p>
                 )}

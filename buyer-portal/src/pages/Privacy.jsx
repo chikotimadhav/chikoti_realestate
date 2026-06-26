@@ -26,7 +26,7 @@ export default function PrivacyPage({ navigate }) {
           color: '#374151'
         }}>
           <p style={{ marginBottom: '1.5rem' }}>
-            Chikoti Real Estate ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
+            EstateHub ("we," "our," or "us") respects your privacy and is committed to protecting your personal information.
           </p>
 
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: '#0A1628', marginTop: '2rem', marginBottom: '0.75rem', borderBottom: '1px solid #F3F4F6', paddingBottom: '0.4rem' }}>
@@ -118,7 +118,7 @@ export default function PrivacyPage({ navigate }) {
             Contact
           </h2>
           <address style={{ fontStyle: 'normal', color: '#374151' }}>
-            Email: <a href="mailto:chikoticreations@gmail.com" style={{ color: '#C9A84C' }}>chikoticreations@gmail.com</a><br />
+            Email: <a href="mailto:estatehub@gmail.com" style={{ color: '#C9A84C' }}>estatehub@gmail.com</a><br />
             Website: <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>chikotirealestate.vercel.app</a>
           </address>
         </div>
