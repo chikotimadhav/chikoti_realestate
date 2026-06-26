@@ -158,8 +158,8 @@ export default function AboutPage({ navigate }) {
                 <span style={{ fontSize: '1.5rem' }}>🌐</span>
                 <div>
                   <div style={{ fontSize: '0.75rem', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 600 }}>Website URL</div>
-                  <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#5EEAD4', fontWeight: 600, fontSize: '0.92rem' }}>
-                    chikotirealestate.vercel.app
+                  <a href="https://estatehub.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#5EEAD4', fontWeight: 600, fontSize: '0.92rem' }}>
+                    estatehub.vercel.app
                   </a>
                 </div>
               </div>

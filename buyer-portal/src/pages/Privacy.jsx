@@ -119,7 +119,7 @@ export default function PrivacyPage({ navigate }) {
           </h2>
           <address style={{ fontStyle: 'normal', color: '#374151' }}>
             Email: <a href="mailto:estatehub@gmail.com" style={{ color: '#C9A84C' }}>estatehub@gmail.com</a><br />
-            Website: <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>chikotirealestate.vercel.app</a>
+            Website: <a href="https://estatehub.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>estatehub.vercel.app</a>
           </address>
         </div>
 

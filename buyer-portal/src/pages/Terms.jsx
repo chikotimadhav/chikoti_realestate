@@ -191,7 +191,7 @@ export default function TermsPage({ navigate }) {
           <address style={{ fontStyle: 'normal', color: '#374151' }}>
             <strong>EstateHub</strong><br />
             Email: <a href="mailto:estatehub@gmail.com" style={{ color: '#C9A84C' }}>estatehub@gmail.com</a><br />
-            Website: <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>chikotirealestate.vercel.app</a><br />
+            Website: <a href="https://estatehub.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#C9A84C' }}>estatehub.vercel.app</a><br />
             Location: Telangana, India
           </address>
         </div>

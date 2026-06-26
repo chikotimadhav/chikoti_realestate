@@ -113,7 +113,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
               
               {/* Buyer Portal Navigation Link */}
               <a 
-                href="https://chikotirealestate.vercel.app/" 
+                href="https://estatehub.vercel.app/" 
                 target="_blank" 
                 rel="noreferrer"
                 style={{
@@ -171,7 +171,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
             
             {/* Buyer Portal Navigation Link */}
             <a 
-              href="https://chikotirealestate.vercel.app/" 
+              href="https://estatehub.vercel.app/" 
               target="_blank" 
               rel="noreferrer" 
               style={{

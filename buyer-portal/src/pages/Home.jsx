@@ -82,7 +82,7 @@ export default function HomePage({ navigate, openDetail }) {
             <button onClick={() => navigate('properties')} className="btn-gold" style={{ fontSize: '1rem', padding: '0.9rem 2rem' }}>
               <i className="fas fa-search" /> Explore Listings
             </button>
-            <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
+            <a href="https://estateshub-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
               className="btn-outline" style={{ fontSize: '1rem', padding: '0.9rem 2rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               <i className="fas fa-home" /> List Your Property
             </a>

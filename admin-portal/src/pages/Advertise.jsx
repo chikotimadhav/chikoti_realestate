@@ -242,7 +242,7 @@ export default function AdvertisePage() {
               <input 
                 type="url" 
                 className="form-input" 
-                placeholder="e.g. https://www.chikotirealestate.com/offers" 
+                placeholder="e.g. https://estatehub.vercel.app/offers" 
                 value={link} 
                 onChange={e => setLink(e.target.value)} 
               />

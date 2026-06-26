@@ -221,11 +221,11 @@ export default function AboutPage({ navigate }) {
               <span style={{ fontSize: '1.5rem' }}>🌐</span>
               <div>
                 <div style={{ fontSize: '0.8rem', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '1px' }}>Website</div>
-                <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noopener noreferrer" 
+                <a href="https://estatehub.vercel.app/" target="_blank" rel="noopener noreferrer" 
                    style={{ color: '#F0C040', fontWeight: 600, fontSize: '0.95rem', transition: 'color 0.2s' }}
                    onMouseEnter={e => e.target.style.color = '#F5F0E8'}
                    onMouseLeave={e => e.target.style.color = '#F0C040'}>
-                  chikotirealestate.vercel.app
+                  estatehub.vercel.app
                 </a>
               </div>
             </div>

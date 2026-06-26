@@ -184,7 +184,7 @@ export default function LoginPage({ onLogin }) {
 
         <p style={{ textAlign:'center', color:'#475569', fontSize:'0.85rem', marginTop:'1.5rem' }}>
           Looking to buy? Visit{' '}
-          <a href="https://chikotirealestate.vercel.app/" style={{ color:'#14B8A6', fontWeight:600 }}>
+          <a href="https://estatehub.vercel.app/" style={{ color:'#14B8A6', fontWeight:600 }}>
             EstateHub Buyer Portal
           </a>
         </p>

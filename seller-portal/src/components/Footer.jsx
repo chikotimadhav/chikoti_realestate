@@ -6,7 +6,7 @@ export default function Footer({ hasSidebar, navigate }) {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
         <div>
           © {new Date().getFullYear()} EstateHub. All rights reserved. | Seller Portal | {' '}
-          <a href="https://chikotirealestate.vercel.app/" target="_blank" rel="noreferrer" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'underline' }}
+          <a href="https://estatehub.vercel.app/" target="_blank" rel="noreferrer" style={{ color: 'var(--teal)', fontWeight: 600, textDecoration: 'underline' }}
              onMouseEnter={e => e.target.style.color = 'var(--teal-dark)'}
              onMouseLeave={e => e.target.style.color = 'var(--teal)'}>
             Buyer Portal ↗

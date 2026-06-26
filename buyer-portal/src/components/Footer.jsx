@@ -32,7 +32,7 @@ export default function Footer({ navigate }) {
               </div>
             ))}
             <div style={{ marginTop: '0.4rem' }}>
-              <a href="https://chikoti-realestate-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
+              <a href="https://estateshub-seller-portal.vercel.app/" target="_blank" rel="noreferrer"
                 style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Seller Portal</a>
             </div>
           </div>
