@@ -49,7 +49,7 @@ export default function SellerHeader({ page, navigate, user, onLogout }) {
         <img 
           src="/logo.jpg" 
           alt="EstateHub Logo" 
-          style={{ width:36, height:36, objectFit:'contain' }}
+          style={{ width:36, height:36, objectFit:'cover', borderRadius:'50%' }}
         />
         <div>
           <div style={{ color:'white', fontWeight:800, fontSize:'0.95rem', lineHeight:1.2 }}>

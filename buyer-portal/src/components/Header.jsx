@@ -111,7 +111,7 @@ export default function Header({ page, navigate, user, onLogin, onLogout, showLo
             <img 
               src="/logo.jpg" 
               alt="EstateHub Logo" 
-              style={{ width:40, height:40, objectFit:'contain' }}
+              style={{ width:40, height:40, objectFit:'cover', borderRadius:'50%' }}
             />
             <span style={{ fontFamily:'Playfair Display', fontWeight:700, fontSize:'1.2rem', color:'#F5F0E8', letterSpacing:'0.5px' }}>
               EstateHub

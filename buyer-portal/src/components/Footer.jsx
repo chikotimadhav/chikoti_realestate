@@ -10,7 +10,7 @@ export default function Footer({ navigate }) {
               <img
                 src="/logo.jpg"
                 alt="EstateHub Logo"
-                style={{ width: 36, height: 36, objectFit: 'contain' }}
+                style={{ width: 36, height: 36, objectFit: 'cover', borderRadius: '50%' }}
               />
               <span style={{ fontFamily: 'Playfair Display', fontWeight: 700, color: '#F5F0E8', fontSize: '1.1rem' }}>
                 EstateHub

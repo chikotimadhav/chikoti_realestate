@@ -89,7 +89,7 @@ export default function LoginPage({ onLogin }) {
           <img 
             src="/logo.jpg" 
             alt="EstateHub Logo" 
-            style={{ width:64, height:64, objectFit:'contain', margin:'0 auto 0.75rem', display:'block' }}
+            style={{ width:64, height:64, objectFit:'cover', borderRadius:'50%', margin:'0 auto 0.75rem', display:'block' }}
           />
           <h1 style={{ fontFamily:'Plus Jakarta Sans', fontWeight:800, fontSize:'1.4rem', color:'white' }}>
             EstateHub Seller Portal
